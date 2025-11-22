@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/*Fonts*/
+.paragraph200Medium_white {
+    color: var(--Theme-White, #FFF);
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-transform: capitalize;
+}
+
+.paragraph200Medium_black {
+    color: var(--Theme-Body, #161414);
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-transform: capitalize;
+}
+
+.paragraph100Medium_grey {
+    color: var(--Theme-Body_muted, #979797);
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.paragraph100Medium_black {
+    color: var(--Theme-Body_muted, #161414);
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.paragraph100Medium_white {
+    color: #FFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+}
+
+.paragraph200regular {
+    color: var(--Theme-Body_muted, #979797);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.heading100 {
+    color: #FFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 62px;
+}
+
+.heading200 {
+    color: var(--Theme-Body, #161414);
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 48px;
+}
+
+.heading300 {
+    color: var(--Theme-White, #FFF);
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 36px;
+}
+
+.heading400 {
+    color: var(--Theme-Body, #161414);
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+}
+
+.button200regular {
+    color: var(--Theme-Primary, #7B61FF);
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.button-text {
+    color: var(--Theme-White, #FFF);
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+}
