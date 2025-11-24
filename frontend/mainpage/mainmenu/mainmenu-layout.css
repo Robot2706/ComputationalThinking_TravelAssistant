@@ -1,0 +1,529 @@
+/* =========================================
+   1. SETUP & VARIABLES
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+    --primary-color: #7B61FF; /* Màu tím chủ đạo */
+    --text-dark: #1C1C1E;
+    --text-light: #FFFFFF;
+    --text-gray: #666666;
+    --bg-white: #FFFFFF;
+    
+    /* Tốc độ chuyển động của hiệu ứng */
+    --transition-speed: 0.6s; 
+    --transition-ease: cubic-bezier(0.22, 1, 0.36, 1); /* Hiệu ứng trượt mượt mà */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-white);
+    
+    /* QUAN TRỌNG: Khóa cuộn dọc (Y) ban đầu */
+    overflow-y: hidden; 
+    overflow-x: hidden; 
+    
+    /* Giúp việc lướt xuống mượt mà hơn */
+    scroll-behavior: smooth; 
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* =========================================
+   2. HERO SECTION (BACKGROUND & KHUNG)
+   ========================================= */
+.hero-section {
+    position: fixed; /* Luôn dính chặt màn hình */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Mặc định cao full màn hình */
+    z-index: 1000;
+    overflow: hidden;
+    
+    /* Bo góc ban đầu bằng 0 */
+    border-radius: 0;
+    box-shadow: none;
+    
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+/* --- TRẠNG THÁI KHI CUỘN XUỐNG (.shrink) --- */
+.hero-section.shrink {
+    height: 170px; /* Thu ngắn chiều cao lại */
+    
+    /* Bo tròn 2 góc dưới */
+    border-radius: 0 0 60px 60px; 
+    
+    /* Thêm bóng đổ tách biệt nền */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); 
+}
+
+/* Ảnh nền */
+.hero-section .background-main {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: url("../../assets/picture/background.jpg") center center / cover no-repeat;
+    z-index: -1;
+    /* Khi thu nhỏ ảnh vẫn giữ tâm ở giữa */
+}
+
+.mainmenu-container {
+    width: 100%;
+    height: 135%;
+    position: relative;
+}
+
+/* =========================================
+   3. LOGO & CHỮ WELCOME (XỬ LÝ BIẾN HÌNH)
+   ========================================= */
+.logo-container {
+    position: absolute;
+    top: 100px; /* Vị trí ban đầu */
+    left: 50%;
+    transform: translateX(-50%); /* Căn giữa */
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    transition: all var(--transition-speed) var(--transition-ease);
+    z-index: 20;
+}
+
+.logo-container img {
+    width: 88px;
+    height: auto;
+    transition: transform 0.4s;
+}
+
+
+/* --- KHI LƯỚT XUỐNG --- */
+
+/* 1. Logo chạy sang trái */
+.hero-section.shrink .logo-container {
+    top: 15px; 
+    left: 2.5%;  /* Cách mép trái 5% */
+    transform: translateX(0); /* Bỏ căn giữa */
+    align-items: flex-start; /* Canh lề trái cho các phần tử con */
+}
+
+/* 3. Ảnh logo nhỏ lại chút */
+.hero-section.shrink .logo-container img {
+    transform: scale(0.9);
+    transform-origin: left top;
+}
+
+/* =========================================
+   4. NAV MENU (MENU MỚI: HOTELS, CHAT...)
+   ========================================= */
+.nav-menu {
+    position: absolute;
+    top: 22px; /* Cùng hàng ngang với logo khi shrink */
+    left: 50%;
+    transform: translateX(-50%); /* Luôn căn giữa màn hình */
+    
+    display: flex;
+    gap: 50px; /* Khoảng cách giữa các mục menu */
+    
+    /* BAN ĐẦU: ẨN ĐI */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    
+    transition: all 0.5s ease-in-out;
+    z-index: 20;
+}
+
+.nav-menu a {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: capitalize; /* Viết hoa chữ cái đầu */
+    transition: 0.3s;
+    position: relative;
+}
+
+.nav-menu a:hover {
+    color: #fff;
+}
+
+/* Hiệu ứng gạch chân khi hover (Optional) */
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    width: 0; height: 2px;
+    bottom: -4px; left: 0;
+    background-color: #fff;
+    transition: width 0.3s;
+}
+.nav-menu a:hover::after {
+    width: 100%;
+}
+
+/* --- KHI LƯỚT XUỐNG: HIỆN MENU --- */
+.hero-section.shrink .nav-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* =========================================
+   5. CÁC PHẦN TỬ KHÁC (SLOGAN, NÚT SIGN UP)
+   ========================================= */
+.slogan-container {
+    position: absolute;
+    top: 240px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.4s;
+    width: 100%;
+    text-align: center;
+}
+
+.glass-btn {
+    position: absolute;
+    top: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 24px;
+    
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    
+    cursor: pointer;
+    transition: all 0.4s;
+    z-index: 10;
+}
+
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* --- KHI LƯỚT XUỐNG: ẨN ĐI --- */
+.hero-section.shrink .slogan-container,
+.hero-section.shrink .glass-btn {
+    opacity: 0;
+    transform: translate(-50%, -20px); /* Bay nhẹ lên trên khi ẩn */
+    pointer-events: none;
+}
+
+/* =========================================
+   6. THANH TÌM KIẾM (SEARCH BAR)
+   ========================================= */
+.search-row {
+    position: absolute;
+    top: 55%; /* Vị trí ban đầu */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    width: 90%;
+    max-width: 1140px;
+    height: 80px;
+    padding: 10px 20px;
+    gap: 10px;
+    
+    background: #FFF;
+    border-radius: 20px;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
+    
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.input-search-row {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 10px;
+    border-right: 1px solid #eee;
+}
+.input-search-row:last-child { border-right: none; } /* Xóa gạch ngăn ô cuối */
+.input-search-row:nth-last-child(2) { border-right: none; } /* Xóa gạch ngăn gần nút search */
+
+.text-search-row {
+    display: flex;
+    flex-direction: column;
+}
+.paragraph200regular {
+    font-weight: 600; font-size: 14px; color: var(--text-dark);
+}
+.paragraph100Medium_black {
+    font-size: 12px; color: var(--text-gray);
+}
+
+/* Nút tìm kiếm tím */
+.search-button-purple {
+    background: var(--primary-color);
+    height: 60px; width: 60px; min-width: 60px;
+    border-radius: 16px;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer; transition: 0.2s;
+}
+.search-button-purple:hover { background: #654ce0; }
+.search-button-purple img { width: 24px; height: 24px; filter: brightness(0) invert(1); }
+
+/* --- KHI LƯỚT XUỐNG: DI CHUYỂN LÊN --- */
+.hero-section.shrink .search-row {
+    top: 100px; /* Nằm gọn trong khung 380px */
+    width: 80%; /* Thu gọn chiều ngang */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+/* =========================================
+   7. CONTENT SECTION (PHẦN TRẮNG DƯỚI)
+   ========================================= */
+.white-section {
+    position: relative;
+    z-index: 1;
+    background-color: var(--bg-white);
+    
+    /* QUAN TRỌNG: Đẩy xuống dưới màn hình ban đầu */
+    margin-top: 100vh; 
+    
+    padding: 100px 10%;
+    min-height: 100vh;
+}
+
+.white-section h2 {
+    font-size: 28px; font-weight: 600; margin-bottom: 40px;
+}
+
+/* Grid Layout cho Card */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.card-item {
+    display: flex; flex-direction: column; gap: 12px;
+    cursor: pointer; transition: transform 0.3s;
+}
+.card-item:hover { transform: translateY(-5px); }
+
+.card-item img {
+    width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 16px;
+}
+.card-item h3 { font-size: 16px; margin: 0; font-weight: 600; }
+.card-item p { font-size: 13px; color: var(--text-gray); margin: 0; }
+
+/* --- INPUT STYLING (Cho Location & Budget) --- */
+.search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    color: #1C1C1E;
+    font-weight: 500;
+    width: 100%;
+    padding: 0;
+}
+
+.search-input::placeholder {
+    color: #666;
+    font-weight: 400;
+}
+
+.text-search-row label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dark);
+    display: block;
+    cursor: pointer;
+}
+
+.placeholder-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+}
+
+/* --- POPUP CONTAINER CHUNG (Ẩn/Hiện) --- */
+.input-search-row {
+    position: relative; /* Để popup căn theo ô này */
+    cursor: pointer;
+}
+
+.popup-container {
+    position: absolute;
+    top: 120%; /* Nằm ngay dưới ô input */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background: #FFF;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    padding: 20px;
+    z-index: 100;
+    
+    /* Mặc định ẩn */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+/* Class active để hiện popup */
+.popup-container.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    top: 110%; /* Hiệu ứng trượt nhẹ lên */
+}
+
+/* --- 1. STYLE CHO GUEST POPUP --- */
+.guest-popup {
+    width: 200px;
+}
+
+.guest-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.counter-control {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.counter-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; justify-content: center; align-items: center;
+    color: #666;
+    transition: 0.2s;
+}
+
+.counter-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
+.counter-btn:active { transform: scale(0.9); }
+
+/* --- 2. STYLE CHO CALENDAR POPUP --- */
+.calendar-popup {
+    width: 600px; /* Lịch 2 tháng nên cần rộng */
+    padding: 30px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.month-title { font-weight: 600; font-size: 16px; text-align: center; width: 50%; }
+
+.calendar-body {
+    display: flex;
+    gap: 30px; /* Khoảng cách giữa 2 tháng */
+}
+
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 cột cho 7 ngày */
+    gap: 8px;
+    flex: 1;
+}
+
+.day-name, .day-num {
+    text-align: center;
+    font-size: 13px;
+    padding: 8px 0;
+}
+.day-name { color: #888; font-weight: 400; }
+.day-num { font-weight: 500; cursor: pointer; border-radius: 50%; }
+
+.day-num:hover { background-color: #f0f0f0; }
+/* Ví dụ ngày đang chọn */
+.day-num.selected { background-color: var(--primary-color); color: #fff; }
+
+.calendar-footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex; gap: 10px;
+}
+
+.pill-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    background: #eee;
+    font-size: 13px; cursor: pointer;
+}
+.pill-btn.outline { background: transparent; border: 1px solid #ddd; }
+
+/* =========================================
+   CHẾ ĐỘ KHÓA (MODE-LOCKED)
+   Dùng để khóa giao diện sau khi tìm kiếm
+   ========================================= */
+
+/* 1. Khi vào chế độ khóa, ép Hero luôn ở trạng thái shrink */
+body.mode-locked .hero-section {
+    /* Giữ nguyên các thông số của .shrink mà bạn đã chỉnh */
+    height: 170px !important;
+    border-radius: 0 0 60px 60px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Ép các phần tử con (Logo, Menu...) theo trạng thái shrink */
+body.mode-locked .hero-section .logo-container {
+    top: 15px !important; 
+    left: 2.5% !important;
+    transform: translateX(0) !important;
+    align-items: flex-start !important;
+}
+body.mode-locked .hero-section .logo-container img {
+    transform: scale(0.9) !important;
+}
+
+body.mode-locked .slogan-container,
+body.mode-locked .glass-btn {
+    display: none !important; /* Ẩn hoàn toàn để không bị lỗi vặt */
+}
+body.mode-locked .nav-menu {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+body.mode-locked .search-row {
+    top: 100px !important;
+    width: 80% !important;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15) !important;
+}
+
+/* 2. QUAN TRỌNG NHẤT: Kéo phần nội dung trắng lên sát header */
+body.mode-locked .white-section {
+    /* Thay vì margin-top: 100vh, giờ chỉ cần cách đúng bằng chiều cao header */
+    margin-top: 170px !important; 
+    
+    /* Thêm padding top chút cho thoáng nếu cần */
+    padding-top: 50px; 
+}

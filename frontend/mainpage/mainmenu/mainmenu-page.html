@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2rism</title>
+    
+    <link rel="stylesheet" href="mainmenu-layout.css" />
+    
+    <link rel="stylesheet" href="../../fonts.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <section class="hero-section">
+        
+        <div class="background-main"></div>
+
+        <div class="mainmenu-container">
+    
+          <div class="logo-container">
+            <div class="paragraph200Medium_white" style="opacity: 0.7">
+              Welcome to
+            </div>
+              <img src="../../assets/section/logo.svg" alt="Logo" />
+          </div>
+
+          <div class="nav-menu">
+              <a href="../../mainpage/featuring/featuring-mainmenu-page.html">hotels/homestays</a>
+              <a href="../../mainpage/chatwithAI/chatwithai-page.html">chat with AI</a>
+              <a href="../../mainpage/aboutus/aboutus-page.html">about us</a>
+          </div>
+
+          <div class="slogan-container">
+              <div class="heading100" style="color: white; font-size: 32px; font-weight: 600;">
+                  Travel with us, travel with trust
+              </div>
+          </div>
+
+          <a href="../../login/signup-page.html">
+              <div class="glass-btn">
+                  <img src="../../assets/section/loginicon.svg" alt="Icon" />
+                  <div class="button-text">Sign up/Sign in</div>
+              </div>
+          </a>
+
+          <div class="search-row">
+              
+              <div class="input-search-row">
+                  <img src="../../assets/section/map-pin-line.svg" alt="MapPin" />
+                  <div class="text-search-row">
+                      <label for="location-input">Location</label>
+                      <input type="text" id="location-input" placeholder="Where are you going?" class="search-input">
+                  </div>
+              </div>
+
+              <div class="input-search-row">
+                  <img src="../../assets/section/budget.svg" alt="Budget" />
+                  <div class="text-search-row">
+                      <label for="budget-input">Budget</label>
+                      <input type="text" id="budget-input" placeholder="Add budget" class="search-input">
+                  </div>
+              </div>
+
+              <div class="input-search-row" id="date-trigger">
+                  <img src="../../assets/section/calendar-event-fill.svg" alt="Date" />
+                  <div class="text-search-row">
+                      <div>Arrive and Leave</div>
+                      <div class="placeholder-text" id="date-display">Choose a Date</div>
+                  </div>
+
+                  <div class="popup-container calendar-popup" id="calendar-popup">
+                      <div class="calendar-header">
+                          <div class="month-title">November 2025</div>
+                          <div class="month-title">December 2025</div>
+                      </div>
+                      
+                      <div class="calendar-body">
+                          <div class="month-grid">
+                              <div class="day-name">Mo</div><div class="day-name">Tu</div><div class="day-name">We</div><div class="day-name">Th</div><div class="day-name">Fr</div><div class="day-name">Sa</div><div class="day-name">Su</div>
+                              <div></div><div></div><div></div><div></div><div></div>
+                              <div class="day-num">1</div><div class="day-num">2</div><div class="day-num">3</div><div class="day-num">4</div><div class="day-num">5</div><div class="day-num">6</div><div class="day-num">7</div>
+                              <div class="day-num">8</div><div class="day-num">9</div><div class="day-num">10</div><div class="day-num">11</div><div class="day-num">12</div><div class="day-num">13</div><div class="day-num">14</div>
+                              <div class="day-num">15</div><div class="day-num">16</div><div class="day-num">17</div><div class="day-num">18</div><div class="day-num">19</div><div class="day-num">20</div><div class="day-num">21</div>
+                              <div class="day-num">22</div><div class="day-num">23</div><div class="day-num">24</div><div class="day-num">25</div><div class="day-num">26</div><div class="day-num">27</div><div class="day-num">28</div>
+                              <div class="day-num">29</div><div class="day-num">30</div>
+                          </div>
+                          <div class="month-grid">
+                              <div class="day-name">Mo</div><div class="day-name">Tu</div><div class="day-name">We</div><div class="day-name">Th</div><div class="day-name">Fr</div><div class="day-name">Sa</div><div class="day-name">Su</div>
+                              <div class="day-num">1</div><div class="day-num">2</div><div class="day-num">3</div><div class="day-num">4</div><div class="day-num">5</div><div class="day-num">6</div><div class="day-num">7</div>
+                              <div class="day-num">8</div><div class="day-num">9</div><div class="day-num">10</div><div class="day-num">11</div><div class="day-num">12</div><div class="day-num">13</div><div class="day-num">14</div>
+                              </div>
+                      </div>
+                      <div class="calendar-footer">
+                          <button class="pill-btn">Exact dates</button>
+                          <button class="pill-btn outline">+ 1 day</button>
+                          <button class="pill-btn outline">+ 2 days</button>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="input-search-row" id="guest-trigger">
+                  <img src="../../assets/section/group-line.svg" alt="Guests" />
+                  <div class="text-search-row">
+                      <div>Guests</div>
+                      <div class="placeholder-text" id="guest-display">1 guest</div>
+                  </div>
+
+                  <div class="popup-container guest-popup" id="guest-popup">
+                      <div class="guest-row">
+                          <span>Adults</span>
+                          <div class="counter-control">
+                              <button class="counter-btn" id="btn-minus">-</button>
+                              <span id="guest-count-number">1</span>
+                              <button class="counter-btn" id="btn-plus">+</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="search-button-purple">
+                  <img src="../../assets/section/search-icon.svg" alt="Search">
+              </div>
+          </div>
+      </div>
+    </section>
+
+    <section class="white-section">
+        <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 30px; font-family: 'Poppins', sans-serif;">
+            Maybe you should try these:
+        </h2>
+
+        <div class="cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
+            
+            <div class="card-item" style="display: flex; flex-direction: column; gap: 10px;">
+                <img src="https://via.placeholder.com/300x400" alt="Hotel 1" style="width: 100%; border-radius: 16px; aspect-ratio: 3/4; object-fit: cover;">
+                <div>
+                    <h3 style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif;">Monastero Santa Rosa Hotel</h3>
+                    <p style="font-size: 12px; color: gray; margin: 5px 0;">📍 Salerno, Italy</p>
+                </div>
+            </div>
+
+            <div class="card-item" style="display: flex; flex-direction: column; gap: 10px;">
+                <img src="https://via.placeholder.com/300x400" alt="Hotel 2" style="width: 100%; border-radius: 16px; aspect-ratio: 3/4; object-fit: cover;">
+                <div>
+                    <h3 style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif;">Grand Hotel Tremezzo</h3>
+                    <p style="font-size: 12px; color: gray; margin: 5px 0;">📍 Lake Como, Italy</p>
+                </div>
+            </div>
+             
+            <div class="card-item" style="display: flex; flex-direction: column; gap: 10px;">
+                <img src="https://via.placeholder.com/300x400" alt="Hotel 3" style="width: 100%; border-radius: 16px; aspect-ratio: 3/4; object-fit: cover;">
+                <div>
+                    <h3 style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif;">The Oberoi Udaivilas</h3>
+                    <p style="font-size: 12px; color: gray; margin: 5px 0;">📍 Udaipur, India</p>
+                </div>
+            </div>
+
+            <div class="card-item" style="display: flex; flex-direction: column; gap: 10px;">
+                <img src="https://via.placeholder.com/300x400" alt="Hotel 4" style="width: 100%; border-radius: 16px; aspect-ratio: 3/4; object-fit: cover;">
+                <div>
+                    <h3 style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif;">AKA Beverly Hills</h3>
+                    <p style="font-size: 12px; color: gray; margin: 5px 0;">📍 Los Angeles, USA</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+<script>
+    window.addEventListener('scroll', function() {
+        const hero = document.querySelector('.hero-section');
+        const scrollPosition = window.scrollY;
+
+        // Nếu cuộn quá 50px thì thêm class 'shrink', ngược lại thì bỏ
+        if (scrollPosition > 50) {
+            hero.classList.add('shrink');
+        } else {
+            hero.classList.remove('shrink');
+        }
+    });
+</script>
+<script src="mainmenu-effect.js"></script>
+</body>
+</html>

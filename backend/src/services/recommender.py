@@ -1,32 +1,41 @@
 """
-recommender_module.py
 Recommender module for Hotel Recommendation POC
 
-Provides:
-- dataclasses: UserInput, Hotel
-- functions: hard_filter, compute_price_fit, compute_rating_fit, compute_score,
-             search_with_expansion, generate_mock_hotels
-- JSON export functions: export_results_to_json, export_hotels_to_json
-- constants for default parameters and purpose weights / rating floors
+This version:
+- Removes unnecessary mock data generator and demo code.
+- Loads hotels from processed JSON file (hotels_parsed.json) via load_hotels_from_json().
+- Exposes a simple `recommend_from_json` function that the frontend can call (by importing
+  this module in backend route) and pass a user input dict. The module keeps the original
+  ranking/search logic (compute_price_fit, compute_rating_fit, compute_score, search_with_expansion).
 
-Usage:
->>> from recommender_module import UserInput, Hotel, generate_mock_hotels, search_with_expansion
->>> hotels = generate_mock_hotels(100)
->>> inp = UserInput(district="Quận 3", budget_min=900000, budget_max=1400000, purpose="business",
-...                 check_in="2025-11-14", check_out="2025-11-15", topN=5)
->>> results, meta = search_with_expansion(hotels, inp, topN=5)
->>> export_results_to_json(results, meta, "results.json")
+Example (backend route):
+
+from recommender import recommend_from_json
+
+user_input = {
+    "district": "Quận 1",
+    "budget_min": 900000,
+    "budget_max": 1400000,
+    "purpose": "business",
+    "check_in": "2025-11-14",
+    "check_out": "2025-11-15",
+    "topN": 5
+}
+
+results, meta = recommend_from_json(user_input, "../data/processed/hotels_parsed.json")
+
 """
-
 from dataclasses import dataclass, field, asdict
 from typing import List, Tuple, Dict, Any
 from datetime import datetime, date
-import random
 import json
+import os
 
 # --------------------------- Utilities ---------------------------
+
 def clamp(x: float, lo: float = 0.0, hi: float = 1.0) -> float:
     return max(lo, min(hi, x))
+
 
 def parse_date(d: str) -> date:
     return datetime.strptime(d, "%Y-%m-%d").date()
@@ -51,6 +60,7 @@ class Hotel:
     rating: float
     capacity: int = 1
     amenities: List[str] = field(default_factory=list)
+    details: str = ""
     available_from: str = "2025-01-01"
     available_to: str = "2025-12-31"
 
@@ -89,6 +99,7 @@ def is_available(h: Hotel, check_in: str, check_out: str) -> bool:
         return True
     return (a_from <= ci) and (a_to >= co)
 
+
 def hard_filter(hotels: List[Hotel], inp: UserInput) -> List[Hotel]:
     """
     Apply basic hard filters:
@@ -107,6 +118,7 @@ def hard_filter(hotels: List[Hotel], inp: UserInput) -> List[Hotel]:
             continue
         results.append(h)
     return results
+
 
 def compute_price_fit(price: float, budget_min: float, budget_max: float,
                       lam: float = DEFAULT_LAMBDA,
@@ -129,11 +141,13 @@ def compute_price_fit(price: float, budget_min: float, budget_max: float,
         val = 1.0 - (price - budget_max) / tau_high
     return clamp(val, 0.0, 1.0)
 
+
 def compute_rating_fit(rating: float) -> float:
     """Normalize rating (0..10) to [0,1]."""
     if rating is None:
         return 0.0
     return clamp(rating / 10.0, 0.0, 1.0)
+
 
 def compute_score(h: Hotel, inp: UserInput,
                   lam: float = DEFAULT_LAMBDA,
@@ -178,14 +192,17 @@ def search_with_expansion(hotels: List[Hotel], inp: UserInput, topN: int = 5,
 
         if top:
             results = [{
-                "id": h.id,
-                "name": h.name,
-                "district": h.district,
-                "price": h.price,
-                "rating": h.rating,
-                "amenities": h.amenities,
-                "score": round(sc, 4)
+            "id": h.id,
+            "name": h.name,
+            "district": h.district,
+            "price": h.price,
+            "rating": h.rating,
+            "capacity": h.capacity,
+            "amenities": h.amenities,
+            "details": h.details,
+            "score": round(sc, 4)
             } for h, sc in top]
+
             meta = {"attempts": attempt+1, "expanded": expanded, "current_min": current_min, "current_max": current_max, "tau_high": current_tau_high}
             return results, meta
 
@@ -204,7 +221,8 @@ def search_with_expansion(hotels: List[Hotel], inp: UserInput, topN: int = 5,
             current_tau_high = current_tau_high * 1.5
         attempt += 1
 
-# --------------------------- JSON Export Functions ---------------------------
+# --------------------------- JSON Export / Load Functions ---------------------------
+
 def export_results_to_json(results: List[Dict[str, Any]], meta: Dict[str, Any], 
                            filepath: str, indent: int = 2) -> None:
     """
@@ -221,125 +239,88 @@ def export_results_to_json(results: List[Dict[str, Any]], meta: Dict[str, Any],
         "meta": meta,
         "timestamp": datetime.now().isoformat()
     }
-    
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=indent)
-    
-    print(f"Results exported to {filepath}")
-
-def export_hotels_to_json(hotels: List[Hotel], filepath: str, indent: int = 2) -> None:
-    """
-    Export a list of Hotel objects to a JSON file.
-    
-    Args:
-        hotels: List of Hotel dataclass instances
-        filepath: Path to output JSON file
-        indent: JSON indentation (default: 2)
-    """
-    hotels_data = [asdict(h) for h in hotels]
-    
-    with open(filepath, 'w', encoding='utf-8') as f:
-        json.dump(hotels_data, f, ensure_ascii=False, indent=indent)
-    
-    print(f"Hotels exported to {filepath}")
 
 def load_hotels_from_json(filepath: str) -> List[Hotel]:
-    """
-    Load hotels from a JSON file.
-    
-    Args:
-        filepath: Path to JSON file containing hotel data
-    
-    Returns:
-        List of Hotel dataclass instances
-    """
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"Hotels JSON not found: {filepath}")
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    
     hotels = [Hotel(**h) for h in data]
-    print(f"Loaded {len(hotels)} hotels from {filepath}")
-    return hotels
+    return hotels   
 
-def rank_and_export(hotels: List[Hotel], user_inputs: List[UserInput], 
-                    output_dir: str = ".", topN: int = 10) -> None:
+# --------------------------- Frontend / API helper ---------------------------
+
+def recommend_from_json(user_input: Dict[str, Any], hotels_json_path: str,
+                        topN: int | None = None) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     """
-    Rank hotels for multiple user queries and export each result to JSON.
-    
-    Args:
-        hotels: List of all available hotels
-        user_inputs: List of UserInput queries to process
-        output_dir: Directory to save JSON files (default: current directory)
-        topN: Number of top results per query
+    Main entrypoint for frontend/backend route.
+    - user_input: dict containing keys matching UserInput fields
+    - hotels_json_path: path to processed hotels JSON (hotels_parsed.json)
+    - topN: optional override for number of results
+
+    Returns: (results, meta) ready to jsonify to client.
     """
-    import os
-    os.makedirs(output_dir, exist_ok=True)
-    
-    for idx, inp in enumerate(user_inputs, 1):
-        results, meta = search_with_expansion(hotels, inp, topN=topN)
-        
-        # Create filename from query parameters
-        filename = f"results_{idx}_{inp.district.replace(' ', '_')}_{inp.purpose}.json"
-        filepath = os.path.join(output_dir, filename)
-        
-        # Add query info to meta
-        meta['query'] = asdict(inp)
-        
-        export_results_to_json(results, meta, filepath)
+    # validate and normalize user input
+    required = ['district', 'budget_min', 'budget_max', 'purpose', 'check_in', 'check_out']
+    for k in required:
+        if k not in user_input:
+            raise ValueError(f"Missing user input field: {k}")
 
-# --------------------------- Mock data generator (useful for testing) ---------------------------
-def generate_mock_hotels(n: int = 50, seed: int = 1) -> List[Hotel]:
-    random.seed(seed)
-    centers = ["Quận 1", "Quận 3", "Bình Thạnh"]
-    outer = ["Tân Phú", "Bình Tân", "Gò Vấp"]
-    hotels = []
-    idx = 1
-    for _ in range(n):
-        if random.random() < 0.45:
-            d = random.choice(centers)
-            price = random.randint(800000, 2000000)
-        else:
-            d = random.choice(outer)
-            price = random.randint(300000, 800000)
-        rating = round(random.uniform(5.0, 9.5), 1)
-        amenities = random.sample(["wifi", "elevator", "parking", "breakfast", "pool", "gym"], k=random.randint(1, 3))
-        hotels.append(Hotel(id=idx, name=f"Hotel {idx}", district=d, price=price, rating=rating, amenities=amenities))
-        idx += 1
-    return hotels
-
-# --------------------------- Quick demo when run as script ---------------------------
-if __name__ == "__main__":
-    # Generate mock hotels
-    hotels = generate_mock_hotels(120, seed=42)
-    
-    # Export all hotels to JSON
-    export_hotels_to_json(hotels, "all_hotels.json")
-    
-    # Single query example
-    inp = UserInput(
-        district="Quận 3", 
-        budget_min=900000, 
-        budget_max=1400000, 
-        purpose="business",
-        check_in="2025-11-14", 
-        check_out="2025-11-15", 
-        topN=5
+    ui = UserInput(
+        district=user_input['district'],
+        budget_min=float(user_input['budget_min']),
+        budget_max=float(user_input['budget_max']),
+        purpose=user_input['purpose'],
+        check_in=user_input['check_in'],
+        check_out=user_input['check_out'],
+        topN=int(user_input.get('topN', user_input.get('topN', 5)))
     )
-    results, meta = search_with_expansion(hotels, inp, topN=5)
-    
-    # Export single result
-    export_results_to_json(results, meta, "search_results.json")
-    
-    print("\nSearch meta:", meta)
-    print(f"\nTop {len(results)} results:")
-    for r in results:
-        print(f"  {r['name']}: score={r['score']}, price={r['price']}, rating={r['rating']}")
-    
-    # Multiple queries example
-    queries = [
-        UserInput("Quận 1", 1000000, 1500000, "premium", "2025-12-01", "2025-12-03", 5),
-        UserInput("Quận 3", 500000, 800000, "budget", "2025-12-10", "2025-12-12", 5),
-        UserInput("Bình Thạnh", 800000, 1200000, "family", "2025-12-15", "2025-12-17", 5),
-    ]
-    
-    rank_and_export(hotels, queries, output_dir="results", topN=10)
-    print("\n✓ Multiple queries exported to 'results/' directory")
+
+    if topN is None:
+        topN = ui.topN
+
+    hotels = load_hotels_from_json(hotels_json_path)
+
+    results, meta = search_with_expansion(hotels, ui, topN=topN)
+    meta['query'] = asdict(ui)
+    return results, meta
+
+# --------------------------- if run as script ---------------------------
+if __name__ == '__main__':
+    import os
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    # Đường dẫn tương đối tới file hotels_parsed.json
+    default_path = os.path.join(
+        BASE_DIR, ".." ,"..", "data", "processed", "hotels_parsed.json"
+    )
+
+    if not os.path.exists(default_path):
+        print(f"Default hotels_parsed.json not found at {default_path}. Please provide path.")
+    else:
+        # Sample user input
+        sample = {
+            'district': 'Quận 1',
+            'budget_min': 500000,
+            'budget_max': 2000000,
+            'purpose': 'business',
+            'check_in': '2025-11-14',
+            'check_out': '2025-11-15',
+            'topN': 5
+        }
+
+        # Run recommendation
+        results, meta = recommend_from_json(sample, default_path)
+
+        # Folder kết quả
+        export_dir = os.path.join(BASE_DIR, "..", "results")
+        os.makedirs(export_dir, exist_ok=True)
+
+        # Export JSON ra results/recommend_results.json
+        export_file = os.path.join(export_dir, "recommend_results.json")
+        export_results_to_json(results, meta, export_file)
+
+        print(f"✓ Recommendation exported to {export_file}")
