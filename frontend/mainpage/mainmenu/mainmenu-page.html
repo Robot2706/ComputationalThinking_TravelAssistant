@@ -6,7 +6,6 @@
     <title>2rism</title>
     
     <link rel="stylesheet" href="mainmenu-layout.css" />
-    
     <link rel="stylesheet" href="../../fonts.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -70,27 +69,9 @@
                   </div>
 
                   <div class="popup-container calendar-popup" id="calendar-popup">
-                      <div class="calendar-header">
-                          <div class="month-title">November 2025</div>
-                          <div class="month-title">December 2025</div>
-                      </div>
-                      
-                      <div class="calendar-body">
-                          <div class="month-grid">
-                              <div class="day-name">Mo</div><div class="day-name">Tu</div><div class="day-name">We</div><div class="day-name">Th</div><div class="day-name">Fr</div><div class="day-name">Sa</div><div class="day-name">Su</div>
-                              <div></div><div></div><div></div><div></div><div></div>
-                              <div class="day-num">1</div><div class="day-num">2</div><div class="day-num">3</div><div class="day-num">4</div><div class="day-num">5</div><div class="day-num">6</div><div class="day-num">7</div>
-                              <div class="day-num">8</div><div class="day-num">9</div><div class="day-num">10</div><div class="day-num">11</div><div class="day-num">12</div><div class="day-num">13</div><div class="day-num">14</div>
-                              <div class="day-num">15</div><div class="day-num">16</div><div class="day-num">17</div><div class="day-num">18</div><div class="day-num">19</div><div class="day-num">20</div><div class="day-num">21</div>
-                              <div class="day-num">22</div><div class="day-num">23</div><div class="day-num">24</div><div class="day-num">25</div><div class="day-num">26</div><div class="day-num">27</div><div class="day-num">28</div>
-                              <div class="day-num">29</div><div class="day-num">30</div>
+                      <div class="calendar-wrapper" id="calendar-render-area" style="display: flex; gap: 30px;">
                           </div>
-                          <div class="month-grid">
-                              <div class="day-name">Mo</div><div class="day-name">Tu</div><div class="day-name">We</div><div class="day-name">Th</div><div class="day-name">Fr</div><div class="day-name">Sa</div><div class="day-name">Su</div>
-                              <div class="day-num">1</div><div class="day-num">2</div><div class="day-num">3</div><div class="day-num">4</div><div class="day-num">5</div><div class="day-num">6</div><div class="day-num">7</div>
-                              <div class="day-num">8</div><div class="day-num">9</div><div class="day-num">10</div><div class="day-num">11</div><div class="day-num">12</div><div class="day-num">13</div><div class="day-num">14</div>
-                              </div>
-                      </div>
+                      
                       <div class="calendar-footer">
                           <button class="pill-btn">Exact dates</button>
                           <button class="pill-btn outline">+ 1 day</button>
@@ -167,19 +148,6 @@
         </div>
     </section>
 
-<script>
-    window.addEventListener('scroll', function() {
-        const hero = document.querySelector('.hero-section');
-        const scrollPosition = window.scrollY;
-
-        // Nếu cuộn quá 50px thì thêm class 'shrink', ngược lại thì bỏ
-        if (scrollPosition > 50) {
-            hero.classList.add('shrink');
-        } else {
-            hero.classList.remove('shrink');
-        }
-    });
-</script>
-<script src="mainmenu-effect.js"></script>
+    <script src="mainmenu-effect.js"></script>
 </body>
 </html>
