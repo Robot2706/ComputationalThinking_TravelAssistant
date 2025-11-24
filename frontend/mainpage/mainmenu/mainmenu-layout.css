@@ -133,3 +133,13 @@ body {
     position: absolute;
     transform: translateX(36px);
 }
+
+.next-icon {
+    position: absolute;
+    top: 50%;
+    left: 1300px;
+}
+
+.next-icon img {
+    width: 24px;
+}
