@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2rism</title>
+
+    <link rel="stylesheet" href="./chatBot_detail.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script type="module" src="./chatBot_detail.js" defer></script>
+</head>
+
+<body>
+    <div class="background-main"></div>
+
+    <div class="mainmenu-container" id="menuScreen" style="display: none;"></div>
+
+    <div class="results-screen" id="resultsScreen" style="display: flex;">
+        <div class="main-content-wrapper">
+
+            <!-- HEADER -->
+            <header class="ai-header">
+                <img src="../../assets/section/logo.svg" alt="2rism Logo" class="header-logo">
+                <i class="fas fa-home home-icon" id="goHome"></i>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+            </header>
+
+            <!-- CAROUSEL -->
+            <div class="carousel-container">
+                <button class="carousel-button prev-btn" id="prevBtn">⟨</button>
+
+                <div class="card-list" id="cardList">
+                    <!-- HOTEL DETAIL 1 -->
+                    <div class="hotel-card">
+                        <div class="card-image-placeholder">
+                            <img src="../../assets/default-hotel.jpg" alt="Hotel 1">
+                        </div>
+
+                        <div class="card-details">
+                            <div class="details-header">
+                                <h2 id="detailName" class="card-title heading400">Hotel name</h2>
+                                <span id="detailRating" class="card-rating paragraph200regular">RATING</span>
+                                
+                                <p class="card-description paragraph200regular">Thông tin chi tiết: <br> - Giới thiệu ngắn... <br> - Price: ... <br> - Address: ...</p>
+                                <div class="contact-info">
+                                    <h3 class="card-title heading300">Contact us</h3>
+                                    <span class="contact-icon">📞</span> 
+                                    <a href="tel:0909123456" class="contact-text">0909 123 456</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HOTEL DETAIL 2 -->
+                    <div class="hotel-card">
+                        <div class="card-image-placeholder">
+                            <img src="../../assets/default-hotel.jpg" alt="Hotel 1">
+                        </div>
+
+                        <div class="card-details">
+                            <div class="details-header">
+                                <h2 id="detailName" class="card-title heading400">Hotel name</h2>
+                                <span id="detailRating" class="card-rating paragraph200regular">RATING</span>
+                                
+                                <p class="card-description paragraph200regular">Thông tin chi tiết: <br> - Giới thiệu ngắn... <br> - Price: ... <br> - Address: ...</p>
+                                <div class="contact-info">
+                                    <h3 class="card-title heading300">Contact us</h3>
+                                    <span class="contact-icon">📞</span> 
+                                    <a href="tel:0909123456" class="contact-text">0909 123 456</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HOTEL DETAIL 3 -->
+                    <div class="hotel-card">
+                        <div class="card-image-placeholder">
+                            <img src="../../assets/default-hotel.jpg" alt="Hotel 1">
+                        </div>
+
+                        <div class="card-details">
+                            <div class="details-header">
+                                <h2 id="detailName" class="card-title heading400">Hotel name</h2>
+                                <span id="detailRating" class="card-rating paragraph200regular">RATING</span>
+                                
+                                <p class="card-description paragraph200regular">Thông tin chi tiết: <br> - Giới thiệu ngắn... <br> - Price: ... <br> - Address: ...</p>
+                                <div class="contact-info">
+                                    <h3 class="card-title heading300">Contact us</h3>
+                                    <span class="contact-icon">📞</span> 
+                                    <a href="tel:0909123456" class="contact-text">0909 123 456</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <button class="carousel-button next-btn" id="nextBtn">⟩</button>
+            </div>
+
+            <!-- ASK BAR -->
+            <div class="ask-bar-container">
+                <input type="text" placeholder="Ask something..." class="ask-input">
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

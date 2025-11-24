@@ -1,0 +1,134 @@
+.header-logo {
+    width: 87px; 
+    height: auto;
+}
+
+.ai-header {
+    margin: 5;
+    width: 100%;
+    padding: 10;               /* giống result */
+    display: flex;
+    align-items: center;
+    gap: 10px;                /* hoặc theo result */
+    justify-content: flex-start; /* căn trái như result */
+}
+
+
+.home-icon,
+.dropdown-icon {
+    font-size: 1.2em; 
+    color: #fff;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+/* Carousel wrapper */
+.carousel-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 80px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-list {
+    display: flex;
+    gap: 40px;   /* khoảng cách giữa các card */
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* CARD HOLDER */
+.hotel-card {
+    width: 30%;               /* mỗi card chiếm 30% */
+    max-height: 450px;        /* giảm chiều cao */
+    padding: 25px;
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* chia đều header/mid/footer */
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+/* Nội dung card */
+.card-content-wrapper,
+.card-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* Header: title + rating */
+.details-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.card-rating {
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+/* Description */
+.card-description {
+    font-size: 14px;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+/* Contact info */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.contact-icon {
+    font-size: 18px;
+}
+
+/* Hover effect */
+.hotel-card:hover {
+    transform: translateY(-8px);
+    transition: 0.3s;
+}
+
+/* Ẩn nút prev/next */
+.nav-button {
+    display: none !important;
+}
+
+/* Override carousel cũ */
+.hotel-card {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+#cardList {
+    position: static !important;
+}
