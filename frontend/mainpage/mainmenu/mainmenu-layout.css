@@ -80,7 +80,7 @@ a {
 
 .mainmenu-container {
     width: 100%;
-    height: 100%;
+    height: 135%;
     position: relative;
 }
 
@@ -89,7 +89,7 @@ a {
    ========================================= */
 .logo-container {
     position: absolute;
-    top: 80px; /* Vị trí ban đầu */
+    top: 100px; /* Vị trí ban đầu */
     left: 50%;
     transform: translateX(-50%); /* Căn giữa */
     
@@ -107,16 +107,6 @@ a {
     transition: transform 0.4s;
 }
 
-/* Chữ "Welcome to" */
-.welcome-text {
-    font-size: 16px;
-    font-weight: 500;
-    color: white;
-    opacity: 0.8;
-    margin-bottom: 8px;
-    transition: all 0.3s ease;
-    height: auto;
-}
 
 /* --- KHI LƯỚT XUỐNG --- */
 
@@ -203,7 +193,7 @@ a {
 
 .glass-btn {
     position: absolute;
-    top: 340px;
+    top: 400px;
     left: 50%;
     transform: translateX(-50%);
     
@@ -513,7 +503,7 @@ body.mode-locked .hero-section .logo-container {
 body.mode-locked .hero-section .logo-container img {
     transform: scale(0.9) !important;
 }
-body.mode-locked .welcome-text,
+
 body.mode-locked .slogan-container,
 body.mode-locked .glass-btn {
     display: none !important; /* Ẩn hoàn toàn để không bị lỗi vặt */
