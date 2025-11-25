@@ -1,30 +1,14 @@
 """
 Recommender module for Hotel Recommendation POC
 
-This version:
-- Removes unnecessary mock data generator and demo code.
-- Loads hotels from processed JSON file (hotels_parsed.json) via load_hotels_from_json().
-- Exposes a simple `recommend_from_json` function that the frontend can call (by importing
-  this module in backend route) and pass a user input dict. The module keeps the original
-  ranking/search logic (compute_price_fit, compute_rating_fit, compute_score, search_with_expansion).
-
-Example (backend route):
-
-from recommender import recommend_from_json
-
-user_input = {
-    "district": "Quận 1",
-    "budget_min": 900000,
-    "budget_max": 1400000,
-    "purpose": "business",
-    "check_in": "2025-11-14",
-    "check_out": "2025-11-15",
-    "topN": 5
-}
-
-results, meta = recommend_from_json(user_input, "../data/processed/hotels_parsed.json")
-
+Changes in this variant:
+- Accepts frontend that provides a single "budget" value instead of separate budget_min/budget_max.
+  If `budget` is present in user_input, we expand it to a (budget_min, budget_max) interval by +/-25%.
+  If frontend still provides budget_min/budget_max, those are used unchanged (backward compatible).
+- If `purpose` is missing from user_input, default to "leisure".
+- recommend_from_json validates and normalizes inputs accordingly, then calls existing search logic.
 """
+
 from dataclasses import dataclass, field, asdict
 from typing import List, Tuple, Dict, Any
 from datetime import datetime, date
@@ -191,17 +175,19 @@ def search_with_expansion(hotels: List[Hotel], inp: UserInput, topN: int = 5,
         top = scored[:topN]
 
         if top:
-            results = [{
-            "id": h.id,
-            "name": h.name,
-            "district": h.district,
-            "price": h.price,
-            "rating": h.rating,
-            "capacity": h.capacity,
-            "amenities": h.amenities,
-            "details": h.details,
-            "score": round(sc, 4)
-            } for h, sc in top]
+            results = []
+            for h, sc in top:
+                results.append({
+                    "id": h.id,
+                    "name": h.name,
+                    "district": h.district,
+                    "price": h.price,
+                    "rating": h.rating,
+                    "capacity": h.capacity,
+                    "amenities": h.amenities,
+                    "details": h.details,
+                    "score": round(sc, 4)
+                })
 
             meta = {"attempts": attempt+1, "expanded": expanded, "current_min": current_min, "current_max": current_max, "tau_high": current_tau_high}
             return results, meta
@@ -247,7 +233,29 @@ def load_hotels_from_json(filepath: str) -> List[Hotel]:
         raise FileNotFoundError(f"Hotels JSON not found: {filepath}")
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    hotels = [Hotel(**h) for h in data]
+    hotels = []
+    for h in data:
+        # Defensive conversions: ensure numeric fields are correct types
+        try:
+            price = float(h.get("price", 0.0))
+        except Exception:
+            price = 0.0
+        try:
+            rating = float(h.get("rating", 0.0))
+        except Exception:
+            rating = 0.0
+        hotels.append(Hotel(
+            id=int(h.get("id", 0)),
+            name=h.get("name", ""),
+            district=h.get("district", ""),
+            price=price,
+            rating=rating,
+            capacity=int(h.get("capacity", 1)) if h.get("capacity") is not None else 1,
+            amenities=h.get("amenities", []) or [],
+            details=h.get("details", "") or "",
+            available_from=h.get("available_from", "2025-01-01"),
+            available_to=h.get("available_to", "2025-12-31")
+        ))
     return hotels   
 
 # --------------------------- Frontend / API helper ---------------------------
@@ -256,26 +264,60 @@ def recommend_from_json(user_input: Dict[str, Any], hotels_json_path: str,
                         topN: int | None = None) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     """
     Main entrypoint for frontend/backend route.
-    - user_input: dict containing keys matching UserInput fields
-    - hotels_json_path: path to processed hotels JSON (hotels_parsed.json)
-    - topN: optional override for number of results
 
-    Returns: (results, meta) ready to jsonify to client.
+    Changes to support frontend that passes only `budget`:
+    - user_input may contain:
+        - 'budget' (single numeric value)  OR
+        - 'budget_min' and 'budget_max' (legacy)
+    - If 'budget' is present, we build a symmetric interval around it:
+        budget_min = budget * (1 - BUDGET_SPREAD)
+        budget_max = budget * (1 + BUDGET_SPREAD)
+      where BUDGET_SPREAD = 0.25 (25%) by default (configurable below).
+    - If 'purpose' is missing, default to 'leisure'.
+    - Required fields: district, check_in, check_out (budget is provided as described).
     """
-    # validate and normalize user input
-    required = ['district', 'budget_min', 'budget_max', 'purpose', 'check_in', 'check_out']
-    for k in required:
+    # config for single-budget expansion
+    BUDGET_SPREAD = 0.25  # +/- 25%
+
+    # minimal required keys
+    required_minimal = ['district', 'check_in', 'check_out']
+    for k in required_minimal:
         if k not in user_input:
             raise ValueError(f"Missing user input field: {k}")
 
+    # normalize purpose
+    purpose = user_input.get('purpose') or "leisure"
+
+    # handle budget input
+    if 'budget' in user_input and user_input['budget'] is not None:
+        try:
+            budget_val = float(user_input['budget'])
+        except Exception:
+            raise ValueError("Invalid numeric value for 'budget'")
+        budget_min = max(0.0, budget_val * (1.0 - BUDGET_SPREAD))
+        budget_max = max(0.0, budget_val * (1.0 + BUDGET_SPREAD))
+    else:
+        # fallback to legacy fields if provided
+        if 'budget_min' in user_input and 'budget_max' in user_input:
+            try:
+                budget_min = float(user_input['budget_min'])
+                budget_max = float(user_input['budget_max'])
+            except Exception:
+                raise ValueError("Invalid numeric values for 'budget_min'/'budget_max'")
+        else:
+            # last resort: use defaults similar to previous behavior
+            budget_min = float(user_input.get('budget_min', 500000))
+            budget_max = float(user_input.get('budget_max', 2000000))
+
+    # build UserInput object
     ui = UserInput(
         district=user_input['district'],
-        budget_min=float(user_input['budget_min']),
-        budget_max=float(user_input['budget_max']),
-        purpose=user_input['purpose'],
+        budget_min=budget_min,
+        budget_max=budget_max,
+        purpose=purpose,
         check_in=user_input['check_in'],
         check_out=user_input['check_out'],
-        topN=int(user_input.get('topN', user_input.get('topN', 5)))
+        topN=int(user_input.get('topN', 5))
     )
 
     if topN is None:
@@ -301,7 +343,7 @@ if __name__ == '__main__':
     if not os.path.exists(default_path):
         print(f"Default hotels_parsed.json not found at {default_path}. Please provide path.")
     else:
-        # Sample user input
+        # Sample user input (note: this script uses budget_min/budget_max)
         sample = {
             'district': 'Quận 1',
             'budget_min': 500000,
