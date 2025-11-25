@@ -53,13 +53,18 @@
                   </div>
               </div>
 
-              <div class="input-search-row">
-                  <img src="../../assets/section/budget.svg" alt="Budget" />
-                  <div class="text-search-row">
-                      <label for="budget-input">Budget</label>
-                      <input type="text" id="budget-input" placeholder="Add budget" class="search-input">
-                  </div>
-              </div>
+                <div class="input-search-row">
+                    <img src="../../assets/section/budget.svg" alt="Budget" />
+                    <div class="text-search-row">
+                        <label>Budget (VND)</label>
+                        
+                        <div class="budget-range-group">
+                            <input type="number" id="min-budget" placeholder="Min" class="search-input small-input">
+                            <span class="range-separator">-</span>
+                            <input type="number" id="max-budget" placeholder="Max" class="search-input small-input">
+                        </div>
+                    </div>
+                </div>
 
               <div class="input-search-row" id="date-trigger">
                   <img src="../../assets/section/calendar-event-fill.svg" alt="Date" />

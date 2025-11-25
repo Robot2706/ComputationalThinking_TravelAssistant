@@ -361,6 +361,46 @@ a {
     color: #666;
 }
 
+/* --- STYLE CHO BUDGET RANGE (MIN - MAX) --- */
+
+.budget-range-group {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Khoảng cách giữa số và dấu gạch ngang */
+    width: 100%;
+}
+
+/* Style riêng cho ô nhập nhỏ (Min/Max) */
+.search-input.small-input {
+    width: 70px; /* Độ rộng cố định cho mỗi ô số */
+    min-width: 50px;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1C1C1E;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+/* Dấu gạch ngang ở giữa */
+.range-separator {
+    color: #888;
+    font-weight: 400;
+}
+
+/* --- Xóa mũi tên tăng giảm mặc định của ô nhập số (cho gọn) --- */
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 /* --- POPUP CONTAINER CHUNG (Ẩn/Hiện) --- */
 .input-search-row {
     position: relative; /* Để popup căn theo ô này */
