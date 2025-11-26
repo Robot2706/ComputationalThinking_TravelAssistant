@@ -78,6 +78,7 @@ class SearchRequest(BaseModel):
         return v
 
 
+# ...
 class HotelOut(BaseModel):
     id: int
     name: str
@@ -86,6 +87,11 @@ class HotelOut(BaseModel):
     rating: float
     amenities: List[str]
     score: Optional[float] = None
+    
+    # --- THÊM 2 DÒNG NÀY ---
+    details: Optional[str] = None  # Để chứa mô tả chi tiết
+    image: Optional[str] = None    # Để chứa link ảnh
+# ...
 
 class RecommendResponse(BaseModel):
     results: List[HotelOut]
@@ -122,7 +128,10 @@ def get_hotel(hotel_id: int):
                 price=h.price,
                 rating=h.rating,
                 amenities=h.amenities,
-                score=None
+                score=None,
+                
+                details=getattr(h, "details", None),
+                image=getattr(h, "image", None) or getattr(h, "photo", None) 
             )
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="hotel not found")
 
@@ -163,15 +172,13 @@ def recommend(req: SearchRequest):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal recommendation error")
 
     if not results:
-        # Trả về danh sách rỗng thay vì lỗi 204 (để frontend dễ xử lý hơn)
         return RecommendResponse(results=[], meta=meta)
 
     out_results = []
     for r in results:
-        # đảm bảo id có mặt
         id_val = r.get("id")
         if id_val is None:
-            continue # Bỏ qua item lỗi thay vì crash
+            continue
 
         out_results.append(HotelOut(
             id=int(id_val),
@@ -180,7 +187,11 @@ def recommend(req: SearchRequest):
             price=float(r.get("price") or 0.0),
             rating=float(r.get("rating") or 0.0),
             amenities=r.get("amenities") or [],
-            score=r.get("score")
+            score=r.get("score"),
+            
+            # --- THÊM CÁC DÒNG NÀY ---
+            details=str(r.get("details") or ""), # Lấy trường details
+            image=str(r.get("image") or r.get("photo") or "") # Lấy trường image
         ))
 
     return RecommendResponse(results=out_results, meta=meta)

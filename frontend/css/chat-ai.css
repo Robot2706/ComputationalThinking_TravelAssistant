@@ -22,7 +22,8 @@ body {
     width: 250px;
     flex-shrink: 0;
     aspect-ratio: 1/1;
-    background: url("../../assets/section/elipse-left.svg") center / cover no-repeat;
+    /* ĐÃ SỬA PATH: assets/icons */
+    background: url("../assets/icons/elipse-left.svg") center / cover no-repeat;
 }
 
 .chatwithai-bg-cir02 {
@@ -32,7 +33,8 @@ body {
     width: 250px;
     flex-shrink: 0;
     aspect-ratio: 1/1;
-    background: url("../../assets/section/elipse-right.svg") center / cover no-repeat;
+    /* ĐÃ SỬA PATH: assets/icons */
+    background: url("../assets/icons/elipse-right.svg") center / cover no-repeat;
 }
 
 /* Assets - header */
@@ -82,6 +84,8 @@ body {
     display: flex;
     padding: 24px;
     justify-content: center;
+    align-items: center; /* Thêm căn giữa */
+    gap: 12px; /* Khoảng cách giữa chữ và icon */
 
     transform: translateX(-50%);
     white-space: nowrap;
@@ -95,18 +99,12 @@ body {
 
     cursor: pointer;
     transition: all 0.3s ease;
+    color: #fff; /* Đảm bảo chữ màu trắng */
 }
 
-.glass-btn a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 180px;
-    height: 30px;
-    padding: 0 20px;
-    text-decoration: none;
-    color: #fff;
+/* Xóa style cũ của thẻ a bên trong vì thẻ a giờ bọc bên ngoài */
+.glass-btn img {
+    width: 24px; /* Kích thước icon mũi tên */
 }
 
 .glass-btn:hover {
