@@ -1,0 +1,27 @@
+# --- Python & System ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.env
+
+# --- OS specific ---
+.DS_Store
+Thumbs.db
+
+# --- IDE settings (VS Code, Pycharm) ---
+.vscode/
+.idea/
+
+# --- Project Data & Results ---
+# Dữ liệu thô và kết quả chạy mô hình thường không push lên git nếu file quá nặng
+# Nhưng nếu file json của bạn nhẹ (<50MB) thì có thể bỏ comment dòng dưới để track
+# backend/data/raw/
+# backend/src/results/
+
+# --- Logs ---
+*.log

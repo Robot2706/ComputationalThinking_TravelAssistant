@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="163.839" height="163.839" fill-rule="evenodd" clip-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="0 0 1.707 1.707" id="navigation-arrow">
+  <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".05" d="M.965.472.903.866.841.687.655.723z"></path>
+  <path fill-rule="nonzero" d="M.832 1.532c-.044-.071-.094-.148-.145-.227A5.373 5.373 0 0 1 .42.87.482.482 0 0 1 .51.305a.484.484 0 0 1 .829.343.487.487 0 0 1-.052.219c-.068.134-.17.291-.268.44-.052.08-.103.157-.144.225l-.022.035-.021-.035zm-.103-.254c.043.067.086.132.124.194.039-.061.08-.126.124-.192.097-.148.2-.305.265-.436a.432.432 0 0 0-.08-.504.434.434 0 0 0-.744.308.437.437 0 0 0 .048.2c.068.13.167.284.263.43z"></path>
+  <circle cx=".853" cy=".648" r=".323" fill="none" stroke="#000" stroke-width=".05"></circle>
+  <path fill="none" d="M0 0h1.707v1.707H0z"></path>
+</svg>
