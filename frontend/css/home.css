@@ -161,7 +161,7 @@ a {
    ========================================= */
 .slogan-container {
     position: absolute;
-    top: 240px;
+    top: 170px;
     left: 50%;
     transform: translateX(-50%);
     transition: all 0.4s;
@@ -171,7 +171,7 @@ a {
 
 .glass-btn {
     position: absolute;
-    top: 190px;
+    top: 250px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
