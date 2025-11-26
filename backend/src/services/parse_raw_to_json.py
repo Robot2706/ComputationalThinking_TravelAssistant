@@ -16,6 +16,7 @@ from typing import List
 import re
 import json
 import argparse
+import os
 from pathlib import Path
 
 
@@ -227,10 +228,14 @@ def parse_markdown_file(path: Path) -> List[Hotel]:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', '-i', type=str,
-                        default=('C:\\Users\\Admin\\source\\repos\\ComputationalThinking_TravelAssistant\\backend\\data\\raw\\hotels_list.md'))
-    parser.add_argument('--output', '-o', type=str,
-                        default=('C:\\Users\\Admin\\source\\repos\\ComputationalThinking_TravelAssistant\\backend\\data\\processed\\hotels_parsed.json'))
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # folder where this script is
+    INPUT_FILE = os.path.join(BASE_DIR, '../../data/raw/hotels_list.md')
+    OUTPUT_FILE = os.path.join(BASE_DIR, '../../data/processed/hotels_parsed.json')
+
+    parser.add_argument('--input', '-i', type=str, default=INPUT_FILE)
+    parser.add_argument('--output', '-o', type=str, default=OUTPUT_FILE)
+
     args = parser.parse_args()
 
     in_path = Path(args.input)

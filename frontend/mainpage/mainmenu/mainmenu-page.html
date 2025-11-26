@@ -45,22 +45,72 @@
 
           <div class="search-row">
               
-              <div class="input-search-row">
+              <!-- CUSTOM LOCATION DROPDOWN -->
+              <div class="input-search-row" id="location-trigger">
                   <img src="../../assets/section/map-pin-line.svg" alt="MapPin" />
                   <div class="text-search-row">
-                      <label for="location-input">Location</label>
-                      <input type="text" id="location-input" placeholder="Where are you going?" class="search-input">
+                      <label>Location</label>
+                      <div class="custom-select-display" id="location-display">Quận 1</div>
+                  </div>
+                  
+                  <!-- Custom Dropdown -->
+                  <div class="popup-container location-dropdown" id="location-dropdown">
+                      <div class="dropdown-search">
+                          <input type="text" id="location-search" placeholder="Tìm quận..." class="dropdown-search-input">
+                      </div>
+                      <div class="dropdown-list" id="location-list">
+                          <div class="dropdown-item selected" data-value="Quận 1">Quận 1</div>
+                          <div class="dropdown-item" data-value="Quận 3">Quận 3</div>
+                          <div class="dropdown-item" data-value="Quận 4">Quận 4</div>
+                          <div class="dropdown-item" data-value="Quận 5">Quận 5</div>
+                          <div class="dropdown-item" data-value="Quận 6">Quận 6</div>
+                          <div class="dropdown-item" data-value="Quận 7">Quận 7</div>
+                          <div class="dropdown-item" data-value="Quận 8">Quận 8</div>
+                          <div class="dropdown-item" data-value="Quận 10">Quận 10</div>
+                          <div class="dropdown-item" data-value="Quận 11">Quận 11</div>
+                          <div class="dropdown-item" data-value="Quận 12">Quận 12</div>
+                          <div class="dropdown-item" data-value="Quận Bình Thạnh">Quận Bình Thạnh</div>
+                          <div class="dropdown-item" data-value="Quận Gò Vấp">Quận Gò Vấp</div>
+                          <div class="dropdown-item" data-value="Quận Phú Nhuận">Quận Phú Nhuận</div>
+                          <div class="dropdown-item" data-value="Quận Tân Bình">Quận Tân Bình</div>
+                          <div class="dropdown-item" data-value="Quận Tân Phú">Quận Tân Phú</div>
+                          <div class="dropdown-item" data-value="Quận Bình Tân">Quận Bình Tân</div>
+                          <div class="dropdown-item" data-value="Thành phố Thủ Đức">Thành phố Thủ Đức</div>
+                      </div>
                   </div>
               </div>
 
+              <!-- Budget -->
               <div class="input-search-row">
                   <img src="../../assets/section/budget.svg" alt="Budget" />
                   <div class="text-search-row">
-                      <label for="budget-input">Budget</label>
-                      <input type="text" id="budget-input" placeholder="Add budget" class="search-input">
+                      <label>Budget (VND)</label>
+                      
+                      <div class="budget-range-group">
+                          <input type="number" id="budget-min" placeholder="Min" class="search-input small-input">
+                          <span class="range-separator">-</span>
+                          <input type="number" id="budget-max" placeholder="Max" class="search-input small-input">
+                      </div>
                   </div>
               </div>
 
+              <!-- Purpose -->
+              <div class="input-search-row">
+                  <img src="../../assets/section/purpose-icon.svg" alt="Purpose" class="icon-small" />
+                  <div class="text-search-row">
+                      <label for="purpose-select">Purpose</label>
+                      <select id="purpose-select" class="search-input">
+                          <option value="leisure">Leisure</option>
+                          <option value="business">Business</option>
+                          <option value="family">Family</option>
+                          <option value="budget">Budget</option>
+                          <option value="premium">Premium</option>
+                          <option value="long_term">Long Term</option>
+                      </select>
+                  </div>
+              </div>
+
+              <!-- Date -->
               <div class="input-search-row" id="date-trigger">
                   <img src="../../assets/section/calendar-event-fill.svg" alt="Date" />
                   <div class="text-search-row">
@@ -70,7 +120,7 @@
 
                   <div class="popup-container calendar-popup" id="calendar-popup">
                       <div class="calendar-wrapper" id="calendar-render-area" style="display: flex; gap: 30px;">
-                          </div>
+                      </div>
                       
                       <div class="calendar-footer">
                           <button class="pill-btn">Exact dates</button>
@@ -80,6 +130,7 @@
                   </div>
               </div>
 
+              <!-- Guests -->
               <div class="input-search-row" id="guest-trigger">
                   <img src="../../assets/section/group-line.svg" alt="Guests" />
                   <div class="text-search-row">
@@ -99,6 +150,7 @@
                   </div>
               </div>
 
+              <!-- Search Button -->
               <div class="search-button-purple">
                   <img src="../../assets/section/search-icon.svg" alt="Search">
               </div>
@@ -110,42 +162,6 @@
         <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 30px; font-family: 'Poppins', sans-serif;">
             Maybe you should try these:
         </h2>
-
-        <div class="cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
-            
-            <div class="card-item" style="display: flex; flex-direction: column; gap: 10px;">
-                <img src="https://via.placeholder.com/300x400" alt="Hotel 1" style="width: 100%; border-radius: 16px; aspect-ratio: 3/4; object-fit: cover;">
-                <div>
-                    <h3 style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif;">Monastero Santa Rosa Hotel</h3>
-                    <p style="font-size: 12px; color: gray; margin: 5px 0;">📍 Salerno, Italy</p>
-                </div>
-            </div>
-
-            <div class="card-item" style="display: flex; flex-direction: column; gap: 10px;">
-                <img src="https://via.placeholder.com/300x400" alt="Hotel 2" style="width: 100%; border-radius: 16px; aspect-ratio: 3/4; object-fit: cover;">
-                <div>
-                    <h3 style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif;">Grand Hotel Tremezzo</h3>
-                    <p style="font-size: 12px; color: gray; margin: 5px 0;">📍 Lake Como, Italy</p>
-                </div>
-            </div>
-             
-            <div class="card-item" style="display: flex; flex-direction: column; gap: 10px;">
-                <img src="https://via.placeholder.com/300x400" alt="Hotel 3" style="width: 100%; border-radius: 16px; aspect-ratio: 3/4; object-fit: cover;">
-                <div>
-                    <h3 style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif;">The Oberoi Udaivilas</h3>
-                    <p style="font-size: 12px; color: gray; margin: 5px 0;">📍 Udaipur, India</p>
-                </div>
-            </div>
-
-            <div class="card-item" style="display: flex; flex-direction: column; gap: 10px;">
-                <img src="https://via.placeholder.com/300x400" alt="Hotel 4" style="width: 100%; border-radius: 16px; aspect-ratio: 3/4; object-fit: cover;">
-                <div>
-                    <h3 style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif;">AKA Beverly Hills</h3>
-                    <p style="font-size: 12px; color: gray; margin: 5px 0;">📍 Los Angeles, USA</p>
-                </div>
-            </div>
-
-        </div>
     </section>
 
     <section class="detail-section">

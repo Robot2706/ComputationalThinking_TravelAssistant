@@ -1,8 +1,7 @@
-# Thư viện của Scraper
-pandas
-selenium
-webdriver-manager
 
 # Thư viện của đồ án chính
 # flask
 # numpy
+uvicorn
+fastapi
+pydantic

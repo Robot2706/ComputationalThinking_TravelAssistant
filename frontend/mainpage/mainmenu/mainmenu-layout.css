@@ -4,15 +4,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 :root {
-    --primary-color: #7B61FF; /* Màu tím chủ đạo */
+    --primary-color: #7B61FF;
     --text-dark: #1C1C1E;
     --text-light: #FFFFFF;
     --text-gray: #666666;
     --bg-white: #FFFFFF;
-    
-    /* Tốc độ chuyển động của hiệu ứng */
-    --transition-speed: 0.6s; 
-    --transition-ease: cubic-bezier(0.22, 1, 0.36, 1); /* Hiệu ứng trượt mượt mà */
+    --transition-speed: 0.6s;
+    --transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 * {
@@ -24,13 +22,9 @@ body {
     padding: 0;
     font-family: 'Poppins', sans-serif;
     background-color: var(--bg-white);
-    
-    /* QUAN TRỌNG: Khóa cuộn dọc (Y) ban đầu */
-    overflow-y: hidden; 
-    overflow-x: hidden; 
-    
-    /* Giúp việc lướt xuống mượt mà hơn */
-    scroll-behavior: smooth; 
+    overflow-y: hidden;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 a {
@@ -39,43 +33,35 @@ a {
 }
 
 /* =========================================
-   2. HERO SECTION (BACKGROUND & KHUNG)
+   2. HERO SECTION
    ========================================= */
 .hero-section {
-    position: fixed; /* Luôn dính chặt màn hình */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* Mặc định cao full màn hình */
+    height: 100vh;
     z-index: 1000;
     overflow: hidden;
-    
-    /* Bo góc ban đầu bằng 0 */
     border-radius: 0;
     box-shadow: none;
-    
     transition: all var(--transition-speed) var(--transition-ease);
 }
 
-/* --- TRẠNG THÁI KHI CUỘN XUỐNG (.shrink) --- */
 .hero-section.shrink {
-    height: 170px; /* Thu ngắn chiều cao lại */
-    
-    /* Bo tròn 2 góc dưới */
-    border-radius: 0 0 60px 60px; 
-    
-    /* Thêm bóng đổ tách biệt nền */
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); 
+    height: 170px;
+    border-radius: 0 0 60px 60px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
-/* Ảnh nền */
 .hero-section .background-main {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: url("../../assets/picture/background.jpg") center center / cover no-repeat;
     z-index: -1;
-    /* Khi thu nhỏ ảnh vẫn giữ tâm ở giữa */
 }
 
 .mainmenu-container {
@@ -85,14 +71,13 @@ a {
 }
 
 /* =========================================
-   3. LOGO & CHỮ WELCOME (XỬ LÝ BIẾN HÌNH)
+   3. LOGO & WELCOME
    ========================================= */
 .logo-container {
     position: absolute;
-    top: 100px; /* Vị trí ban đầu */
+    top: 100px;
     left: 50%;
-    transform: translateX(-50%); /* Căn giữa */
-    
+    transform: translateX(-50%);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -107,40 +92,31 @@ a {
     transition: transform 0.4s;
 }
 
-
-/* --- KHI LƯỚT XUỐNG --- */
-
-/* 1. Logo chạy sang trái */
 .hero-section.shrink .logo-container {
-    top: 15px; 
-    left: 2.5%;  /* Cách mép trái 5% */
-    transform: translateX(0); /* Bỏ căn giữa */
-    align-items: flex-start; /* Canh lề trái cho các phần tử con */
+    top: 15px;
+    left: 2.5%;
+    transform: translateX(0);
+    align-items: flex-start;
 }
 
-/* 3. Ảnh logo nhỏ lại chút */
 .hero-section.shrink .logo-container img {
     transform: scale(0.9);
     transform-origin: left top;
 }
 
 /* =========================================
-   4. NAV MENU (MENU MỚI: HOTELS, CHAT...)
+   4. NAV MENU
    ========================================= */
 .nav-menu {
     position: absolute;
-    top: 22px; /* Cùng hàng ngang với logo khi shrink */
+    top: 22px;
     left: 50%;
-    transform: translateX(-50%); /* Luôn căn giữa màn hình */
-    
+    transform: translateX(-50%);
     display: flex;
-    gap: 50px; /* Khoảng cách giữa các mục menu */
-    
-    /* BAN ĐẦU: ẨN ĐI */
+    gap: 50px;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    
     transition: all 0.5s ease-in-out;
     z-index: 20;
 }
@@ -149,7 +125,7 @@ a {
     font-size: 15px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.75);
-    text-transform: capitalize; /* Viết hoa chữ cái đầu */
+    text-transform: capitalize;
     transition: 0.3s;
     position: relative;
 }
@@ -158,20 +134,21 @@ a {
     color: #fff;
 }
 
-/* Hiệu ứng gạch chân khi hover (Optional) */
 .nav-menu a::after {
     content: '';
     position: absolute;
-    width: 0; height: 2px;
-    bottom: -4px; left: 0;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
     background-color: #fff;
     transition: width 0.3s;
 }
+
 .nav-menu a:hover::after {
     width: 100%;
 }
 
-/* --- KHI LƯỚT XUỐNG: HIỆN MENU --- */
 .hero-section.shrink .nav-menu {
     opacity: 1;
     visibility: visible;
@@ -179,7 +156,7 @@ a {
 }
 
 /* =========================================
-   5. CÁC PHẦN TỬ KHÁC (SLOGAN, NÚT SIGN UP)
+   5. SLOGAN & SIGN UP BUTTON
    ========================================= */
 .slogan-container {
     position: absolute;
@@ -196,18 +173,15 @@ a {
     top: 250px;
     left: 50%;
     transform: translateX(-50%);
-    
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     padding: 12px 24px;
-    
     border-radius: 50px;
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(12px);
-    
     cursor: pointer;
     transition: all 0.4s;
     z-index: 10;
@@ -217,38 +191,34 @@ a {
     background: rgba(255, 255, 255, 0.25);
 }
 
-/* --- KHI LƯỚT XUỐNG: ẨN ĐI --- */
 .hero-section.shrink .slogan-container,
 .hero-section.shrink .glass-btn {
     opacity: 0;
-    transform: translate(-50%, -20px); /* Bay nhẹ lên trên khi ẩn */
+    transform: translate(-50%, -20px);
     pointer-events: none;
 }
 
 /* =========================================
-   6. THANH TÌM KIẾM (SEARCH BAR)
+   6. SEARCH BAR
    ========================================= */
 .search-row {
     position: absolute;
-    top: 55%; /* Vị trí ban đầu */
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
     width: 90%;
     max-width: 1140px;
     height: 80px;
     padding: 10px 20px;
     gap: 10px;
-    
     background: #FFF;
     border-radius: 20px;
     box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
-    
     transition: all var(--transition-speed) var(--transition-ease);
+    overflow: visible !important;
 }
 
 .input-search-row {
@@ -258,78 +228,70 @@ a {
     gap: 12px;
     padding: 0 10px;
     border-right: 1px solid #eee;
+    position: relative;
+    cursor: pointer;
+    overflow: visible !important;
 }
-.input-search-row:last-child { border-right: none; } /* Xóa gạch ngăn ô cuối */
-.input-search-row:nth-last-child(2) { border-right: none; } /* Xóa gạch ngăn gần nút search */
+
+.input-search-row:last-child {
+    border-right: none;
+}
+
+.input-search-row:nth-last-child(2) {
+    border-right: none;
+}
 
 .text-search-row {
     display: flex;
     flex-direction: column;
 }
-.paragraph200regular {
-    font-weight: 600; font-size: 14px; color: var(--text-dark);
-}
-.paragraph100Medium_black {
-    font-size: 12px; color: var(--text-gray);
+
+.text-search-row label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dark);
+    display: block;
+    cursor: pointer;
 }
 
-/* Nút tìm kiếm tím */
+.placeholder-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+}
+
 .search-button-purple {
     background: var(--primary-color);
-    height: 60px; width: 60px; min-width: 60px;
+    height: 60px;
+    width: 60px;
+    min-width: 60px;
     border-radius: 16px;
-    display: flex; justify-content: center; align-items: center;
-    cursor: pointer; transition: 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s;
 }
-.search-button-purple:hover { background: #654ce0; }
-.search-button-purple img { width: 24px; height: 24px; filter: brightness(0) invert(1); }
 
-/* --- KHI LƯỚT XUỐNG: DI CHUYỂN LÊN --- */
+.search-button-purple:hover {
+    background: #654ce0;
+}
+
+.search-button-purple img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
 .hero-section.shrink .search-row {
-    top: 100px; /* Nằm gọn trong khung 380px */
-    width: 80%; /* Thu gọn chiều ngang */
+    top: 100px;
+    width: 80%;
     box-shadow: 0 15px 40px rgba(0,0,0,0.15);
 }
 
 /* =========================================
-   7. CONTENT SECTION (PHẦN TRẮNG DƯỚI)
+   7. INPUT STYLING
    ========================================= */
-.white-section {
-    position: relative;
-    z-index: 1;
-    background-color: var(--bg-white);
-    
-    /* QUAN TRỌNG: Đẩy xuống dưới màn hình ban đầu */
-    margin-top: 100vh; 
-    
-    padding: 100px 10%;
-    min-height: 100vh;
-}
-
-.white-section h2 {
-    font-size: 28px; font-weight: 600; margin-bottom: 40px;
-}
-
-/* Grid Layout cho Card */
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 30px;
-}
-
-.card-item {
-    display: flex; flex-direction: column; gap: 12px;
-    cursor: pointer; transition: transform 0.3s;
-}
-.card-item:hover { transform: translateY(-5px); }
-
-.card-item img {
-    width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 16px;
-}
-.card-item h3 { font-size: 16px; margin: 0; font-weight: 600; }
-.card-item p { font-size: 13px; color: var(--text-gray); margin: 0; }
-
-/* --- INPUT STYLING (Cho Location & Budget) --- */
 .search-input {
     border: none;
     outline: none;
@@ -347,54 +309,210 @@ a {
     font-weight: 400;
 }
 
-.text-search-row label {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--text-dark);
-    display: block;
-    cursor: pointer;
+.budget-range-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
 }
 
-.placeholder-text {
+.search-input.small-input {
+    width: 70px;
+    min-width: 50px;
+    padding: 0;
     font-size: 13px;
     font-weight: 500;
-    color: #666;
+    color: #1C1C1E;
+    background: transparent;
+    border: none;
+    outline: none;
 }
 
-/* --- POPUP CONTAINER CHUNG (Ẩn/Hiện) --- */
-.input-search-row {
-    position: relative; /* Để popup căn theo ô này */
+.range-separator {
+    color: #888;
+    font-weight: 400;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    appearance: textfield;
+}
+
+/* =========================================
+   8. CUSTOM LOCATION DROPDOWN
+   ========================================= */
+.custom-select-display {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1C1C1E;
     cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 20px;
 }
 
+.custom-select-display::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #666;
+}
+
+.location-dropdown {
+    width: 280px;
+    max-height: 320px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.dropdown-search {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+}
+
+.dropdown-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.dropdown-search-input:focus {
+    border-color: var(--primary-color);
+}
+
+.dropdown-list {
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 8px 0;
+}
+
+.dropdown-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #1C1C1E;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #f5f5f5;
+}
+
+.dropdown-item.selected {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.dropdown-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* =========================================
+   9. PURPOSE SELECT
+   ========================================= */
+.search-input select,
+select.search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    color: #1C1C1E;
+    font-weight: 500;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+}
+
+.input-search-row select#purpose-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    padding-right: 28px;
+}
+
+.search-input select option {
+    background: white;
+    color: #1C1C1E;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.search-input select option:hover {
+    background: #f5f5f5;
+}
+
+.icon-small {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+/* =========================================
+   10. POPUP CONTAINER
+   ========================================= */
 .popup-container {
     position: absolute;
-    top: 120%; /* Nằm ngay dưới ô input */
+    top: 120%;
     left: 50%;
     transform: translateX(-50%);
-    
     background: #FFF;
     border-radius: 24px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.15);
     padding: 20px;
     z-index: 100;
-    
-    /* Mặc định ẩn */
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     transition: all 0.2s ease;
 }
 
-/* Class active để hiện popup */
 .popup-container.active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    top: 110%; /* Hiệu ứng trượt nhẹ lên */
+    top: 110%;
 }
 
-/* --- 1. STYLE CHO GUEST POPUP --- */
+/* =========================================
+   11. GUEST POPUP
+   ========================================= */
 .guest-popup {
     width: 200px;
 }
@@ -413,81 +531,89 @@ a {
 }
 
 .counter-btn {
-    width: 32px; height: 32px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: 1px solid #ddd;
     background: #fff;
     cursor: pointer;
     font-size: 18px;
-    display: flex; justify-content: center; align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #666;
     transition: 0.2s;
 }
 
-.counter-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
-.counter-btn:active { transform: scale(0.9); }
+.counter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
 
-/* --- 2. STYLE CHO CALENDAR POPUP (COMPACT VERSION) --- */
+.counter-btn:active {
+    transform: scale(0.9);
+}
 
+/* =========================================
+   12. CALENDAR POPUP
+   ========================================= */
 .calendar-popup {
-    width: 560px; /* Giảm từ 600px xuống 520px */
-    padding: 20px; /* Giảm padding cho gọn */
+    width: 560px;
+    padding: 20px;
 }
 
 .calendar-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px; /* Giảm khoảng cách dưới */
+    margin-bottom: 10px;
 }
 
-/* Tiêu đề tháng nhỏ lại chút */
-.month-title { 
-    font-weight: 600; 
-    font-size: 14px; /* Giảm size chữ */
-    text-align: center; 
-    width: 50%; 
+.month-title {
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    width: 50%;
 }
 
 .calendar-body {
     display: flex;
-    gap: 10px; /* Giảm khoảng cách giữa 2 tháng (Cũ là 30px) */
+    gap: 10px;
 }
 
 .month-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 1px; /* Giảm khoảng cách giữa các ô ngày */
+    gap: 1px;
     flex: 1;
 }
 
 .day-name, .day-num {
     text-align: center;
-    font-size: 12px; /* Chữ nhỏ hơn */
-    padding: 0;      /* Bỏ padding thừa */
+    font-size: 12px;
+    padding: 0;
 }
 
-.day-name { 
-    color: #888; 
-    font-weight: 400; 
+.day-name {
+    color: #888;
+    font-weight: 400;
     margin-bottom: 5px;
 }
 
-/* --- CHỈNH KÍCH THƯỚC Ô NGÀY NHỎ LẠI --- */
 .day-num {
-    width: 32px;  /* Cũ là 40px -> Giảm xuống 32px */
-    height: 32px; /* Vuông vức */
-    line-height: 32px; /* Căn giữa chữ theo chiều dọc */
-    
-    font-weight: 500; 
-    cursor: pointer; 
-    border-radius: 50%; 
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 50%;
     margin: 0 auto;
     transition: 0.2s;
 }
 
-.day-num:hover { background-color: #f5f5f5; }
+.day-num:hover {
+    background-color: #f5f5f5;
+}
 
-/* Ngày Start và End */
 .day-num.start-date,
 .day-num.end-date {
     background-color: var(--primary-color);
@@ -497,52 +623,228 @@ a {
     z-index: 2;
 }
 
-/* Dải ở giữa */
 .day-num.in-range {
     background-color: #EFEAFF;
     color: var(--primary-color);
     border-radius: 0;
-    width: 100%; 
+    width: 100%;
 }
 
-/* Bo góc dải */
-.day-num.start-date { border-top-right-radius: 0; border-bottom-right-radius: 0; }
-.day-num.end-date { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.day-num.start-date {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
 
+.day-num.end-date {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 
 .calendar-footer {
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid #eee;
-    display: flex; gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 .pill-btn {
-    padding: 6px 12px; /* Nút nhỏ lại xíu */
+    padding: 6px 12px;
     border-radius: 20px;
     border: none;
     background: #eee;
-    font-size: 12px; 
+    font-size: 12px;
     cursor: pointer;
 }
-.pill-btn.outline { background: transparent; border: 1px solid #ddd; }
+
+.pill-btn.outline {
+    background: transparent;
+    border: 1px solid #ddd;
+}
 
 /* =========================================
-   CHẾ ĐỘ KHÓA (MODE-LOCKED)
-   Dùng để khóa giao diện sau khi tìm kiếm
+   13. WHITE SECTION
    ========================================= */
+.white-section {
+    position: relative;
+    z-index: 1;
+    background-color: var(--bg-white);
+    margin-top: 100vh;
+    padding: 100px 10%;
+    min-height: 100vh;
+}
 
-/* 1. Khi vào chế độ khóa, ép Hero luôn ở trạng thái shrink */
+.white-section h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.card-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.card-item:hover {
+    transform: translateY(-5px);
+}
+
+.card-item img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.card-item h3 {
+    font-size: 16px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.card-item p {
+    font-size: 13px;
+    color: var(--text-gray);
+    margin: 0;
+}
+
+/* =========================================
+   14. RESULTS CONTAINER
+   ========================================= */
+.results-container {
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+    padding: 0;
+}
+
+.loading {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 18px;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.error, .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 16px;
+    color: #d63031;
+}
+
+.no-results {
+    color: var(--text-gray);
+}
+
+.hotel-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.hotel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.hotel-image {
+    flex-shrink: 0;
+    width: 240px;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.hotel-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.hotel-card:hover .hotel-image img {
+    transform: scale(1.05);
+}
+
+.hotel-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hotel-info h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.hotel-info .district,
+.hotel-info .price,
+.hotel-info .rating {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-gray);
+}
+
+.hotel-info .price {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 16px;
+}
+
+.hotel-info .rating {
+    color: #f39c12;
+    font-weight: 500;
+}
+
+.amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.amenity-tag {
+    background: #f0f0f0;
+    padding: 4px 12px;border-radius: 16px;
+    font-size: 11px;
+    color: #666;
+    font-weight: 500;
+}
+
+.score {
+    margin-top: auto;
+    font-weight: 600;
+    color: #00b894;
+    font-size: 14px;
+}
+/* =========================================
+15. MODE LOCKED
+========================================= */
 body.mode-locked .hero-section {
-    /* Giữ nguyên các thông số của .shrink mà bạn đã chỉnh */
     height: 170px !important;
     border-radius: 0 0 60px 60px !important;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3) !important;
 }
-
-/* Ép các phần tử con (Logo, Menu...) theo trạng thái shrink */
 body.mode-locked .hero-section .logo-container {
-    top: 15px !important; 
+    top: 15px !important;
     left: 2.5% !important;
     transform: translateX(0) !important;
     align-items: flex-start !important;
@@ -550,10 +852,9 @@ body.mode-locked .hero-section .logo-container {
 body.mode-locked .hero-section .logo-container img {
     transform: scale(0.9) !important;
 }
-
 body.mode-locked .slogan-container,
 body.mode-locked .glass-btn {
-    display: none !important; /* Ẩn hoàn toàn để không bị lỗi vặt */
+    display: none !important;
 }
 body.mode-locked .nav-menu {
     opacity: 1 !important;
@@ -565,25 +866,34 @@ body.mode-locked .search-row {
     width: 80% !important;
     box-shadow: 0 15px 40px rgba(0,0,0,0.15) !important;
 }
-
-/* 2. QUAN TRỌNG NHẤT: Kéo phần nội dung trắng lên sát header */
 body.mode-locked .white-section {
-    /* Thay vì margin-top: 100vh, giờ chỉ cần cách đúng bằng chiều cao header */
-    margin-top: 170px !important; 
-    
-    /* Thêm padding top chút cho thoáng nếu cần */
-    padding-top: 50px; 
+    margin-top: 170px !important;
+    padding-top: 50px;
+}
+/* =========================================
+16. RESPONSIVE
+========================================= */
+@media (max-width: 768px) {
+.hotel-card {
+    flex-direction: column;
+}
+.hotel-image {
+    width: 100%;
+    height: 200px;
+}
 }
 
 .detail-section {
     display: none; /* ẩn mặc định */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 80px 10%;
     background: white;
     min-height: 100vh;
     margin: 0 auto;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    position: relative;
+    z-index: 10; /* đảm bảo nằm trên các section khác */
 }
 
 /* Brief information */
@@ -669,4 +979,10 @@ body.mode-locked .white-section {
     background: #D9D9D9;
     align-self: stretch;
 
+}
+
+.google-map iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
 }
