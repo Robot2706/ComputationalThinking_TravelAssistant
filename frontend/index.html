@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2rism</title>
     
-    <link rel="stylesheet" href="mainmenu-layout.css" />
-    <link rel="stylesheet" href="../../fonts.css" />
+    <link rel="stylesheet" href="css/home.css" /> 
+    <link rel="stylesheet" href="css/fonts.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <section class="hero-section">
         
-        <div class="background-main"></div>
+        <div class="background-main" style="background-image: url('assets/images/background.jpg');"></div>
 
         <div class="mainmenu-container">
     
@@ -21,13 +21,13 @@
             <div class="paragraph200Medium_white" style="opacity: 0.7">
               Welcome to
             </div>
-              <img src="../../assets/section/logo.svg" alt="Logo" />
+              <img src="assets/icons/logo.svg" alt="Logo" />
           </div>
 
           <div class="nav-menu">
-              <a href="../../mainpage/featuring/featuring-mainmenu-page.html">hotels/homestays</a>
-              <a href="../../mainpage/chatwithAI/chatwithai-page.html">chat with AI</a>
-              <a href="../../mainpage/aboutus/aboutus-page.html">about us</a>
+              <a href="pages/hotels.html">hotels/homestays</a>
+              <a href="pages/chat-ai.html">chat with AI</a>
+              <a href="pages/about-us.html">about us</a>
           </div>
 
           <div class="slogan-container">
@@ -36,24 +36,22 @@
               </div>
           </div>
 
-          <a href="../../login/signup-page.html">
+          <a href="pages/signup.html">
               <div class="glass-btn">
-                  <img src="../../assets/section/loginicon.svg" alt="Icon" />
+                  <img src="assets/icons/loginicon.svg" alt="Icon" />
                   <div class="button-text">Sign up/Sign in</div>
               </div>
           </a>
 
           <div class="search-row">
               
-              <!-- CUSTOM LOCATION DROPDOWN -->
               <div class="input-search-row" id="location-trigger">
-                  <img src="../../assets/section/map-pin-line.svg" alt="MapPin" />
+                  <img src="assets/icons/map-pin-line.svg" alt="MapPin" />
                   <div class="text-search-row">
                       <label>Location</label>
                       <div class="custom-select-display" id="location-display">Quận 1</div>
                   </div>
                   
-                  <!-- Custom Dropdown -->
                   <div class="popup-container location-dropdown" id="location-dropdown">
                       <div class="dropdown-search">
                           <input type="text" id="location-search" placeholder="Tìm quận..." class="dropdown-search-input">
@@ -80,12 +78,10 @@
                   </div>
               </div>
 
-              <!-- Budget -->
               <div class="input-search-row">
-                  <img src="../../assets/section/budget.svg" alt="Budget" />
+                  <img src="assets/icons/budget.svg" alt="Budget" />
                   <div class="text-search-row">
                       <label>Budget (VND)</label>
-                      
                       <div class="budget-range-group">
                           <input type="number" id="budget-min" placeholder="Min" class="search-input small-input">
                           <span class="range-separator">-</span>
@@ -94,9 +90,8 @@
                   </div>
               </div>
 
-              <!-- Purpose -->
               <div class="input-search-row">
-                  <img src="../../assets/section/purpose-icon.svg" alt="Purpose" class="icon-small" />
+                  <img src="assets/icons/purpose-icon.svg" alt="Purpose" class="icon-small" />
                   <div class="text-search-row">
                       <label for="purpose-select">Purpose</label>
                       <select id="purpose-select" class="search-input">
@@ -110,9 +105,8 @@
                   </div>
               </div>
 
-              <!-- Date -->
               <div class="input-search-row" id="date-trigger">
-                  <img src="../../assets/section/calendar-event-fill.svg" alt="Date" />
+                  <img src="assets/icons/calendar-event-fill.svg" alt="Date" />
                   <div class="text-search-row">
                       <div>Arrive and Leave</div>
                       <div class="placeholder-text" id="date-display">Choose a Date</div>
@@ -121,7 +115,6 @@
                   <div class="popup-container calendar-popup" id="calendar-popup">
                       <div class="calendar-wrapper" id="calendar-render-area" style="display: flex; gap: 30px;">
                       </div>
-                      
                       <div class="calendar-footer">
                           <button class="pill-btn">Exact dates</button>
                           <button class="pill-btn outline">+ 1 day</button>
@@ -130,9 +123,8 @@
                   </div>
               </div>
 
-              <!-- Guests -->
               <div class="input-search-row" id="guest-trigger">
-                  <img src="../../assets/section/group-line.svg" alt="Guests" />
+                  <img src="assets/icons/group-line.svg" alt="Guests" />
                   <div class="text-search-row">
                       <div>Guests</div>
                       <div class="placeholder-text" id="guest-display">1 guest</div>
@@ -150,9 +142,8 @@
                   </div>
               </div>
 
-              <!-- Search Button -->
               <div class="search-button-purple">
-                  <img src="../../assets/section/search-icon.svg" alt="Search">
+                  <img src="assets/icons/search-icon.svg" alt="Search">
               </div>
           </div>
       </div>
@@ -164,6 +155,6 @@
         </h2>
     </section>
 
-    <script src="mainmenu-effect.js"></script>
+    <script src="js/home.js"></script>
 </body>
 </html>

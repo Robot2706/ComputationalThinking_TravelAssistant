@@ -1,0 +1,223 @@
+/* Import font nếu chưa có */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+/* frontend/css/hotel-detail.css */
+
+/* QUAN TRỌNG: Ghi đè thuộc tính khóa cuộn của trang chủ */
+body {
+    overflow-y: auto !important; /* Cho phép lướt xuống */
+    height: auto !important;
+    overflow-x: hidden; /* Chặn lướt ngang */
+    background-color: #F8F9FD;
+}
+
+/* Đảm bảo Header không che mất nội dung */
+body.mode-locked .hero-section {
+    position: fixed !important; /* Cố định header */
+    height: 140px !important;   /* Thu gọn chiều cao header */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Đẩy nội dung chính xuống để không bị Header che */
+.detail-page-container {
+    margin-top: 160px !important; /* Cách top đủ rộng để chừa chỗ cho Header */
+    padding: 0 10%;
+    padding-bottom: 80px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1; /* Nổi lên trên layer nền */
+}
+
+/* ... (Giữ nguyên các code CSS phía dưới của file cũ) ... */
+
+/* Nút Back */
+.back-nav {
+    margin-bottom: 20px;
+}
+.back-nav a {
+    text-decoration: none;
+    color: #666;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+.back-nav a:hover {
+    color: #7B61FF;
+}
+
+/* Layout chia 2 cột */
+.hotel-detail-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Trái 2 phần, Phải 1 phần */
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* Cột Trái */
+.detail-image-box {
+    width: 100%;
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.detail-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-header-info {
+    margin-top: 20px;
+}
+.detail-header-info h1 {
+    font-size: 32px;
+    margin: 0 0 10px 0;
+    color: #2D3436;
+}
+.sub-info {
+    display: flex;
+    gap: 20px;
+    font-size: 16px;
+    color: #666;
+}
+.sub-info i {
+    color: #7B61FF;
+    margin-right: 5px;
+}
+.sub-info .rating i {
+    color: #F1C40F;
+}
+
+/* Cột Phải (Giá & Tiện nghi) */
+.price-box {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    text-align: center;
+    margin-bottom: 20px;
+}
+.price-label {
+    margin: 0;
+    font-size: 14px;
+    color: #888;
+}
+.price-number {
+    margin: 10px 0 20px 0;
+    color: #7B61FF;
+    font-size: 28px;
+}
+.book-now-btn {
+    width: 100%;
+    padding: 15px;
+    background: #7B61FF;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.book-now-btn:hover {
+    background: #5a45cc;
+    transform: translateY(-2px);
+}
+
+.amenities-box {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+.amenities-box h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+.amenities-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.amenity-tag {
+    background: #F0F0F0;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #555;
+    text-transform: capitalize;
+}
+
+/* Phần Mô tả chi tiết */
+.description-section {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+.description-section h3 {
+    margin-top: 0;
+    font-size: 22px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+.description-content {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.8;
+    color: #444;
+    font-size: 15px;
+    white-space: pre-line; /* Quan trọng: Giữ xuống dòng của dữ liệu JSON */
+    text-align: justify;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hotel-detail-wrapper {
+        grid-template-columns: 1fr;
+    }
+    .detail-image-box {
+        height: 250px;
+    }
+    .detail-page-container {
+        padding: 0 20px;
+    }
+}
+
+.map-section {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    margin-top: 30px; /* Cách phần mô tả 30px */
+}
+
+.map-section h3 {
+    margin-top: 0;
+    font-size: 22px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    color: #2D3436;
+}
+
+.map-wrapper {
+    width: 100%;
+    height: 450px; /* Chiều cao bản đồ */
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #f0f0f0; /* Màu nền chờ load */
+    position: relative;
+}
+
+/* Style cho iframe Google Map */
+.map-frame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}

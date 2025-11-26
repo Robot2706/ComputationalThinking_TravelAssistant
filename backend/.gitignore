@@ -1,27 +1,82 @@
-# --- Python & System ---
+# --- Bytecode / cache ---
 __pycache__/
-*.pyc
+**/__pycache__/
+*.py[cod]
 *.pyo
 *.pyd
-.Python
-env/
-venv/
-.venv/
-.env
 
-# --- OS specific ---
+# --- Virtual environments ---
+venv/
+.env/
+.env.* 
+.venv/
+backend/venv/
+**/venv/
+
+# --- Python packaging / build ---
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+*.egg
+.eggs/
+
+# --- IDEs / editors ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+
+# --- OS files ---
 .DS_Store
 Thumbs.db
 
-# --- IDE settings (VS Code, Pycharm) ---
-.vscode/
-.idea/
-
-# --- Project Data & Results ---
-# Dữ liệu thô và kết quả chạy mô hình thường không push lên git nếu file quá nặng
-# Nhưng nếu file json của bạn nhẹ (<50MB) thì có thể bỏ comment dòng dưới để track
-# backend/data/raw/
-# backend/src/results/
+# --- Test / coverage / caches ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.cache/
+.mypy_cache/
+.tox/
+.nox/
 
 # --- Logs ---
 *.log
+logs/
+*.lo
+
+# --- Data (raw / large) ---
+# Không track dữ liệu thô lớn
+backend/data/raw/
+# Nếu muốn không track cả processed, bỏ comment dòng dưới
+# backend/data/processed/
+
+# --- Results / runtime artifacts ---
+backend/src/results/
+*.sqlite3
+*.db
+
+# --- Frontend / node (nếu có) ---
+node_modules/
+dist/
+build/
+.cache/
+.npm/
+.eslintcache
+parcel-cache/
+
+# --- Misc ---
+.env.local
+.env.*.local
+credentials.json
+secrets.json
+
+# --- Windows / executables ---
+*.exe
+*.dll
+
+# --- Keep this repo clean ---
+# track small, hand-maintained files (README, docs, small JSON). Adjust above as needed.

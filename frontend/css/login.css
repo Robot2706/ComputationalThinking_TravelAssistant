@@ -68,7 +68,8 @@ body {
     position: fixed;
     width: 35%;
     height: 100vh;
-    background: url("../assets/picture/login_bg.jpg") lightgray 50% / cover no-repeat;
+    /* ĐÃ SỬA PATH: picture -> images */
+    background: url("../assets/images/login_bg.jpg") lightgray 50% / cover no-repeat;
     background-color: #FFFFFF;
 }
 

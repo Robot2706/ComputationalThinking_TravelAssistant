@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Details - 2rism</title>
+    
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/hotel-detail.css">
+    <link rel="stylesheet" href="../css/fonts.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="mode-locked">
+
+    <section class="hero-section">
+        <div class="background-main" style="background-image: url('../assets/images/background.jpg');"></div>
+
+        <div class="mainmenu-container">
+            <div class="logo-container">
+                <div class="paragraph200Medium_white" style="opacity: 0.7">Welcome to</div>
+                <a href="../index.html">
+                    <img src="../assets/icons/logo.svg" alt="Logo" />
+                </a>
+            </div>
+
+            <div class="nav-menu">
+                <a href="hotels.html">hotels/homestays</a>
+                <a href="chat-ai.html">chat with AI</a>
+                <a href="about-us.html">about us</a>
+            </div>
+
+            <a href="signup.html">
+                <div class="glass-btn" style="top: 25px; transform: none; left: auto; right: 5%;">
+                    <img src="../assets/icons/loginicon.svg" alt="Icon" />
+                    <div class="button-text">Sign up/Sign in</div>
+                </div>
+            </a>
+            
+            <div class="search-row" style="display: none;"></div>
+        </div>
+    </section>
+
+    <div class="detail-page-container">
+        
+        <div class="back-nav">
+            <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i> Quay lại tìm kiếm</a>
+        </div>
+
+        <div class="hotel-detail-wrapper">
+            <div class="detail-left">
+                <div class="detail-image-box">
+                    <img id="hotel-img" src="" alt="Hotel Image" onerror="this.src='https://via.placeholder.com/800x600?text=No+Image'">
+                </div>
+                
+                <div class="detail-header-info">
+                    <h1 id="hotel-name">Đang tải dữ liệu...</h1>
+                    <div class="sub-info">
+                        <span class="location"><i class="fa-solid fa-location-dot"></i> <span id="hotel-district">...</span></span>
+                        <span class="rating"><i class="fa-solid fa-star"></i> <span id="hotel-rating">...</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-right">
+                <div class="price-box">
+                    <p class="price-label">Giá mỗi đêm</p>
+                    <h2 class="price-number"><span id="hotel-price">0</span> VND</h2>
+                    <button class="book-now-btn">Đặt phòng ngay</button>
+                </div>
+
+                <div class="amenities-box">
+                    <h3>Tiện nghi</h3>
+                    <div class="amenities-list" id="amenities-container">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="description-section">
+            <h3>Chi tiết về khách sạn</h3>
+            <div class="description-content" id="hotel-details-text">
+                </div>
+        </div>
+
+    </div>
+
+    <div class="map-section">
+            <h3>Location</h3>
+            <div id="map-container" class="map-wrapper">
+                </div>
+        </div>
+
+    </div> ```
+    
+    <script src="../js/hotel-detail.js"></script>
+</body>
+</html>
