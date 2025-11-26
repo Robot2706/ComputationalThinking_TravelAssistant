@@ -1,0 +1,116 @@
+Folder PATH listing for volume OS
+Volume serial number is 6405-EFBE
+C:.
+|   .DS_Store
+|   folder_structure.txt
+|   README.md
+|   
++---backend
+|   |   .gitignore
+|   |   requirements.txt
+|   |   
+|   +---data
+|   |   |   dataFolderPrototype.txt
+|   |   |   
+|   |   +---processed
+|   |   |       hotels_parsed.json
+|   |   |       
+|   |   \---raw
+|   |           hotels_list.md
+|   |           
+|   \---src
+|       |   main.py
+|       |   
+|       +---results
+|       |       recommend_results.json
+|       |       
+|       \---services
+|           |   parse_raw_to_json.py
+|           |   rag_service.py
+|           |   recommender.py
+|           |   
+|           \---__pycache__
+|                   recommender.cpython-313.pyc
+|                   
++---diagrams
+|       mock.txt
+|       
++---docs
+|       doc.txt
+|       
++---frontend
+|   |   .DS_Store
+|   |   fonts.css
+|   |   
+|   +---assets
+|   |   |   .DS_Store
+|   |   |   
+|   |   +---picture
+|   |   |   |   background.jpg
+|   |   |   |   featuring-bg.png
+|   |   |   |   group.jpg
+|   |   |   |   login_bg.jpg
+|   |   |   |   
+|   |   |   \---section
+|   |   |       \---section
+|   |   |               cf09d7f57be8d7c1d3534ed2e1a31ff8 1.png
+|   |   |               
+|   |   \---section
+|   |           arrow-drop-down-line.svg
+|   |           arrow-right.svg
+|   |           budget.svg
+|   |           calendar-event-fill.svg
+|   |           calendar-event-line.svg
+|   |           elipse-left.svg
+|   |           elipse-right.svg
+|   |           googleaccount.svg
+|   |           group-line.svg
+|   |           hide.svg
+|   |           home-2-line.svg
+|   |           loginicon.svg
+|   |           logo.svg
+|   |           map-pin-line.svg
+|   |           purpose-icon.svg
+|   |           search-icon.svg
+|   |           search-line.svg
+|   |           
+|   +---login
+|   |       login-layout.css
+|   |       login-page.html
+|   |       signup-page.html
+|   |       
+|   +---mainpage
+|   |   +---aboutus
+|   |   |       aboutus-layout.css
+|   |   |       aboutus-page.html
+|   |   |       
+|   |   +---chatwithAI
+|   |   |       chatwithai-layout.css
+|   |   |       chatwithai-page.html
+|   |   |       
+|   |   +---featuring
+|   |   |       featuring-mainmenu-layout.css
+|   |   |       featuring-mainmenu-page.html
+|   |   |       
+|   |   \---mainmenu
+|   |           mainmenu-effect.js
+|   |           mainmenu-layout.css
+|   |           mainmenu-page.html
+|   |           
+|   \---pages
+|       +---chatBot_detail
+|       |       chatBot_detail.css
+|       |       chatBot_detail.html
+|       |       chatBot_detail.js
+|       |       
+|       \---chatBot_result
+|               chatBot_result.css
+|               chatbot_result.html
+|               chatBot_result.js
+|               
++---Links
+|       links.txt
+|       
+\---team_logbook
+        Timeline.txt
+        

@@ -1,31 +1,52 @@
-# main.py
+import os
+
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional
-import os
-import logging
 
-# import module recommender từ services
-from services import recommender as recmod
+# Các module tự viết
+from src.utils.file_helper import get_project_root, load_json
+from src.utils.logger import get_logger
+from src.services import recommender as recmod
+
+# ... (Phần còn lại giữ nguyên)
+
+# Import modules từ src
+from src.utils.file_helper import get_project_root, load_json
+from src.utils.logger import get_logger
+from src.services import recommender as recmod
 
 app = FastAPI(title="Hotel Recommender POC", version="0.1")
 
+# --- Logging ---
+logger = get_logger("API")
+
 # --- CORS (cho frontend local/dev) ---
+# Lấy biến môi trường hoặc mặc định localhost:3000
 origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],            # dev: cho mọi origin để test
+    allow_origins=["*"],  # Dev mode: cho phép tất cả (cẩn thận khi production)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --- Logging ---
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("recommender-api")
+# --- Path Setup ---
+BASE_DIR = get_project_root()
+# [FIX 2] Ép kiểu về string để tránh lỗi nếu module recommender không hỗ trợ Path object
+HOTELS_JSON_PATH = str(BASE_DIR / "data" / "processed" / "hotels_parsed.json")
 
-# --- Pydantic models (request / response) ---
+# Kiểm tra file data ngay khi khởi động
+if not os.path.exists(HOTELS_JSON_PATH):
+    logger.warning(f"⚠️ DATA NOT FOUND at: {HOTELS_JSON_PATH}")
+else:
+    logger.info(f"✅ Data loaded from: {HOTELS_JSON_PATH}")
+
+
+# --- Pydantic models ---
 class SearchRequest(BaseModel):
     # frontend may send a single `budget` (number) OR budget_min & budget_max (legacy)
     # We therefore make all budget fields optional and normalize in endpoint.
@@ -70,20 +91,24 @@ class RecommendResponse(BaseModel):
     results: List[HotelOut]
     meta: dict
 
-# --- Load hotels from JSON file via recommender ---
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-HOTELS_JSON_PATH = os.path.join(BASE_DIR, "services", "hotels_parsed.json")  # chỉnh path nếu cần
 
-# --- Simple utility endpoints ---
+# --- Endpoints ---
 @app.get("/api/ping")
 def ping():
     return {"status": "ok"}
 
 @app.get("/api/districts", response_model=List[str])
 def get_districts():
-    hotels = recmod.load_hotels_from_json(HOTELS_JSON_PATH)
-    districts = sorted({h.district for h in hotels})
-    return districts
+    # Sử dụng hàm load_json từ utils (nếu bạn đã viết trong file_helper.py)
+    # Hoặc dùng hàm của recmod nếu logic phức tạp
+    # Ở đây giả sử recmod.load_hotels_from_json vẫn hoạt động
+    try:
+        hotels = recmod.load_hotels_from_json(HOTELS_JSON_PATH)
+        districts = sorted({h.district for h in hotels})
+        return districts
+    except Exception as e:
+        logger.error(f"Error loading districts: {e}")
+        raise HTTPException(status_code=500, detail="Error loading data")
 
 @app.get("/api/hotels/{hotel_id}", response_model=HotelOut)
 def get_hotel(hotel_id: int):
@@ -121,38 +146,32 @@ def recommend(req: SearchRequest):
     elif req.budget_min is not None and req.budget_max is not None:
         user_input["budget_min"] = float(req.budget_min)
         user_input["budget_max"] = float(req.budget_max)
-    else:
-        # no budget fields provided: you can choose defaults or return 400.
-        # We'll pass no explicit budget and rely on recommender's fallback defaults.
-        pass
-
-    # purpose optional: recommender will default to 'leisure' if missing,
-    # but pass through if provided.
+    
     if req.purpose:
         user_input["purpose"] = req.purpose
 
     try:
         results, meta = recmod.recommend_from_json(user_input, HOTELS_JSON_PATH, topN=user_input["topN"])
     except FileNotFoundError as fnf:
-        logger.error("Hotels JSON not found: %s", fnf)
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(fnf))
+        logger.error(f"Hotels JSON not found: {fnf}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Data file missing")
     except ValueError as ve:
-        logger.error("Bad user input: %s", ve)
+        logger.error(f"Bad user input: {ve}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
     except Exception as ex:
-        logger.exception("Recommendation error: %s", ex)
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="internal recommendation error")
+        logger.exception(f"Recommendation error: {ex}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal recommendation error")
 
     if not results:
-        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="no results found")
+        # Trả về danh sách rỗng thay vì lỗi 204 (để frontend dễ xử lý hơn)
+        return RecommendResponse(results=[], meta=meta)
 
     out_results = []
     for r in results:
         # đảm bảo id có mặt
         id_val = r.get("id")
         if id_val is None:
-            # chọn cách xử lý: bỏ item hoặc raise; ở đây ta raise để dễ debug
-            raise ValueError(f"Result item missing 'id': {r}")
+            continue # Bỏ qua item lỗi thay vì crash
 
         out_results.append(HotelOut(
             id=int(id_val),
@@ -164,6 +183,4 @@ def recommend(req: SearchRequest):
             score=r.get("score")
         ))
 
-
     return RecommendResponse(results=out_results, meta=meta)
-
