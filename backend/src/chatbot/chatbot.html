@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Chatbot Demo</title>
+    <style>
+        /* CSS đơn giản cho khung chat */
+        body { font-family: sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        
+        .chat-container {
+            width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #007bff; /* Màu xanh chủ đạo */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .bot-message {
+            background-color: #e4e6eb;
+            color: black;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #ccc; }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">✈️ Trợ lý Du lịch Ảo</div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">Chào bạn! Tôi có thể giúp gì về khách sạn hôm nay?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="Nhập câu hỏi..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()" id="sendBtn">Gửi</button>
+        </div>
+    </div>
+
+    <script>
+        // --- PHẦN KẾT NỐI VỚI BACKEND CỦA BẠN ---
+        const API_URL = "http://127.0.0.1:8000/api/chat"; // Địa chỉ server Python
+
+        async function sendMessage() {
+            const inputField = document.getElementById('userInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const chatBox = document.getElementById('chatMessages');
+            const question = inputField.value.trim();
+
+            if (!question) return;
+
+            // 1. Hiển thị tin nhắn của người dùng lên giao diện
+            addMessage(question, 'user');
+            inputField.value = '';
+            inputField.disabled = true; // Khóa ô nhập trong khi chờ
+            sendBtn.disabled = true;
+
+            // 2. Gửi request đến Python API
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question: question })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Lỗi kết nối Server");
+                }
+
+                const data = await response.json();
+                
+                // 3. Hiển thị câu trả lời của Bot (data.answer lấy từ JSON trả về)
+                addMessage(data.answer, 'bot');
+
+            } catch (error) {
+                console.error("Error:", error);
+                addMessage("Xin lỗi, server đang bận. Vui lòng thử lại sau!", 'bot');
+            } finally {
+                inputField.disabled = false;
+                sendBtn.disabled = false;
+                inputField.focus();
+            }
+        }
+
+        function addMessage(text, sender) {
+            const chatBox = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message');
+            msgDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            
+            // Xử lý xuống dòng cho đẹp
+            msgDiv.innerHTML = text.replace(/\n/g, '<br>'); 
+            
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight; // Tự cuộn xuống dưới cùng
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+    </script>
+
+</body>
+</html>
