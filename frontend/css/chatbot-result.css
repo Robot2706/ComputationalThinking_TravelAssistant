@@ -1,24 +1,59 @@
-.header-logo {
-    width: 87px; 
-    height: auto;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+    --white: #FFF;
+    --black: #161414;
+    --grey: #979797;
 }
 
-.ai-header {
-    margin: 5;
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+}
+
+.background-main {
+    position: fixed;
+    inset: 0;
     width: 100%;
-    padding: 10;               /* giống result */
-    display: flex;
-    align-items: center;
-    gap: 10px;                /* hoặc theo result */
-    justify-content: flex-start; /* căn trái như result */
+    height: 100vh;
+    background: url("../assets/images/background.jpg") center/cover no-repeat;
+    z-index: -1;
 }
 
+/* Text */
+.paragraph200regular { color: var(--white); font-size: 14px; }
+.heading400 { color: var(--black); font-size: 18px; font-weight: 500; }
 
-.home-icon,
-.dropdown-icon {
-    font-size: 1.2em; 
-    color: #fff;
-    opacity: 0.8;
+.main-content-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* HEADER */
+/* HEADER ĐƠN GIẢN (2rism) */
+.ai-header {
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    gap: 5px;
+    box-sizing: border-box;
+}
+.ai-header .logo-text {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+.header-logo { width: 87px; }
+.home-icon, .dropdown-icon {
+    font-size: 1.2em;
+    color: var(--white);
     cursor: pointer;
 }
 
@@ -41,9 +76,10 @@
 
 /* CARD HOLDER */
 .hotel-card {
-    width: 30%;               /* mỗi card chiếm 30% */
-    max-height: 450px;        /* giảm chiều cao */
-    padding: 25px;
+    margin-bottom: 0%;
+    width: 40%;
+    min-height: 350px;
+    padding: 30px;
     border-radius: 20px;
 
     background: rgba(255, 255, 255, 0.15);
@@ -115,11 +151,6 @@
     transition: 0.3s;
 }
 
-/* Ẩn nút prev/next */
-.nav-button {
-    display: none !important;
-}
-
 /* Override carousel cũ */
 .hotel-card {
     position: relative !important;
@@ -131,4 +162,58 @@
 
 #cardList {
     position: static !important;
+}
+
+/* ASK BAR */
+.ask-bar-container {
+    position: fixed;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.ask-input {
+    width: 100%;
+    max-width: 600px;
+    padding: 15px 30px;
+    border-radius: 30px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+}
+
+/* AI MESSAGE TEXT */
+.ai-message-box {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    padding: 12px 18px;
+    max-width: 50%;
+    width: fit-content;
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.ask-bar-container {
+    position: fixed;
+    bottom: 30px;          /* hạ xuống để không đè UI */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 200;
+}
+
+.ask-input {
+    width: 100%;
+    max-width: 600px;
+    padding: 15px 25px;
+    border-radius: 30px;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Đảm bảo content không bị tràn lên header */
+.main-content-wrapper {
+    padding-top: 20px;
 }
