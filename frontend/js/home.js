@@ -349,9 +349,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Lưu vào localStorage
-        localStorage.setItem('lastSearchResults', JSON.stringify(hotels));
-
         const html = hotels.map(h => buildHotelCard(h)).join('');
         container.innerHTML = html;
         const cardsGrid = document.querySelector('.cards-grid');
