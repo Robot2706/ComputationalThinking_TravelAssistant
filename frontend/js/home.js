@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const MIN_GUESTS = 1;
 
     // Budget đã chọn
-    let selectedBudgetMin = 500000;
-    let selectedBudgetMax = 1000000;
+    let selectedBudgetMin = null;
+    let selectedBudgetMax = null;
 
     // Purpose đã chọn
     let selectedPurpose = 'leisure';
