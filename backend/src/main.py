@@ -6,18 +6,12 @@ from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional
 from contextlib import asynccontextmanager
 
-# Các module tự viết
-from utils.file_helper import get_project_root, load_json
-from utils.logger import get_logger
-from services import recommender as recmod
-
-# ... (Phần còn lại giữ nguyên)
 
 # Import modules từ src
-from utils.file_helper import get_project_root, load_json
-from utils.logger import get_logger
-from services import recommender as recmod
-from chatbot.rag_service import HotelChatbot
+from src.utils.file_helper import get_project_root, load_json
+from src.utils.logger import get_logger
+from src.services import recommender as recmod
+from src.chatbot.rag_service import HotelChatbot
 
 # --- Logging ---
 logger = get_logger("API")

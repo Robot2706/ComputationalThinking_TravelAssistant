@@ -255,6 +255,14 @@ a {
     cursor: pointer;
 }
 
+.text-search-row .label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dark);
+    display: block;
+    cursor: pointer;
+}
+
 .placeholder-text {
     font-size: 13px;
     font-weight: 500;
@@ -350,7 +358,7 @@ input[type=number] {
 .custom-select-display {
     font-size: 13px;
     font-weight: 500;
-    color: #1C1C1E;
+    color: #666;
     cursor: pointer;
     user-select: none;
     position: relative;
@@ -373,6 +381,20 @@ input[type=number] {
 .location-dropdown {
     width: 280px;
     max-height: 320px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.budget-dropdown {
+    width: 280px;
+    max-height: 200px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.purpose-dropdown {
+    width: 280px;
+    max-height: 240px;
     padding: 0;
     overflow: hidden;
 }
