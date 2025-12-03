@@ -75,18 +75,16 @@ document.addEventListener('DOMContentLoaded', function() {
        2. LOGIC CHẶN SCROLL LÚC ĐẦU
        ========================================= */
     // Chặn scroll xuống ban đầu
+    let isScrollLocked = true;
     const preventScrollDown = (e) => {
-        if (!canScrollDown) {
-            const scrollTop = window.scrollY;
-            // Chỉ cho phép lướt lên (về top)
-            if (scrollTop > lastScrollTop) {
-                // Đang lướt xuống - chặn lại
-                isPreventingScroll = true;
-                window.scrollTo(0, lastScrollTop);
-                setTimeout(() => { isPreventingScroll = false; }, 10);
-                e.preventDefault();
-            }
-            lastScrollTop = scrollTop;
+        // Không chặn scroll nếu event từ trong dropdown
+        const target = e.target;
+        if (target.closest('.dropdown-list')) {
+            return;
+        }
+        
+        if (isScrollLocked && !canScrollDown) {
+            e.preventDefault();
         }
     };
 
@@ -127,19 +125,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 1. Mở khóa scroll xuống
             canScrollDown = true;
+            isScrollLocked = false;
             
             // 2. Bật scroll cho trang web
             document.body.style.overflowY = 'auto';
             
-            // 3. Khóa trạng thái Header
+            // 3. Khóa trạng thái Header (để scroll event tự handle shrink)
             isLocked = true;
-            heroSection.classList.add('shrink');
 
             const resultsContainer = createResultsContainer();
             resultsContainer.innerHTML = '<div class="loading">Loading...</div>';
 
-            // Cuộn xuống phần nội dung
-            if (whiteSection) whiteSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Cuộn xuống phần nội dung mượt mà
+            if (whiteSection) {
+                setTimeout(() => {
+                    whiteSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            }
 
             // Đóng các popup
             if (guestPopup) guestPopup.classList.remove('active');
@@ -169,6 +171,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // ... (Giữ nguyên phần Location) ...
     if (locationTrigger) {
         locationTrigger.addEventListener('click', (e) => {
+            // Chặn mở dropdown khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
             if (e.target.closest('.dropdown-item')) return;
             locationDropdown.classList.toggle('active');
             if (guestPopup) guestPopup.classList.remove('active');
@@ -214,6 +220,10 @@ document.addEventListener('DOMContentLoaded', function() {
        ========================================= */
     if (budgetTrigger) {
         budgetTrigger.addEventListener('click', (e) => {
+            // Chặn mở dropdown khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
             if (e.target.closest('.dropdown-item')) return;
             budgetDropdown.classList.toggle('active');
             if (guestPopup) guestPopup.classList.remove('active');
@@ -244,6 +254,10 @@ document.addEventListener('DOMContentLoaded', function() {
        ========================================= */
     if (purposeTrigger) {
         purposeTrigger.addEventListener('click', (e) => {
+            // Chặn mở dropdown khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
             if (e.target.closest('.dropdown-item')) return;
             purposeDropdown.classList.toggle('active');
             if (guestPopup) guestPopup.classList.remove('active');
@@ -274,6 +288,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // ... (Giữ nguyên phần Guest) ...
     if (guestTrigger) {
         guestTrigger.addEventListener('click', (e) => {
+            // Chặn mở popup khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
             if (e.target.closest('.counter-btn')) return;
             guestPopup.classList.toggle('active');
             if (calendarPopup) calendarPopup.classList.remove('active');
@@ -400,6 +418,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (dateTrigger) {
         dateTrigger.addEventListener('click', (e) => {
+            // Chặn mở popup khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
             calendarPopup.classList.toggle('active');
             if (guestPopup) guestPopup.classList.remove('active');
             if (locationDropdown) locationDropdown.classList.remove('active');
@@ -484,9 +506,6 @@ document.addEventListener('DOMContentLoaded', function() {
         container.innerHTML = html;
         const cardsGrid = document.querySelector('.cards-grid');
         if (cardsGrid) cardsGrid.style.display = 'none';
-        
-        // Cuộn xuống
-        if (whiteSection) whiteSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     async function callRecommendAPI(searchParams) {
@@ -615,5 +634,21 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('lastSearchResults');
         }
     }
+
+    /* =========================================
+       PREVENT PAGE SCROLL WHEN DROPDOWN ACTIVE
+       ========================================= */
+    const allDropdownLists = document.querySelectorAll('.dropdown-list');
+    
+    allDropdownLists.forEach(list => {
+        list.addEventListener('wheel', (e) => {
+            const isAtTop = list.scrollTop === 0;
+            const isAtBottom = list.scrollTop + list.clientHeight >= list.scrollHeight;
+            
+            if ((e.deltaY < 0 && isAtTop) || (e.deltaY > 0 && isAtBottom)) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    });
 
 });

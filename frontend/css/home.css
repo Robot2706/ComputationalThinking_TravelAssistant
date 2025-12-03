@@ -387,16 +387,16 @@ input[type=number] {
 
 .budget-dropdown {
     width: 280px;
-    max-height: 200px;
+    max-height: 380px;
     padding: 0;
     overflow: hidden;
 }
 
 .purpose-dropdown {
     width: 280px;
-    max-height: 240px;
+    max-height: 280px;
     padding: 0;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .dropdown-search {
@@ -423,9 +423,11 @@ input[type=number] {
 }
 
 .dropdown-list {
-    max-height: 240px;
-    overflow-y: auto;
+    max-height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
     padding: 8px 0;
+    -webkit-overflow-scrolling: touch;
 }
 
 .dropdown-item {
@@ -462,6 +464,16 @@ input[type=number] {
 
 .dropdown-list::-webkit-scrollbar-thumb:hover {
     background: var(--primary-color);
+}
+
+/* Hide scrollbar cho purpose dropdown */
+.purpose-dropdown .dropdown-list::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+
+.purpose-dropdown .dropdown-list {
+    scrollbar-width: none;
 }
 
 /* =========================================
