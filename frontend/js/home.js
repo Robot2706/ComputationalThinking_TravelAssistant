@@ -344,9 +344,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Lưu vào localStorage
-        localStorage.setItem('lastSearchResults', JSON.stringify(hotels));
-
         const html = hotels.map(h => buildHotelCard(h)).join('');
         container.innerHTML = html;
         const cardsGrid = document.querySelector('.cards-grid');
@@ -355,7 +352,43 @@ document.addEventListener('DOMContentLoaded', function() {
         // Cuộn xuống
         const white = document.querySelector('.white-section');
         if (white) white.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        triggerChatbot(hotels);
+
+        // ✅ THÊM: Trigger chatbot container
+        if (window.chatbotContainer) {
+            setTimeout(() => {
+                window.chatbotContainer.showChatbot(hotels);
+            }, 500);
+        }
     }
+
+    function triggerChatbot(hotels) {
+    // Đợi chatbot widget khởi tạo xong
+    setTimeout(() => {
+        if (window.chatbotWidget && hotels && hotels.length > 0) {
+            // Chuẩn bị data cho chatbot (chuẩn hóa format)
+            const normalizedHotels = hotels.map(h => ({
+                id: h.id,
+                hotel_id: h.id,
+                name: h.name,
+                hotel_name: h.name,
+                rating: h.rating || 0,
+                price: h.price || 0,
+                image_url: h.image || h.photo || 'https://via.placeholder.com/400x300?text=Hotel',
+                image: h.image || h.photo || 'https://via.placeholder.com/400x300?text=Hotel',
+                location: h.district || h.location || '',
+                district: h.district || '',
+                amenities: h.amenities || []
+            }));
+            
+            // Kích hoạt widget
+            window.chatbotWidget.showWidget(normalizedHotels);
+            console.log('✅ Chatbot activated with', normalizedHotels.length, 'hotels');
+        } else {
+            console.warn('⚠️ Chatbot widget not ready or no hotels');
+        }
+    }, 500); // Delay 500ms để đảm bảo widget đã load
+}
 
     async function callRecommendAPI(searchParams) {
         try {

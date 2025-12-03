@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+    --white: #FFF;
+    --black: #161414;
+    --grey: #979797;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+}
+
+.background-main {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    background: url("../assets/images/background.jpg") center/cover no-repeat;
+    z-index: -1;
+}
+
+/* Text */
+.paragraph200regular { color: var(--white); font-size: 14px; }
+.heading400 { color: var(--black); font-size: 18px; font-weight: 500; }
+
+/* PAGE WRAPPER */
+.main-content-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* HEADER */
+/* HEADER ĐƠN GIẢN (2rism) */
+.ai-header {
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    gap: 5px;
+    box-sizing: border-box;
+}
+.ai-header .logo-text {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+.header-logo { width: 87px; }
+.home-icon, .dropdown-icon {
+    font-size: 1.2em;
+    color: var(--white);
+    cursor: pointer;
+}
+
+/* CAROUSEL */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 80px auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px;
+}
+
+.card-list {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    transition: transform 0.5s ease;
+    position: relative;
+}
+
+.hotel-card {
+    width: 80%;
+    max-width: 1000px;
+    height: 400px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    display: flex;
+    gap: 30px;
+    color: var(--black);
+    flex-shrink: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 1;           /* tất cả card hiển thị đầy đủ */
+    transform: scale(1);  /* bỏ zoom */
+    position: relative;
+    z-index: 1;
+}
+
+.hotel-card.active {
+    opacity: 1;
+    transform: scale(1.15);
+    z-index: 5;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+.hotel-card.prev, .hotel-card.next {
+    opacity: 0.6;
+    transform: scale(0.9);
+    z-index: 3;
+}
+
+/* Card inner */
+.card-image-placeholder {
+    width: 45%;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-details {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-description {
+    opacity: 0.9;
+    color: var(--grey);
+}
+
+/* CAROUSEL BUTTONS */
+.carousel-button {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    font-size: 22px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 999;
+    transition: 0.2s;
+}
+
+#prevBtn { left: 10px; }
+#nextBtn { right: 10px; }
+
+.carousel-button:hover {
+    background: rgba(255,255,255,0.32);
+    border-color: rgba(255,255,255,0.6);
+}
+
+/* ASK BAR */
+.ask-bar-container {
+    position: fixed;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.ask-input {
+    width: 100%;
+    max-width: 600px;
+    padding: 15px 30px;
+    border-radius: 30px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+}

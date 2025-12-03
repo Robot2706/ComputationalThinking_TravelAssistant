@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2rism</title>
     
-    <link rel="stylesheet" href="../../layout.css">
-    <link rel="stylesheet" href="./chatBot_result.css">
+    <link rel="stylesheet" href="../css/fonts.css">
+    <link rel="stylesheet" href="../css/chatbot-result.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <script type="module" src="./chatBot_result.js" defer></script>
+    <script type="module" src="../js/chatbot-result.js" defer></script>
 </head>
 <body>
     <div class="background-main"></div>
@@ -21,12 +21,11 @@
     <div class="results-screen" id="resultsScreen" style="display: flex;">
         <div class="main-content-wrapper">
             <header class="ai-header">
-                <img src="../../assets/section/logo.svg" alt="2rism Logo" class="header-logo">
+                <img src="../assets/icons/logo.svg" alt="2rism Logo" class="header-logo">
                 <i class="fas fa-home home-icon"></i> <i class="fas fa-chevron-down dropdown-icon"></i> 
             </header>
 
             <div class="carousel-container">
-                <button class="nav-button prev" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
 
                 <div class="card-list" id="cardList">
                     
@@ -81,11 +80,16 @@
                         </div>
                     </div>
                 </div>
-                <button class="nav-button next" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
             </div>
             
+            <!-- AI MESSAGE -->
+            <div class="ai-message-box paragraph200regular" id="aiMessage">
+                Bạn có muốn mình lọc review của 3 khách sạn này không? Bạn chỉ cần trả lời "Có" hoặc "Không".
+            </div>
+
+            <!-- ASK BAR -->
             <div class="ask-bar-container">
-                <input type="text" placeholder="Ask something..." class="ask-input">
+                <input type="text" placeholder="Ask something..." class="ask-input" id="askInput">
             </div>
         </div>
     </div>

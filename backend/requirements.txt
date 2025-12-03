@@ -5,3 +5,13 @@
 uvicorn
 fastapi
 pydantic
+python-dotenv
+langchain-community
+langchain-core
+langchain-text-splitters
+langchain-classic
+langchain-chroma
+langsmith
+faiss-cpu
+openai
+langchain-openai
