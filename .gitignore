@@ -53,7 +53,7 @@ logs/
 
 # --- Data (raw / large) ---
 # Không track dữ liệu thô lớn
-backend/data/raw/
+
 vector_db/
 chatbot/vector_db/
 backend/src/chatbot/vector_db/
