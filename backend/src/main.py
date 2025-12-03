@@ -8,10 +8,10 @@ from contextlib import asynccontextmanager
 
 
 # Import modules từ src
-from src.utils.file_helper import get_project_root, load_json
-from src.utils.logger import get_logger
-from src.services import recommender as recmod
-from src.chatbot.rag_service import HotelChatbot
+from utils.file_helper import get_project_root, load_json
+from utils.logger import get_logger
+from services import recommender as recmod
+from chatbot.rag_service import HotelChatbot
 
 # --- Logging ---
 logger = get_logger("API")

@@ -62,7 +62,11 @@ Bước 2: Cài đặt các dependencies (lần đầu tiên)
    npm install
 
    (Lần sau chỉ cần chạy bước 3, không cần chạy bước 2 lại)
+   * Nếu nó hiện thông báo như thế này: 
+   npm : File C:\Program Files\nodejs\npm.ps1 cannot be loaded because running scripts is disabled on this system....
 
+   - thì cần vào powershell (chạy quyền admin) kiểm tra: Get-ExecutionPolicy. Nếu nó ghi Restricted thì ghi thêm lệnh:
+      Set-ExecutionPolicy RemoteSigned -Scope CurrentUser, rùi ấn Y -> enter.
 Bước 3: Chạy Development Server
    npm run dev
 
