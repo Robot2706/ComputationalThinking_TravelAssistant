@@ -1,17 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 :root {
-    --white: #FFF;
+    --white: #FFFFFF;
     --black: #161414;
-    --grey: #979797;
 }
 
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    overflow-x: hidden;
 }
 
+/* BACKGROUND */
 .background-main {
     position: fixed;
     inset: 0;
@@ -21,375 +22,66 @@ body {
     z-index: -1;
 }
 
-/* Text */
-.paragraph200regular { color: var(--white); font-size: 14px; }
-.heading400 { color: var(--black); font-size: 18px; font-weight: 500; }
-
-/* PAGE WRAPPER */
+/* MAIN WRAPPER */
 .main-content-wrapper {
-    position: relative;
-    z-index: 10;
     width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-/* HEADER */
-/* HEADER ĐƠN GIẢN (2rism) */
-.ai-header {
-    width: 100%;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: flex-start; 
-    align-items: center;
-    gap: 5px;
-    box-sizing: border-box;
-}
-.ai-header .logo-text {
-    font-size: 1.5em;
-    font-weight: 600;
-}
-.header-logo { width: 87px; }
-.home-icon, .dropdown-icon {
-    font-size: 1.2em;
-    color: var(--white);
-    cursor: pointer;
-}
-
-/* CAROUSEL */
-.carousel-container {
-    position: relative;
-    width: 100%;
-    max-width: 1100px;
-    margin: 80px auto;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 500px;
-}
-
-.card-list {
-    display: flex;
-    gap: 50px;
-    align-items: center;
-    transition: transform 0.5s ease;
-    position: relative;
-}
-
-.hotel-card {
-    width: 80%;
-    max-width: 1000px;
-    height: 400px;
-    padding: 30px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255,255,255,0.5);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    display: flex;
-    gap: 30px;
-    color: var(--black);
-    flex-shrink: 0;
-    transition: transform 0.5s ease, opacity 0.5s ease;
-    opacity: 1;           /* tất cả card hiển thị đầy đủ */
-    transform: scale(1);  /* bỏ zoom */
-    position: relative;
-    z-index: 1;
-}
-
-.hotel-card.active {
-    opacity: 1;
-    transform: scale(1.15);
-    z-index: 5;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-}
-
-.hotel-card.prev, .hotel-card.next {
-    opacity: 0.6;
-    transform: scale(0.9);
-    z-index: 3;
-}
-
-/* Card inner */
-.card-image-placeholder {
-    width: 45%;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.25);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-details {
-    width: 55%;
-    display: flex;
-    flex-direction: column;
-}
-
-.card-description {
-    opacity: 0.9;
-    color: var(--grey);
-}
-
-/* CAROUSEL BUTTONS */
-.carousel-button {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.35);
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(10px);
-    font-size: 22px;
-    color: #fff;
-    cursor: pointer;
-    z-index: 999;@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-
-:root {
-    --white: #FFF;
-    --black: #161414;
-    --grey: #979797;
-}
-
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
-}
-
-.background-main {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100vh;
-    background: url("../assets/images/background.jpg") center/cover no-repeat;
-    z-index: -1;
-}
-
-/* Text */
-.paragraph200regular { color: var(--white); font-size: 14px; }
-.heading400 { color: var(--black); font-size: 18px; font-weight: 500; }
-
-.main-content-wrapper {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* HEADER */
-/* HEADER ĐƠN GIẢN (2rism) */
-.ai-header {
-    width: 100%;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: flex-start; 
-    align-items: center;
-    gap: 5px;
-    box-sizing: border-box;
-}
-.ai-header .logo-text {
-    font-size: 1.5em;
-    font-weight: 600;
-}
-.header-logo { width: 87px; }
-.home-icon, .dropdown-icon {
-    font-size: 1.2em;
-    color: var(--white);
-    cursor: pointer;
-}
-
-/* Carousel wrapper */
-.carousel-container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 80px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-list {
-    display: flex;
-    gap: 40px;   /* khoảng cách giữa các card */
-    justify-content: center;
-    align-items: flex-start;
-}
-
-/* CARD HOLDER */
-.hotel-card {
-    margin-bottom: 0%;
-    width: 40%;
-    min-height: 350px;
-    padding: 30px;
-    border-radius: 20px;
-
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
-
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* chia đều header/mid/footer */
-    align-items: center;
-    text-align: center;
-    gap: 10px;
-}
-
-/* Nội dung card */
-.card-content-wrapper,
-.card-details {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-}
-
-/* Header: title + rating */
-.details-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.card-title {
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0;
-}
-
-.card-rating {
-    font-size: 14px;
-    font-weight: 600;
-    opacity: 0.9;
-}
-
-/* Description */
-.card-description {
-    font-size: 14px;
-    opacity: 0.9;
-    line-height: 1.4;
-}
-
-/* Contact info */
-.contact-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.contact-icon {
-    font-size: 18px;
-}
-
-/* Hover effect */
-.hotel-card:hover {
-    transform: translateY(-8px);
-    transition: 0.3s;
-}
-
-/* Override carousel cũ */
-.hotel-card {
-    position: relative !important;
-    top: 0 !important;
-    left: 0 !important;
-    transform: none !important;
-    opacity: 1 !important;
-}
-
-#cardList {
-    position: static !important;
-}
-
-/* ASK BAR */
-.ask-bar-container {
-    position: fixed;
-    bottom: 40px;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-.ask-input {
-    width: 100%;
-    max-width: 600px;
-    padding: 15px 30px;
-    border-radius: 30px;
-    background: rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--white);
-}
-
-/* AI MESSAGE TEXT */
-.ai-message-box {
-    margin-top: 0px;
-    margin-bottom: 20px;
-    padding: 12px 18px;
-    max-width: 50%;
-    width: fit-content;
-    text-align: left;
-    font-size: 15px;
-    line-height: 1.45;
-}
-
-.ask-bar-container {
-    position: fixed;
-    bottom: 30px;          /* hạ xuống để không đè UI */
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    z-index: 200;
-}
-
-.ask-input {
-    width: 100%;
-    max-width: 600px;
-    padding: 15px 25px;
-    border-radius: 30px;
-    background: rgba(0,0,0,0.45);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-/* Đảm bảo content không bị tràn lên header */
-.main-content-wrapper {
     padding-top: 20px;
 }
-    transition: 0.2s;
+
+/* HEADER */
+.ai-header {
+    position: fixed;
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    gap: 5px;
+    box-sizing: border-box;
+}
+.ai-header .logo-text {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+.header-logo { width: 87px; }
+.home-icon, .dropdown-icon {
+    font-size: 1.2em;
+    color: var(--white);
+    cursor: pointer;
 }
 
-.carousel-button:hover {
-    background: rgba(255,255,255,0.32);
-    border-color: rgba(255,255,255,0.6);
+/* AI MESSAGE (CENTERED TITLE) */
+.ai-message {
+    margin-top: 120px;
+    color: var(--white);
+    font-size: 26px;
+    font-weight: 600;
+    text-align: center;
 }
 
 /* ASK BAR */
 .ask-bar-container {
     position: fixed;
-    bottom: 40px;
-    left: 0;
-    width: 100%;
+    bottom: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    max-width: 90%;
     display: flex;
-    justify-content: center;
+    align-items: center;
 }
+
 .ask-input {
-    width: 100%;
-    max-width: 600px;
-    padding: 15px 30px;
-    border-radius: 30px;
-    background: rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.1);
+    flex: 1;
+    padding: 16px 25px;
+    border-radius: 40px 40px 40px 40px;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.32);
     color: var(--white);
+    outline: none;
+    font-size: 15px;
 }

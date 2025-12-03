@@ -36,8 +36,8 @@ body {
 }
 
 /* HEADER */
-/* HEADER ĐƠN GIẢN (2rism) */
 .ai-header {
+    position: fixed;
     width: 100%;
     padding: 20px 40px;
     display: flex;
@@ -78,7 +78,7 @@ body {
 .hotel-card {
     margin-bottom: 0%;
     width: 40%;
-    min-height: 350px;
+    min-height: 300px;
     padding: 30px;
     border-radius: 20px;
 
