@@ -8,8 +8,8 @@
 
 Trước khi bắt đầu, hãy đảm bảo máy tính của bạn đã cài đặt:
 1.  Python 3.8 trở lên.
-2.  Visual Studio Code (VS Code).
-3.  Extension "Live Server" trên VS Code (để chạy Frontend).
+2.  Node.js & npm (https://nodejs.org/).
+3.  Visual Studio Code (VS Code).
 
 ---
 
@@ -51,22 +51,66 @@ Bước 4: Chạy Server
 
 ### Phần 2: Khởi chạy Frontend (Giao diện)
 
-Lưu ý: Không mở trực tiếp file HTML bằng cách click đúp (Double click) vì sẽ bị lỗi chặn API (CORS). Hãy dùng Live Server.
+Frontend sử dụng Vite làm build tool và Firebase cho authentication.
 
-1.  Mở VS Code tại thư mục gốc của dự án.
-2.  Tìm đến file trang chủ:
-    frontend/mainpage/mainmenu/mainmenu-page.html
-3.  Chuột phải vào file này và chọn "Open with Live Server".
-4.  Trình duyệt sẽ tự mở trang web.
+**Lưu ý**: Mở Terminal mới riêng cho Frontend, không cần kích hoạt venv.
+
+Bước 1: Mở Terminal tại thư mục frontend
+   cd frontend
+
+Bước 2: Cài đặt các dependencies (lần đầu tiên)
+   npm install
+
+   (Lần sau chỉ cần chạy bước 3, không cần chạy bước 2 lại)
+
+Bước 3: Chạy Development Server
+   npm run dev
+
+   ✅ Thành công: Terminal báo "VITE vX.X.X ready in XXX ms" và "Local: http://localhost:5173/".
+   👉 Mở trình duyệt và truy cập http://localhost:5173/
+
+Bước 4: Dừng Server
+   Nhấn Ctrl + C trong Terminal
+
+---
+
+**🎯 Chạy cùng lúc Backend + Frontend:**
+
+* Terminal 1 (Backend - dùng venv):
+  ```bash
+  cd backend
+  source venv/bin/activate
+  uvicorn src.main:app --reload
+  ```
+
+* Terminal 2 (Frontend - không cần venv):
+  ```bash
+  cd frontend
+  npm run dev
+  ```
 
 ---
 
 ## 🧪 Cách sử dụng
 
-1.  Tại trang chủ, nhập thông tin vào thanh tìm kiếm:
+### Đăng ký / Đăng nhập
+1.  Trên trang chủ, bấm nút "Sign up/Sign in" ở góc trên phải.
+2.  Chọn đăng ký (Sign up) hoặc đăng nhập (Login):
+    * **Đăng ký**: Nhập tên, email, mật khẩu (tối thiểu 8 ký tự).
+    * **Đăng nhập**: Nhập email và mật khẩu.
+    * **Google**: Bấm nút "Continue with Google" để đăng nhập nhanh.
+3.  Sau khi đăng nhập thành công, tên bạn sẽ hiện trên navbar.
+
+### Tìm kiếm khách sạn
+1.  Trên trang chủ, nhập thông tin vào thanh tìm kiếm:
     * Location: Nhập tên quận (ví dụ: "District 1").
     * Budget: Nhập khoảng giá (Min - Max).
-    * Date: Chọn ngày nhận/trả phòng trên lịch.
+    * Dates: Chọn ngày nhận/trả phòng.
     * Guests: Chọn số lượng người.
-2.  Bấm nút Tìm kiếm (Kính lúp màu tím).
-3.  Trang web sẽ tự động trượt xuống và hiển thị danh sách khách sạn phù hợp nhất từ Backend.
+2.  Bấm nút Tìm kiếm (Kính lúp).
+3.  Danh sách khách sạn phù hợp sẽ hiển thị dưới hero section.
+
+### Các tính năng khác
+* **Chat with AI**: Tư vấn lựa chọn khách sạn bằng AI.
+* **About Us**: Thông tin về dự án.
+* **Hotel Details**: Xem chi tiết từng khách sạn.
