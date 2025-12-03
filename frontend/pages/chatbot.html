@@ -12,29 +12,31 @@
     
     <script type="module" src="../js/chatbot.js" defer></script>
 </head>
+
 <body>
+    <!-- BACKGROUND -->
     <div class="background-main"></div>
-    
-    <div class="mainmenu-container" id="menuScreen" style="display: none;">
-        </div>
-    
-    <div class="results-screen" id="resultsScreen" style="display: flex;">
-        <div class="main-content-wrapper">
-            <header class="ai-header">
-                <img src="../assets/icons/logo.svg" alt="2rism Logo" class="header-logo">
-                <i class="fas fa-home home-icon"></i> <i class="fas fa-chevron-down dropdown-icon"></i> 
-            </header>
 
-            <!-- AI MESSAGE -->
-            <div class="ai-message-box paragraph200regular" id="aiMessage">
-                XIN CHÀO, TÔI LÀ TRỢ LÝ DU LỊCH 2RISM. BẠN MUỐN TÔI GIÚP GÌ CHO BẠN HÔM NAY?            
-            </div>
+    <div class="main-content-wrapper">
 
-            <!-- ASK BAR -->
-            <div class="ask-bar-container">
-                <input type="text" placeholder="Ask something..." class="ask-input" id="askInput">
-            </div>
+        <!-- HEADER -->
+        <header class="ai-header">
+            <img src="../assets/icons/logo.svg" class="header-logo" />
+            <i class="fas fa-home home-icon"></i>
+            <i class="fas fa-chevron-down dropdown-icon"></i>
+        </header>
+
+        <!-- AI MESSAGE -->
+        <h1 class="ai-message">
+            Hello there, what can I help you with today?
+        </h1>
+
+        <!-- ASK BAR -->
+        <div class="ask-bar-container">
+            <input type="text" class="ask-input" placeholder="Ask something..." />
         </div>
+
     </div>
+
 </body>
 </html>
