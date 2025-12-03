@@ -173,6 +173,8 @@ document.addEventListener('DOMContentLoaded', function() {
             locationDropdown.classList.toggle('active');
             if (guestPopup) guestPopup.classList.remove('active');
             if (calendarPopup) calendarPopup.classList.remove('active');
+            if (budgetDropdown) budgetDropdown.classList.remove('active');
+            if (purposeDropdown) purposeDropdown.classList.remove('active');
             if (locationDropdown.classList.contains('active')) {
                 setTimeout(() => locationSearch.focus(), 100);
             }
@@ -276,6 +278,8 @@ document.addEventListener('DOMContentLoaded', function() {
             guestPopup.classList.toggle('active');
             if (calendarPopup) calendarPopup.classList.remove('active');
             if (locationDropdown) locationDropdown.classList.remove('active');
+            if (budgetDropdown) budgetDropdown.classList.remove('active');
+            if (purposeDropdown) purposeDropdown.classList.remove('active');
             e.stopPropagation();
         });
     }
@@ -399,6 +403,8 @@ document.addEventListener('DOMContentLoaded', function() {
             calendarPopup.classList.toggle('active');
             if (guestPopup) guestPopup.classList.remove('active');
             if (locationDropdown) locationDropdown.classList.remove('active');
+            if (budgetDropdown) budgetDropdown.classList.remove('active');
+            if (purposeDropdown) purposeDropdown.classList.remove('active');
             e.stopPropagation();
         });
     }
@@ -530,10 +536,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Kiểm tra ngày đến không được quá khứ
             if (startDate < today) {
                 errors.push('❌ Date: Check-in date cannot be in the past');
-            }
-            // Kiểm tra ngày đi > ngày đến
-            else if (endDate <= startDate) {
-                errors.push('❌ Date: Check-out date must be after check-in date');
             }
         }
 
