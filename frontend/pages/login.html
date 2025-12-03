@@ -7,6 +7,25 @@
     <link rel="stylesheet" href="../css/login.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .error-message, .success-message {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: none;
+            font-size: 14px;
+        }
+        .error-message {
+            background-color: #ffe0e0;
+            color: #d63031;
+            border: 1px solid #d63031;
+        }
+        .success-message {
+            background-color: #e0ffe0;
+            color: #27ae60;
+            border: 1px solid #27ae60;
+        }
+    </style>
 </head>
 <body>
     <div class="background-login"></div>
@@ -15,30 +34,113 @@
         <div class ="fonts-upper">Login to your account</div>
         <div class ="fonts-lower">Have not got an account? <a href="signup.html" class="link-underline">Create your account</a></div>
     
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
+    
         <div class="textbox-border">
             <div class ="textbox-contents-border">
-                <div class ="fonts-textbox">User name</div>
-                <input type="text" class="text-box" placeholder="">
+                <div class ="fonts-textbox">Email</div>
+                <input type="email" id="login-email" class="text-box" placeholder="Enter your email">
             </div>
             
             <div class="textbox-contents-border">
                 <div class="label-input">
                     <div class="fonts-textbox">Password</div>
-                    <div class="hide-group">
+                    <div class="hide-group" id="hide-toggle">
                         <img src="../assets/icons/hide.svg" alt="Hide Password">
-                        <div class="fonts-textbox">Hide</div>
+                        <div class="fonts-textbox" style="cursor: pointer;">Hide</div>
                     </div>
                 </div>
-                <input type="password" class="text-box" placeholder="">
+                <input type="password" id="login-password" class="text-box" placeholder="Enter your password">
                 <div class="fonts-textbox">Forgot your password? Please press <a href="#" class="link-underline">here</a></div>
             </div>
 
+             <div class="textbox-contents-border">
+                <div class="login-google-border" id="google-login-btn" style="cursor: pointer;">
+                    <div class ="google">
+                        <img src="../assets/icons/googleaccount.svg" alt="Google">
+                        <div class ="fonts-google">Continue with Google</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="textbox-contents-border">
-                <div class ="create-account-border">
+                <div class="create-account-border" id="login-btn" style="cursor: pointer;">
                     <div class="fonts-create-account">Login to your account</div>
                 </div>
             </div>
+
         </div>
     </div>
+
+    <!-- Module Scripts -->
+    <script type="module">
+        import { loginWithEmail, loginWithGoogle, togglePasswordVisibility } from '../js/auth.js';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('login-btn');
+            const googleLoginBtn = document.getElementById('google-login-btn');
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
+            const hideToggle = document.getElementById('hide-toggle');
+            const hideText = hideToggle.querySelector('.fonts-textbox');
+
+            // Toggle password visibility
+            hideToggle.addEventListener('click', () => {
+                togglePasswordVisibility(passwordInput, hideText);
+            });
+
+            // Login button click
+            loginBtn.addEventListener('click', () => {
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+
+                if (!email || !password) {
+                    showError('Please enter email and password');
+                    return;
+                }
+
+                loginBtn.style.opacity = '0.6';
+                loginBtn.style.pointerEvents = 'none';
+                loginBtn.querySelector('.fonts-create-account').textContent = 'Logging in...';
+
+                loginWithEmail(email, password).catch(() => {
+                    loginBtn.style.opacity = '1';
+                    loginBtn.style.pointerEvents = 'auto';
+                    loginBtn.querySelector('.fonts-create-account').textContent = 'Login to your account';
+                });
+            });
+
+            // Google login button click
+            googleLoginBtn.addEventListener('click', () => {
+                googleLoginBtn.style.opacity = '0.6';
+                googleLoginBtn.style.pointerEvents = 'none';
+                
+                loginWithGoogle().catch(() => {
+                    googleLoginBtn.style.opacity = '1';
+                    googleLoginBtn.style.pointerEvents = 'auto';
+                });
+            });
+
+            // Enter key to login
+            passwordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+
+            // Error message function
+            window.showError = function(message) {
+                const errorDiv = document.getElementById('error-message');
+                if (errorDiv) {
+                    errorDiv.textContent = message;
+                    errorDiv.style.display = 'block';
+                    setTimeout(() => {
+                        errorDiv.style.display = 'none';
+                    }, 5000);
+                }
+            };
+        });
+    </script>
 </body>
 </html>

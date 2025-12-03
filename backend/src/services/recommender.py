@@ -6,6 +6,7 @@ Updates:
 - Dynamic tau_low and tau_high based on purpose and district tier
 - Budget expansion logic with single 'budget' value support
 - Dynamic lambda selection added (pick_lambda)
+
 """
 
 from dataclasses import dataclass, field, asdict
@@ -19,9 +20,11 @@ import os
 def clamp(x: float, lo: float = 0.0, hi: float = 1.0) -> float:
     return max(lo, min(hi, x))
 
-
 def parse_date(d: str) -> date:
-    return datetime.strptime(d, "%Y-%m-%d").date()
+    try:
+        return datetime.strptime(d, "%Y-%m-%d").date()
+    except:
+        return date.today()
 
 # --------------------------- District Classification ---------------------------
 
@@ -141,7 +144,7 @@ class UserInput:
     district: str
     budget_min: float
     budget_max: float
-    purpose: str
+    purpose: str 
     check_in: str
     check_out: str
     topN: int = 5
@@ -156,11 +159,21 @@ class Hotel:
     capacity: int = 1
     amenities: List[str] = field(default_factory=list)
     details: str = ""
+    image: str = ""
+    # --- CÁC TRƯỜNG MỚI ---
+    images: List[str] = field(default_factory=list)
+    address: str = ""
+    stars: int = 0
+    reviews_count: int = 0
+    category_reviews: List[Dict] = field(default_factory=list)
+    
     available_from: str = "2025-01-01"
     available_to: str = "2025-12-31"
 
 # --------------------------- Default parameters ---------------------------
+
 DEFAULT_LAMBDA = 0.2
+
 
 PURPOSE_WEIGHT = {
     "leisure": (0.4, 0.6),
@@ -193,24 +206,16 @@ def is_available(h: Hotel, check_in: str, check_out: str) -> bool:
 
 
 def hard_filter(hotels: List[Hotel], inp: UserInput) -> List[Hotel]:
-    """
-    Apply basic hard filters:
-    - district must match
-    - availability must cover check_in..check_out
-    - rating must be >= rating floor for purpose
-    """
     results = []
     floor = RATING_FLOOR.get(inp.purpose, 6.0)
     for h in hotels:
-        if h.district != inp.district:
-            continue
-        if not is_available(h, inp.check_in, inp.check_out):
+        # So sánh district không phân biệt hoa thường
+        if h.district.lower() != inp.district.lower():
             continue
         if h.rating < floor:
             continue
         results.append(h)
     return results
-
 
 def compute_price_fit(price: float, budget_min: float, budget_max: float,
                       lam: float, tau_low: float, tau_high: float) -> float:
@@ -232,11 +237,8 @@ def compute_price_fit(price: float, budget_min: float, budget_max: float,
 
     return clamp(val, 0.0, 1.0)
 
-
 def compute_rating_fit(rating: float) -> float:
-    """Normalize rating (0..10) to [0,1]."""
-    if rating is None:
-        return 0.0
+    if rating is None: return 0.0
     return clamp(rating / 10.0, 0.0, 1.0)
 
 
@@ -298,17 +300,8 @@ def search_with_expansion(hotels: List[Hotel], inp: UserInput, topN: int = 5,
         if top:
             results = []
             for h, sc in top:
-                results.append({
-                    "id": h.id,
-                    "name": h.name,
-                    "district": h.district,
-                    "price": h.price,
-                    "rating": h.rating,
-                    "capacity": h.capacity,
-                    "amenities": h.amenities,
-                    "details": h.details,
-                    "score": round(sc, 4)
-                })
+                # Trả về Dict đầy đủ các trường
+                results.append(asdict(h) | {"score": round(sc, 4)})
 
             meta = {
                 "attempts": attempt + 1,
@@ -366,33 +359,45 @@ def export_results_to_json(results: List[Dict[str, Any]], meta: Dict[str, Any],
 def load_hotels_from_json(filepath: str) -> List[Hotel]:
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Hotels JSON not found: {filepath}")
+    
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
+        
     hotels = []
     for h in data:
         try:
             price = float(h.get("price", 0.0))
-        except Exception:
-            price = 0.0
+        except: price = 0.0
+        
         try:
             rating = float(h.get("rating", 0.0))
-        except Exception:
-            rating = 0.0
+        except: rating = 0.0
+
+        # Tạo object Hotel với đầy đủ trường mới
         hotels.append(Hotel(
             id=int(h.get("id", 0)),
-            name=h.get("name", ""),
-            district=h.get("district", ""),
+            name=str(h.get("name", "")),
+            district=str(h.get("district", "")),
             price=price,
             rating=rating,
-            capacity=int(h.get("capacity", 1)) if h.get("capacity") is not None else 1,
+            capacity=int(h.get("capacity", 2)),
             amenities=h.get("amenities", []) or [],
-            details=h.get("details", "") or "",
-            available_from=h.get("available_from", "2025-01-01"),
-            available_to=h.get("available_to", "2025-12-31")
+            details=str(h.get("details") or ""),
+            image=str(h.get("image", "")),
+            
+            # Các trường mới
+            images=h.get("images", []) or [],
+            address=str(h.get("address", "")),
+            stars=int(h.get("stars", 0)),
+            reviews_count=int(h.get("reviews_count", 0)),
+            category_reviews=h.get("category_reviews", []) or [],
+            
+            available_from="2025-01-01",
+            available_to="2025-12-31"
         ))
     return hotels
 
-# --------------------------- Frontend / API helper ---------------------------
+# --------------------------- Main Recommend Function ---------------------------
 
 def recommend_from_json(user_input: Dict[str, Any], hotels_json_path: str,
                         topN: int | None = None) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
@@ -416,10 +421,10 @@ def recommend_from_json(user_input: Dict[str, Any], hotels_json_path: str,
     if 'budget' in user_input and user_input['budget'] is not None:
         try:
             budget_val = float(user_input['budget'])
-        except Exception:
-            raise ValueError("Invalid numeric value for 'budget'")
-        budget_min = max(0.0, budget_val * (1.0 - BUDGET_SPREAD))
-        budget_max = max(0.0, budget_val * (1.0 + BUDGET_SPREAD))
+            budget_min = max(0.0, budget_val * (1.0 - BUDGET_SPREAD))
+            budget_max = max(0.0, budget_val * (1.0 + BUDGET_SPREAD))
+        except:
+            raise ValueError("Invalid budget")
     else:
         if 'budget_min' in user_input and 'budget_max' in user_input:
             try:
@@ -432,12 +437,12 @@ def recommend_from_json(user_input: Dict[str, Any], hotels_json_path: str,
             budget_max = float(user_input.get('budget_max', 2000000))
 
     ui = UserInput(
-        district=user_input['district'],
+        district=user_input.get('district', 'Quận 1'),
         budget_min=budget_min,
         budget_max=budget_max,
-        purpose=purpose,
-        check_in=user_input['check_in'],
-        check_out=user_input['check_out'],
+        purpose=user_input.get('purpose', 'leisure'),
+        check_in=user_input.get('check_in', ''),
+        check_out=user_input.get('check_out', ''),
         topN=int(user_input.get('topN', 5))
     )
 

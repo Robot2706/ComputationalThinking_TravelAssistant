@@ -16,29 +16,22 @@
 
     <section class="hero-section">
         <div class="background-main" style="background-image: url('../assets/images/background.jpg');"></div>
-
         <div class="mainmenu-container">
             <div class="logo-container">
                 <div class="paragraph200Medium_white" style="opacity: 0.7">Welcome to</div>
-                <a href="../index.html">
-                    <img src="../assets/icons/logo.svg" alt="Logo" />
-                </a>
+                <a href="../index.html"><img src="../assets/icons/logo.svg" alt="Logo" /></a>
             </div>
-
             <div class="nav-menu">
                 <a href="hotels.html">hotels/homestays</a>
                 <a href="chat-ai.html">chat with AI</a>
                 <a href="about-us.html">about us</a>
             </div>
-
             <a href="signup.html">
                 <div class="glass-btn" style="top: 25px; transform: none; left: auto; right: 5%;">
                     <img src="../assets/icons/loginicon.svg" alt="Icon" />
                     <div class="button-text">Sign up/Sign in</div>
                 </div>
             </a>
-            
-            <div class="search-row" style="display: none;"></div>
         </div>
     </section>
 
@@ -50,16 +43,29 @@
 
         <div class="hotel-detail-wrapper">
             <div class="detail-left">
-                <div class="detail-image-box">
-                    <img id="hotel-img" src="" alt="Hotel Image" onerror="this.src='https://via.placeholder.com/800x600?text=No+Image'">
+                <div class="gallery-container">
+                    <div class="gallery-main">
+                        <img id="hotel-img" src="" alt="Main Image" onerror="this.src='../assets/images/background.jpg'">
+                    </div>
+                    <div class="gallery-thumbnails" id="gallery-list"></div>
                 </div>
-                
+
                 <div class="detail-header-info">
                     <h1 id="hotel-name">Loading...</h1>
+                    <div id="hotel-stars" class="stars-display"></div>
+                    
                     <div class="sub-info">
-                        <span class="location"><i class="fa-solid fa-location-dot"></i> <span id="hotel-district">...</span></span>
+                        <span class="location"><i class="fa-solid fa-location-dot"></i> <span id="hotel-address">...</span></span>
                         <span class="rating"><i class="fa-solid fa-star"></i> <span id="hotel-rating">...</span></span>
                     </div>
+                </div>
+
+                <div class="reviews-box">
+                    <h3>Đánh giá của khách (<span id="review-count">0</span>)</h3>
+                    <div class="review-score-big">
+                        <span id="hotel-rating">0.0</span> <span class="rating-label">Tuyệt vời</span>
+                    </div>
+                    <div class="review-categories" id="review-cats"></div>
                 </div>
             </div>
 
@@ -86,14 +92,13 @@
 
     </div>
 
-    <div class="map-section">
+        <div class="map-section">
             <h3>Location</h3>
-            <div id="map-container" class="map-wrapper">
-                </div>
+            <div id="map-container" class="map-wrapper"></div>
         </div>
 
-    </div> ```
-    
+    </div>
+
     <script src="../js/hotel-detail.js"></script>
 </body>
 </html>
