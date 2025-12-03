@@ -46,6 +46,7 @@ body {
     flex-direction: row;
     gap: 50px;
 }
+
 .aboutus-title {
     display: flex;
     width: 550px;
@@ -58,6 +59,7 @@ body {
     object-fit: contain;
     height: auto;
     aspect-ratio: 296/213;
+    border-radius: 24px;   
 }
 
 .link-underline {

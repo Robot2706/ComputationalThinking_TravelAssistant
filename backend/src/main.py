@@ -1,42 +1,50 @@
 import os
 from typing import List, Optional
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
-# Import modules từ src
+# --- Import modules ---
+# Ưu tiên cấu trúc import từ branch 'demo' (có src.)
 from src.utils.file_helper import get_project_root, load_json
 from src.utils.logger import get_logger
 from src.services import recommender as recmod
 
-app = FastAPI(title="Hotel Recommender POC", version="0.1")
+# Import Chatbot Service (Từ branch 'chatbot')
+# Lưu ý: Hãy đảm bảo đường dẫn import chatbot là đúng với cấu trúc thư mục của bạn
+try:
+    from chatbot.rag_service import HotelChatbot
+except ImportError:
+    # Fallback nếu chatbot nằm trong src
+    from src.chatbot.rag_service import HotelChatbot
+
+# --- Logging ---
 logger = get_logger("API")
 
-# Setup CORS
-origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# --- Global Variables ---
+chatbot_instance: Optional[HotelChatbot] = None
 
-# Path Setup
+# --- Path Setup ---
 BASE_DIR = get_project_root()
 HOTELS_JSON_PATH = str(BASE_DIR / "data" / "processed" / "hotels_parsed.json")
 
+# Kiểm tra data
 if not os.path.exists(HOTELS_JSON_PATH):
     logger.warning(f"⚠️ DATA NOT FOUND at: {HOTELS_JSON_PATH}")
 else:
     logger.info(f"✅ Data loaded from: {HOTELS_JSON_PATH}")
 
-# --- Models ---
 
+# --- Pydantic Models ---
+
+# [DEMO] Model phụ cho reviews
 class ReviewItem(BaseModel):
     title: str
     score: float
 
+# [BOTH] Search Request (Lấy bản gọn gàng từ demo)
 class SearchRequest(BaseModel):
     district: str = Field(...)
     budget: Optional[float] = Field(None, ge=0)
@@ -51,7 +59,11 @@ class SearchRequest(BaseModel):
     @classmethod
     def strip_strings(cls, v):
         return v.strip() if isinstance(v, str) else v
+    
+    # Giữ lại validator check date từ chatbot nếu cần thiết, 
+    # nhưng ở đây ta dùng bản demo cho gọn, logic validation có thể nằm ở service.
 
+# [DEMO] HotelOut mở rộng (Fix lỗi hiển thị ảnh)
 class HotelOut(BaseModel):
     id: int
     name: str
@@ -63,15 +75,59 @@ class HotelOut(BaseModel):
     
     details: Optional[str] = None
     image: Optional[str] = None
+    # Các trường mới từ branch demo
     images: List[str] = []          
     address: Optional[str] = None   
     stars: Optional[int] = 0        
     reviews_count: Optional[int] = 0 
     category_reviews: List[ReviewItem] = [] 
 
+# [CHATBOT] Model request cho Chatbot
+class ChatRequest(BaseModel):
+    question: str = Field(..., description="Câu hỏi của người dùng cho chatbot.")
+
 class RecommendResponse(BaseModel):
     results: List[HotelOut]
     meta: dict
+
+# --- Lifespan Manager (Từ branch Chatbot) ---
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Quản lý vòng đời: Khởi tạo Chatbot khi server start.
+    """
+    # --- STARTUP ---
+    global chatbot_instance
+    try:
+        logger.info("Initializing Chatbot Service...")
+        chatbot_instance = HotelChatbot()
+        logger.info("✅ Chatbot Service initialized successfully.")
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize Chatbot Service: {e}")
+        # Không raise lỗi để server vẫn chạy được tính năng recommend
+    
+    yield # Server chạy tại đây
+    
+    # --- SHUTDOWN ---
+    logger.info("Application shutting down.")
+
+
+# --- App Definition ---
+app = FastAPI(
+    title="Hotel Recommender POC", 
+    version="0.2-merged",
+    lifespan=lifespan
+)
+
+# --- CORS ---
+origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # --- Endpoints ---
 
@@ -79,25 +135,50 @@ class RecommendResponse(BaseModel):
 def ping():
     return {"status": "ok"}
 
+# [CHATBOT] Endpoint Chat
+@app.post("/api/chat", summary="Gửi câu hỏi và nhận câu trả lời từ chatbot")
+async def chat_endpoint(req: ChatRequest):
+    global chatbot_instance
+    if chatbot_instance is None:
+        logger.error("Chatbot instance is not available.")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE, 
+            detail="Chatbot service is currently unavailable or still initializing."
+        )
+    
+    logger.info(f"Received chat question: {req.question[:50]}...")
+    
+    try:
+        answer = chatbot_instance.chat(req.question)
+        return {
+            "question": req.question,
+            "answer": answer
+        }
+    except Exception as ex:
+        logger.exception(f"Chatbot processing error: {ex}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail="An error occurred while processing your request in the chatbot."
+        )
+
+# [DEMO] Endpoint Districts (Fix logic sort/get)
 @app.get("/api/districts", response_model=List[str])
 def get_districts():
     try:
-        # load_hotels_from_json trả về List[Hotel Object]
         hotels = recmod.load_hotels_from_json(HOTELS_JSON_PATH)
-        # [FIX] Dùng dot notation (h.district) thay vì .get()
+        # Branch demo dùng dot notation và filter kỹ hơn
         districts = sorted({h.district for h in hotels if h.district})
         return districts
     except Exception as e:
         logger.error(f"Error loading districts: {e}")
         raise HTTPException(status_code=500, detail="Error loading data")
 
+# [DEMO] Endpoint Get Hotel Details (Fix mapping fields mới)
 @app.get("/api/hotels/{hotel_id}", response_model=HotelOut)
 def get_hotel(hotel_id: int):
     try:
-        # load_hotels_from_json trả về List[Hotel Object]
         hotels = recmod.load_hotels_from_json(HOTELS_JSON_PATH)
         for h in hotels:
-            # [FIX] Dùng dot notation (h.id) vì h là Object class Hotel
             if h.id == hotel_id:
                 return HotelOut(
                     id=h.id,
@@ -106,11 +187,12 @@ def get_hotel(hotel_id: int):
                     price=float(h.price or 0.0),
                     rating=float(h.rating or 0.0),
                     amenities=h.amenities or [],
-                    score=None, # Detail không có score gợi ý
+                    score=None,
+                    
                     details=str(h.details or ""),
                     image=str(h.image or ""),
                     
-                    # Các trường mới (truy cập bằng dấu chấm)
+                    # Mapping các trường mới từ branch Demo
                     images=h.images or [],
                     address=str(h.address or ""),
                     stars=int(h.stars or 0),
@@ -123,6 +205,7 @@ def get_hotel(hotel_id: int):
             
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Hotel not found")
 
+# [DEMO] Endpoint Recommend (Fix mapping fields trong vòng lặp kết quả)
 @app.post("/api/recommend", response_model=RecommendResponse)
 def recommend(req: SearchRequest):
     user_input = {
@@ -142,10 +225,10 @@ def recommend(req: SearchRequest):
         user_input["purpose"] = req.purpose
 
     try:
-        # recommend_from_json trả về List[Dict] -> Dùng .get() là đúng
         results, meta = recmod.recommend_from_json(user_input, HOTELS_JSON_PATH, topN=user_input["topN"])
     except Exception as ex:
         logger.exception(f"Recommendation error: {ex}")
+        # Trả về lỗi trong meta thay vì 500 nếu muốn frontend handle
         return RecommendResponse(results=[], meta={"error": str(ex)})
 
     if not results:
@@ -153,7 +236,7 @@ def recommend(req: SearchRequest):
 
     out_results = []
     for r in results:
-        # r là Dictionary -> Dùng .get()
+        # recommend_from_json trả về List[Dict], dùng .get()
         id_val = r.get("id")
         if id_val is None: continue
 
@@ -165,9 +248,11 @@ def recommend(req: SearchRequest):
             rating=float(r.get("rating") or 0.0),
             amenities=r.get("amenities") or [],
             score=r.get("score"),
+            
             details=str(r.get("details") or ""),
             image=str(r.get("image") or ""),
             
+            # Mapping các trường mới từ branch Demo
             images=r.get("images") or [],
             address=str(r.get("address") or ""),
             stars=int(r.get("stars") or 0),
@@ -176,3 +261,8 @@ def recommend(req: SearchRequest):
         ))
 
     return RecommendResponse(results=out_results, meta=meta)
+
+if __name__ == "__main__":
+    import uvicorn
+    print("🚀 Server starting... Docs at http://127.0.0.1:8000/docs")
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

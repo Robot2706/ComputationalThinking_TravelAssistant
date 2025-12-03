@@ -38,7 +38,7 @@
     <div class="detail-page-container">
         
         <div class="back-nav">
-            <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i> Quay lại tìm kiếm</a>
+            <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i>Back</a>
         </div>
 
         <div class="hotel-detail-wrapper">
@@ -53,8 +53,10 @@
                 <div class="detail-header-info">
                     <h1 id="hotel-name">Loading...</h1>
                     <div id="hotel-stars" class="stars-display"></div>
+                    
                     <div class="sub-info">
                         <span class="location"><i class="fa-solid fa-location-dot"></i> <span id="hotel-address">...</span></span>
+                        <span class="rating"><i class="fa-solid fa-star"></i> <span id="hotel-rating">...</span></span>
                     </div>
                 </div>
 
@@ -69,22 +71,26 @@
 
             <div class="detail-right">
                 <div class="price-box">
-                    <p class="price-label">Giá mỗi đêm</p>
+                    <p class="price-label">Price per night</p>
                     <h2 class="price-number"><span id="hotel-price">0</span> VND</h2>
-                    <button class="book-now-btn">Đặt phòng ngay</button>
+                    <button class="book-now-btn">Check availability</button>
                 </div>
 
                 <div class="amenities-box">
-                    <h3>Tiện nghi</h3>
-                    <div class="amenities-list" id="amenities-container"></div>
+                    <h3>Amenities</h3>
+                    <div class="amenities-list" id="amenities-container">
+                        </div>
                 </div>
             </div>
         </div>
 
         <div class="description-section">
-            <h3>Chi tiết về khách sạn</h3>
-            <div class="description-content" id="hotel-details-text"></div>
+            <h3>Details</h3>
+            <div class="description-content" id="hotel-details-text">
+                </div>
         </div>
+
+    </div>
 
         <div class="map-section">
             <h3>Location</h3>

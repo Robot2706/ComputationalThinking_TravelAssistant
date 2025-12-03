@@ -46,17 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let isLocked = false;
 
     /* =========================================
-       2. LOGIC SCROLL (ĐÃ SỬA: KHÓA SCROLL LÊN)
+       2. LOGIC SCROLL - PHÓNG TO/THU NHỎ HERO
        ========================================= */
     
     window.addEventListener('scroll', () => {
-        // [QUAN TRỌNG] Nếu đã locked (đã có kết quả), LUÔN GIỮ trạng thái shrink
-        if (isLocked) {
-            heroSection.classList.add('shrink');
-            return; // Dừng hàm tại đây, không cho phép gỡ class shrink
-        }
-
-        // Nếu chưa locked (mới vào trang), hoạt động co giãn bình thường
+        // Khi lướt lên (scrollY gần 0), phóng to hero section
+        // Khi lướt xuống, thu nhỏ hero section
         if (window.scrollY > 50) {
             heroSection.classList.add('shrink');
         } else {
@@ -80,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             heroSection.classList.add('shrink');
 
             const resultsContainer = createResultsContainer();
-            resultsContainer.innerHTML = '<div class="loading">Đang tìm kiếm...</div>';
+            resultsContainer.innerHTML = '<div class="loading">Loading...</div>';
 
             // Cuộn xuống phần nội dung
             if (whiteSection) whiteSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -92,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const params = getSearchParams();
             if (!params.check_in || !params.check_out) {
-                resultsContainer.innerHTML = '<p class="error">Vui lòng chọn ngày đến và đi.</p>';
+                resultsContainer.innerHTML = '<p class="error">Please enter your date arrive and leave.</p>';
                 return;
             }
 
@@ -100,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const data = await callRecommendAPI(params);
                 displayResults(data.results || []);
             } catch (err) {
-                resultsContainer.innerHTML = `<p class="error">Có lỗi khi tìm kiếm: ${escapeHtml(err.message || 'Unknown')}</p>`;
+                resultsContainer.innerHTML = `<p class="error">Error: ${escapeHtml(err.message || 'Unknown')}</p>`;
             }
         });
     }
@@ -319,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function buildHotelCard(h) {
         const image = (h.image || h.photo || '').trim() || 'https://via.placeholder.com/400x300?text=No+Image';
         const amenitiesHtml = (h.amenities || []).slice(0,6).map(a => `<span class="amenity-tag">${escapeHtml(a)}</span>`).join('');
-        const scoreHtml = (h.score !== undefined && h.score !== null) ? `<p class="score">Điểm phù hợp: ${(Number(h.score)*100).toFixed(1)}%</p>` : '';
+        const scoreHtml = (h.score !== undefined && h.score !== null) ? `<p class="score">Score: ${(Number(h.score)*100).toFixed(1)}%</p>` : '';
         return `
             <div class="hotel-card" 
                  data-id="${escapeHtml(String(h.id||''))}" 
@@ -330,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="hotel-info">
                     <h3>${escapeHtml(h.name || 'Unknown')}</h3>
                     <p class="district">📍 ${escapeHtml(h.district || '-')}</p>
-                    <p class="price">💰 ${formatPrice(h.price)} VND/đêm</p>
+                    <p class="price">💰 ${formatPrice(h.price)} VND/night</p>
                     <p class="rating">⭐ ${h.rating ?? '-'}/10</p>
                     <div class="amenities">${amenitiesHtml}</div>
                     ${scoreHtml}
@@ -357,7 +352,43 @@ document.addEventListener('DOMContentLoaded', function() {
         // Cuộn xuống
         const white = document.querySelector('.white-section');
         if (white) white.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        triggerChatbot(hotels);
+
+        // ✅ THÊM: Trigger chatbot container
+        if (window.chatbotContainer) {
+            setTimeout(() => {
+                window.chatbotContainer.showChatbot(hotels);
+            }, 500);
+        }
     }
+
+    function triggerChatbot(hotels) {
+    // Đợi chatbot widget khởi tạo xong
+    setTimeout(() => {
+        if (window.chatbotWidget && hotels && hotels.length > 0) {
+            // Chuẩn bị data cho chatbot (chuẩn hóa format)
+            const normalizedHotels = hotels.map(h => ({
+                id: h.id,
+                hotel_id: h.id,
+                name: h.name,
+                hotel_name: h.name,
+                rating: h.rating || 0,
+                price: h.price || 0,
+                image_url: h.image || h.photo || 'https://via.placeholder.com/400x300?text=Hotel',
+                image: h.image || h.photo || 'https://via.placeholder.com/400x300?text=Hotel',
+                location: h.district || h.location || '',
+                district: h.district || '',
+                amenities: h.amenities || []
+            }));
+            
+            // Kích hoạt widget
+            window.chatbotWidget.showWidget(normalizedHotels);
+            console.log('✅ Chatbot activated with', normalizedHotels.length, 'hotels');
+        } else {
+            console.warn('⚠️ Chatbot widget not ready or no hotels');
+        }
+    }, 500); // Delay 500ms để đảm bảo widget đã load
+}
 
     async function callRecommendAPI(searchParams) {
         try {
