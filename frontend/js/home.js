@@ -29,10 +29,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const locationList = document.getElementById('location-list');
     const dropdownItems = locationList ? locationList.querySelectorAll('.dropdown-item') : [];
 
+    // Biến Budget Dropdown
+    const budgetTrigger = document.getElementById('budget-trigger');
+    const budgetDropdown = document.getElementById('budget-dropdown');
+    const budgetDisplay = document.getElementById('budget-display');
+    const budgetList = document.getElementById('budget-list');
+    const budgetItems = budgetList ? budgetList.querySelectorAll('.dropdown-item') : [];
+
+    // Biến Purpose Dropdown
+    const purposeTrigger = document.getElementById('purpose-trigger');
+    const purposeDropdown = document.getElementById('purpose-dropdown');
+    const purposeDisplay = document.getElementById('purpose-display');
+    const purposeList = document.getElementById('purpose-list');
+    const purposeItems = purposeList ? purposeList.querySelectorAll('.dropdown-item') : [];
+
     // Chỉ số khách
     let currentGuests = 1;
     const MAX_GUESTS = 7;
     const MIN_GUESTS = 1;
+
+    // Budget đã chọn
+    let selectedBudgetMin = null;
+    let selectedBudgetMax = null;
+
+    // Purpose đã chọn
+    let selectedPurpose = 'leisure';
 
     // Chỉ số ngày tháng
     let startDate = null;
@@ -44,12 +65,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Biến kiểm tra trạng thái "Đã tìm kiếm"
     let isLocked = false;
+    
+    // Biến kiểm tra có thể scroll xuống hay không
+    let canScrollDown = false;
+    let lastScrollTop = 0;
+    let isPreventingScroll = false;
 
     /* =========================================
-       2. LOGIC SCROLL - PHÓNG TO/THU NHỎ HERO
+       2. LOGIC CHẶN SCROLL LÚC ĐẦU
+       ========================================= */
+    // Chặn scroll xuống ban đầu
+    let isScrollLocked = true;
+    const preventScrollDown = (e) => {
+        // Không chặn scroll nếu event từ trong dropdown
+        const target = e.target;
+        if (target.closest('.dropdown-list')) {
+            return;
+        }
+        
+        if (isScrollLocked && !canScrollDown) {
+            e.preventDefault();
+        }
+    };
+
+    window.addEventListener('wheel', preventScrollDown, { passive: false });
+    window.addEventListener('touchmove', preventScrollDown, { passive: false });
+
+    /* =========================================
+       3. LOGIC SCROLL - PHÓNG TO/THU NHỎ HERO
        ========================================= */
     
     window.addEventListener('scroll', () => {
+        // Bỏ qua nếu đang chặn scroll
+        if (isPreventingScroll) return;
+        
         // Khi lướt lên (scrollY gần 0), phóng to hero section
         // Khi lướt xuống, thu nhỏ hero section
         if (window.scrollY > 50) {
@@ -60,33 +109,49 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /* =========================================
-       3. LOGIC NÚT SEARCH
+       4. LOGIC NÚT SEARCH
        ========================================= */
     
     if (searchBtn) {
         searchBtn.addEventListener('click', async (e) => {
             e.preventDefault && e.preventDefault();
 
-            // 1. Bật scroll cho trang web
+            // Validate inputs trước khi tiếp tục
+            const validationErrors = validateSearchInputs();
+            if (validationErrors.length > 0) {
+                alert(validationErrors.join('\n'));
+                return;
+            }
+
+            // 1. Mở khóa scroll xuống
+            canScrollDown = true;
+            isScrollLocked = false;
+            
+            // 2. Bật scroll cho trang web
             document.body.style.overflowY = 'auto';
             
-            // 2. Khóa trạng thái Header
+            // 3. Khóa trạng thái Header (để scroll event tự handle shrink)
             isLocked = true;
-            heroSection.classList.add('shrink');
 
             const resultsContainer = createResultsContainer();
             resultsContainer.innerHTML = '<div class="loading">Loading...</div>';
 
-            // Cuộn xuống phần nội dung
-            if (whiteSection) whiteSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Cuộn xuống phần nội dung mượt mà
+            if (whiteSection) {
+                setTimeout(() => {
+                    whiteSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            }
 
             // Đóng các popup
             if (guestPopup) guestPopup.classList.remove('active');
             if (calendarPopup) calendarPopup.classList.remove('active');
             if (locationDropdown) locationDropdown.classList.remove('active');
+            if (budgetDropdown) budgetDropdown.classList.remove('active');
+            if (purposeDropdown) purposeDropdown.classList.remove('active');
 
             const params = getSearchParams();
-            if (!params.check_in || !params.check_out) {
+            if (!params || !params.check_in || !params.check_out) {
                 resultsContainer.innerHTML = '<p class="error">Please enter your date arrive and leave.</p>';
                 return;
             }
@@ -101,15 +166,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /* =========================================
-       4. LOGIC LOCATION DROPDOWN
+       5. LOGIC LOCATION DROPDOWN
        ========================================= */
     // ... (Giữ nguyên phần Location) ...
     if (locationTrigger) {
         locationTrigger.addEventListener('click', (e) => {
+            // Chặn mở dropdown khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
             if (e.target.closest('.dropdown-item')) return;
             locationDropdown.classList.toggle('active');
             if (guestPopup) guestPopup.classList.remove('active');
             if (calendarPopup) calendarPopup.classList.remove('active');
+            if (budgetDropdown) budgetDropdown.classList.remove('active');
+            if (purposeDropdown) purposeDropdown.classList.remove('active');
             if (locationDropdown.classList.contains('active')) {
                 setTimeout(() => locationSearch.focus(), 100);
             }
@@ -145,15 +216,88 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /* =========================================
-       5. LOGIC GUEST COUNTER
+       5. LOGIC BUDGET DROPDOWN
+       ========================================= */
+    if (budgetTrigger) {
+        budgetTrigger.addEventListener('click', (e) => {
+            // Chặn mở dropdown khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
+            if (e.target.closest('.dropdown-item')) return;
+            budgetDropdown.classList.toggle('active');
+            if (guestPopup) guestPopup.classList.remove('active');
+            if (calendarPopup) calendarPopup.classList.remove('active');
+            if (locationDropdown) locationDropdown.classList.remove('active');
+            if (purposeDropdown) purposeDropdown.classList.remove('active');
+            e.stopPropagation();
+        });
+    }
+    budgetItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectedBudgetMin = Number(item.dataset.min);
+            selectedBudgetMax = Number(item.dataset.max);
+            budgetDisplay.textContent = item.textContent;
+            budgetDisplay.style.color = "#000";
+            budgetDisplay.style.fontWeight = "600";
+            budgetItems.forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            setTimeout(() => {
+                budgetDropdown.classList.remove('active');
+            }, 200);
+        });
+    });
+
+    /* =========================================
+       6. LOGIC PURPOSE DROPDOWN
+       ========================================= */
+    if (purposeTrigger) {
+        purposeTrigger.addEventListener('click', (e) => {
+            // Chặn mở dropdown khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
+            if (e.target.closest('.dropdown-item')) return;
+            purposeDropdown.classList.toggle('active');
+            if (guestPopup) guestPopup.classList.remove('active');
+            if (calendarPopup) calendarPopup.classList.remove('active');
+            if (locationDropdown) locationDropdown.classList.remove('active');
+            if (budgetDropdown) budgetDropdown.classList.remove('active');
+            e.stopPropagation();
+        });
+    }
+    purposeItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectedPurpose = item.dataset.value;
+            purposeDisplay.textContent = item.textContent;
+            purposeDisplay.style.color = "#000";
+            purposeDisplay.style.fontWeight = "600";
+            purposeItems.forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            setTimeout(() => {
+                purposeDropdown.classList.remove('active');
+            }, 200);
+        });
+    });
+
+    /* =========================================
+       7. LOGIC GUEST COUNTER
        ========================================= */
     // ... (Giữ nguyên phần Guest) ...
     if (guestTrigger) {
         guestTrigger.addEventListener('click', (e) => {
+            // Chặn mở popup khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
             if (e.target.closest('.counter-btn')) return;
             guestPopup.classList.toggle('active');
             if (calendarPopup) calendarPopup.classList.remove('active');
             if (locationDropdown) locationDropdown.classList.remove('active');
+            if (budgetDropdown) budgetDropdown.classList.remove('active');
+            if (purposeDropdown) purposeDropdown.classList.remove('active');
             e.stopPropagation();
         });
     }
@@ -274,9 +418,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (dateTrigger) {
         dateTrigger.addEventListener('click', (e) => {
+            // Chặn mở popup khi hero đang shrink
+            if (heroSection.classList.contains('shrink')) {
+                return;
+            }
             calendarPopup.classList.toggle('active');
             if (guestPopup) guestPopup.classList.remove('active');
             if (locationDropdown) locationDropdown.classList.remove('active');
+            if (budgetDropdown) budgetDropdown.classList.remove('active');
+            if (purposeDropdown) purposeDropdown.classList.remove('active');
             e.stopPropagation();
         });
     }
@@ -336,22 +486,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // [CẬP NHẬT] Hàm lưu kết quả vào localStorage
     function displayResults(hotels) {
+        const whiteSection = document.querySelector('.white-section');
+        
+        // Hiển thị white-section
+        if (whiteSection) whiteSection.style.display = '';
+        
         const container = createResultsContainer();
         if (!hotels || hotels.length === 0) {
-            container.innerHTML = '<p class="no-results">Không tìm thấy khách sạn phù hợp. Vui lòng thử lại.</p>';
+            container.innerHTML = '<p class="no-results">Cannot find your hotel.</p>';
             const cardsGrid = document.querySelector('.cards-grid');
             if (cardsGrid) cardsGrid.style.display = '';
             return;
         }
 
+        // Lưu vào localStorage
+        localStorage.setItem('lastSearchResults', JSON.stringify(hotels));
+
         const html = hotels.map(h => buildHotelCard(h)).join('');
         container.innerHTML = html;
         const cardsGrid = document.querySelector('.cards-grid');
         if (cardsGrid) cardsGrid.style.display = 'none';
-        
-        // Cuộn xuống
-        const white = document.querySelector('.white-section');
-        if (white) white.scrollIntoView({ behavior: 'smooth', block: 'start' });
         triggerChatbot(hotels);
 
         // ✅ THÊM: Trigger chatbot container
@@ -397,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(searchParams)
             });
-            if (res.status === 204) return { results: [], meta: { message: 'No hotels found' } };
+            if (res.status === 204) return { results: [], meta: { message: 'No hotel is found' } };
             if (!res.ok) {
                 const err = await res.json().catch(()=>null);
                 const msg = err?.detail || err?.message || `status ${res.status}`;
@@ -409,25 +563,52 @@ document.addEventListener('DOMContentLoaded', function() {
             throw e;
         }
     }
+    
+    /* =========================================
+       7. VALIDATION FUNCTION
+       ========================================= */
+    function validateSearchInputs() {
+        const errors = [];
+        const dateErrorElem = document.getElementById('date-error');
+
+        console.log('🔍 Validating inputs...', { startDate, endDate, selectedBudgetMin, selectedBudgetMax });
+
+        // Reset error messages
+        if (dateErrorElem) dateErrorElem.style.display = 'none';
+
+        // Validate Budget (kiểm tra xem user đã chọn budget dropdown hay không)
+        if (!selectedBudgetMin || !selectedBudgetMax) {
+            errors.push('❌ Budget: Please select a budget range');
+        }
+
+        // Validate Date
+        if (!startDate || !endDate) {
+            errors.push('❌ Date: Please select both check-in and check-out dates');
+        } else {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Kiểm tra ngày đến không được quá khứ
+            if (startDate < today) {
+                errors.push('❌ Date: Check-in date cannot be in the past');
+            }
+        }
+
+        console.log('✅ Validation errors:', errors);
+        return errors;
+    }
+    
     function getSearchParams() {
         const location = selectedLocation || 'Quận 1';
-        const budgetMin = document.querySelector('#budget-min')?.value;
-        const budgetMax = document.querySelector('#budget-max')?.value;
         let payload = {
             district: location,
             check_in: startDate ? startDate.toISOString().slice(0,10) : null,
             check_out: endDate ? endDate.toISOString().slice(0,10) : null,
             topN: 5
         };
-        if (budgetMin && budgetMax) {
-            payload.budget_min = Number(budgetMin);
-            payload.budget_max = Number(budgetMax);
-        } else {
-            payload.budget_min = 500000;
-            payload.budget_max = 2000000;
-        }
-        const purposeSelect = document.querySelector('#purpose-select');
-        payload.purpose = purposeSelect?.value || 'leisure';
+        payload.budget_min = selectedBudgetMin;
+        payload.budget_max = selectedBudgetMax;
+        payload.purpose = selectedPurpose;
         payload.guests = currentGuests;
         return payload;
     }
@@ -445,11 +626,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (locationTrigger && !locationTrigger.contains(e.target)) {
             if (locationDropdown) locationDropdown.classList.remove('active');
         }
+        if (budgetTrigger && !budgetTrigger.contains(e.target)) {
+            if (budgetDropdown) budgetDropdown.classList.remove('active');
+        }
+        if (purposeTrigger && !purposeTrigger.contains(e.target)) {
+            if (purposeDropdown) purposeDropdown.classList.remove('active');
+        }
     });
 
     /* =========================================
        9. [QUAN TRỌNG] TỰ ĐỘNG KHÔI PHỤC KẾT QUẢ CŨ
        ========================================= */
+    
+    // Xóa localStorage khi load trang để luôn bắt đầu fresh
+    localStorage.removeItem('lastSearchResults');
     
     const savedResults = localStorage.getItem('lastSearchResults');
     if (savedResults) {
@@ -480,5 +670,21 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('lastSearchResults');
         }
     }
+
+    /* =========================================
+       PREVENT PAGE SCROLL WHEN DROPDOWN ACTIVE
+       ========================================= */
+    const allDropdownLists = document.querySelectorAll('.dropdown-list');
+    
+    allDropdownLists.forEach(list => {
+        list.addEventListener('wheel', (e) => {
+            const isAtTop = list.scrollTop === 0;
+            const isAtBottom = list.scrollTop + list.clientHeight >= list.scrollHeight;
+            
+            if ((e.deltaY < 0 && isAtTop) || (e.deltaY > 0 && isAtBottom)) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    });
 
 });

@@ -23,6 +23,10 @@ except ImportError:
 # --- Logging ---
 logger = get_logger("API")
 
+# --- CORS (cho frontend local/dev) ---
+# Lấy biến môi trường hoặc mặc định localhost:3000
+origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+
 # --- Global Variables ---
 chatbot_instance: Optional[HotelChatbot] = None
 
