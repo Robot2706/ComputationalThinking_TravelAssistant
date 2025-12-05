@@ -7,7 +7,8 @@ import {
     GoogleAuthProvider, 
     signInWithPopup, 
     updateProfile,
-    onAuthStateChanged 
+    onAuthStateChanged,
+    sendPasswordResetEmail
 } from 'firebase/auth';
 import { collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
@@ -111,6 +112,11 @@ export function loginWithGoogle() {
         })
         .catch(error => {
             console.error('❌ Google login error:', error.message);
+            // Bỏ qua lỗi nếu người dùng hủy đăng nhập, nhưng vẫn throw để reset nút
+            if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+                console.log('User cancelled Google login');
+                throw new Error('cancelled');
+            }
             showError(error.message);
             throw error;
         });
@@ -137,11 +143,8 @@ export function signupWithEmail(email, password, displayName = '') {
                     });
                 }).then(() => {
                     console.log('✅ Signup successful:', user.email);
-                    // Redirect to login page
-                    setTimeout(() => {
-                        window.location.href = './login.html';
-                    }, 1000);
-                    return user;
+                    // Return success object so signup.html can handle it
+                    return { success: true };
                 });
             }
             
@@ -154,10 +157,8 @@ export function signupWithEmail(email, password, displayName = '') {
                 lastLogin: new Date()
             }).then(() => {
                 console.log('✅ Signup successful:', user.email);
-                setTimeout(() => {
-                    window.location.href = './login.html';
-                }, 1000);
-                return user;
+                // Return success object so signup.html can handle it
+                return { success: true };
             });
         })
         .catch(error => {
@@ -243,4 +244,17 @@ export function togglePasswordVisibility(passwordInput, hideBtn) {
         passwordInput.type = 'password';
         hideBtn.textContent = 'Hide';
     }
+}
+
+// === FORGOT PASSWORD ===
+export function resetPassword(email) {
+    return sendPasswordResetEmail(auth, email)
+        .then(() => {
+            console.log('✅ Password reset email sent to:', email);
+            return true;
+        })
+        .catch(error => {
+            console.error('❌ Reset password error:', error.message);
+            throw error;
+        });
 }
