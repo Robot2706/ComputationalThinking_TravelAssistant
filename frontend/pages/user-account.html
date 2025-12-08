@@ -1520,6 +1520,8 @@
         });
         
         // ========== HELPER FUNCTION FOR UPDATING CAROUSEL ==========
+        let currentHotelId = null;
+        
         function updateHistoryCarouselUI(recentHotels, index) {
             const hotelImg = document.querySelector('.Img');
             const hotelTitle = document.querySelector('.Title');
@@ -1528,6 +1530,7 @@
             
             if (recentHotels && recentHotels[index]) {
                 const hotel = recentHotels[index];
+                currentHotelId = hotel.id;
                 
                 // Add fade-out effect
                 if (hotelImg) hotelImg.classList.add('fade-out');
@@ -1540,6 +1543,7 @@
                         hotelImg.style.backgroundImage = `url('${hotel.image}')`;
                         hotelImg.style.backgroundSize = 'cover';
                         hotelImg.style.backgroundPosition = 'center';
+                        hotelImg.style.cursor = 'pointer';
                         hotelImg.classList.remove('fade-out');
                     }
                     
@@ -1561,6 +1565,18 @@
                 });
             }
         }
+        
+        // Add click handler to hotel image in history
+        document.addEventListener('DOMContentLoaded', () => {
+            const hotelImg = document.querySelector('.Img');
+            if (hotelImg) {
+                hotelImg.addEventListener('click', () => {
+                    if (currentHotelId) {
+                        window.location.href = `./hotel-detail.html?id=${currentHotelId}`;
+                    }
+                });
+            }
+        });
     </script>
 
     <!-- ========== EDIT PROFILE MODAL ========== -->

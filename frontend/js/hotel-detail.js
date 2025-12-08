@@ -81,7 +81,16 @@ async function saveHotelHistory(hotelData) {
                         updatedHistory = [...userDocSnap.data().hotelHistory];
                     }
                     
-                    // Add new hotel to the beginning
+                    // Check if hotel already exists by ID
+                    const existingIndex = updatedHistory.findIndex(h => h.id === hotelData.id);
+                    
+                    if (existingIndex !== -1) {
+                        // Hotel already exists - remove it from old position
+                        updatedHistory.splice(existingIndex, 1);
+                        console.log('🔄 Hotel already in history, moving to top with updated time');
+                    }
+                    
+                    // Add hotel to the beginning (most recent)
                     updatedHistory.unshift(hotelHistory);
                     
                     // Keep only last 6 hotels
