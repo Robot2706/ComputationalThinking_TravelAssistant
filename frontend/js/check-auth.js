@@ -39,7 +39,7 @@ function updateNavbarWithUser(userData) {
     const glassBtn = document.querySelector('.glass-btn');
     
     if (glassBtn && userData) {
-        // Change button to show user info and logout
+        // Change button to show user info
         glassBtn.innerHTML = `
             <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="text-align: right;">
@@ -50,15 +50,12 @@ function updateNavbarWithUser(userData) {
             </div>
         `;
         
-        // Add logout click handler
+        // Add click handler to navigate to user-account.html
         if (glassBtnLink) {
             glassBtnLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                
-                // Show logout confirmation
-                if (confirm('Are you sure you want to logout?')) {
-                    logout();
-                }
+                // Navigate to user account page
+                window.location.href = 'pages/user-account.html';
             });
         }
     }

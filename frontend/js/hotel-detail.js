@@ -11,6 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// --- IMPORT FIREBASE ---
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getFirestore, doc, updateDoc, getDoc, arrayUnion, Timestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDF9lK914D_YpHAUNwD2lf8X5q27pH05AY",
+  authDomain: "rism-24a9a.firebaseapp.com",
+  projectId: "rism-24a9a",
+  storageBucket: "rism-24a9a.firebasestorage.app",
+  messagingSenderId: "1014525451464",
+  appId: "1:1014525451464:web:facd617d7d8c86212019fd",
+  measurementId: "G-LR7VE1J9XH"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
 // --- HÀM MỚI: GỌI TRỰC TIẾP API BACKEND ---
 async function fetchHotelDetail(id) {
     try {
@@ -25,10 +44,65 @@ async function fetchHotelDetail(id) {
         
         // Có dữ liệu từ API -> Render ra màn hình
         renderHotelData(data);
+        
+        // ✅ SAVE HOTEL HISTORY TO FIREBASE
+        await saveHotelHistory(data);
 
     } catch (error) {
         console.error("Lỗi:", error);
         showError("Không thể tải thông tin khách sạn. Vui lòng thử lại.");
+    }
+}
+
+// ✅ FUNCTION TO SAVE HOTEL HISTORY
+async function saveHotelHistory(hotelData) {
+    try {
+        // Check if user is logged in
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const hotelHistory = {
+                    id: hotelData.id,
+                    name: hotelData.name,
+                    district: hotelData.district || hotelData.address,
+                    price: hotelData.price,
+                    rating: hotelData.rating || 0,
+                    image: hotelData.image || hotelData.images?.[0] || '',
+                    timestamp: Timestamp.now(),
+                    visitedAt: new Date().toISOString()
+                };
+
+                try {
+                    // Get current hotel history
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDocSnap = await getDoc(userDocRef);
+                    
+                    let updatedHistory = [];
+                    if (userDocSnap.exists() && userDocSnap.data().hotelHistory) {
+                        updatedHistory = [...userDocSnap.data().hotelHistory];
+                    }
+                    
+                    // Add new hotel to the beginning
+                    updatedHistory.unshift(hotelHistory);
+                    
+                    // Keep only last 6 hotels
+                    if (updatedHistory.length > 6) {
+                        updatedHistory = updatedHistory.slice(0, 6);
+                    }
+                    
+                    // Update user's hotel history in Firestore
+                    await updateDoc(userDocRef, {
+                        hotelHistory: updatedHistory
+                    });
+
+                    console.log('✅ Hotel history saved (max 6):', updatedHistory);
+                } catch (error) {
+                    console.error('❌ Error updating hotel history:', error);
+                }
+            }
+        });
+    } catch (error) {
+        console.error('❌ Error saving hotel history:', error);
+        // Don't throw error - let page load normally even if history save fails
     }
 }
 

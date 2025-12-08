@@ -132,6 +132,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 3. Khóa trạng thái Header (để scroll event tự handle shrink)
             isLocked = true;
+            
+            // 4. SHRINK HERO SECTION NGAY LẬP TỨC (không cần chờ scroll)
+            heroSection.classList.add('shrink');
 
             const resultsContainer = createResultsContainer();
             resultsContainer.innerHTML = '<div class="loading">Loading...</div>';
