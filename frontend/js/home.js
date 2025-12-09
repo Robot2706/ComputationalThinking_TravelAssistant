@@ -511,7 +511,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // ✅ THÊM: Trigger chatbot container
         if (window.chatbotContainer) {
             setTimeout(() => {
-                window.chatbotContainer.showChatbot(hotels);
+                if (window.chatbotContainer.state.isVisible) {
+                    window.chatbotContainer.updateHotels(hotels);
+                } else {
+                    window.chatbotContainer.showChatbot(hotels);
+                }
             }, 500);
         }
     }
