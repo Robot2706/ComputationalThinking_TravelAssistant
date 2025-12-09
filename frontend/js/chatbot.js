@@ -1,17 +1,63 @@
-import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
+const chatInput = document.getElementById("chat-input");
+const chatContainer = document.getElementById("chat-container");
 
-const askInput = document.getElementById("askInput");
-const aiMessage = document.getElementById("aiMessage");
+// AUTO SCROLL
+function scrollToBottom() {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
 
-askInput.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" && askInput.value.trim() !== "") {
-        
-        const userText = askInput.value.trim();
-        console.log("User asked:", userText);
+// ADD USER BUBBLE
+function addUserMessage(text) {
+    const bubble = document.createElement("div");
+    bubble.className = "user-bubble";
+    bubble.textContent = text;
 
-        // Tạm thời cho AI trả lời cứng
-        aiMessage.textContent = `Mình đã nhận câu hỏi: "${userText}". Bạn muốn mình hỗ trợ điều gì thêm?`;
+    chatContainer.appendChild(bubble);
+    scrollToBottom();
+}
 
-        askInput.value = "";
+// ADD BOT MESSAGE (Markdown supported)
+function addBotMessage(mdText) {
+    const wall = document.createElement("div");
+    wall.className = "bot-message bot-wall";
+
+    // Convert markdown → HTML
+    wall.innerHTML = marked.parse(mdText);
+
+    chatContainer.appendChild(wall);
+    scrollToBottom();
+}
+
+// BOT FAKE REPLY (demo)
+async function fakeBotReply(text) {
+    await new Promise(r => setTimeout(r, 500));
+
+    addBotMessage(`
+**You asked:**  
+_${text}_  
+
+Here is a markdown example:  
+- Bullet point  
+- **Bold text**  
+- *Italic text*  
+- \`Inline code\`
+`);
+}
+
+// SEND MESSAGE
+function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+
+    addUserMessage(text);
+    chatInput.value = "";
+
+    fakeBotReply(text); // replace with API call later
+}
+
+// ENTER TO SEND
+chatInput.addEventListener("keypress", e => {
+    if (e.key === "Enter") {
+        sendMessage();
     }
 });

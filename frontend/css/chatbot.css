@@ -14,22 +14,23 @@ body {
 
 /* BACKGROUND */
 .background-main {
+    background: url("../assets/images/background.jpg") center/cover no-repeat;
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100vh;
-    background: url("../assets/images/background.jpg") center/cover no-repeat;
     z-index: -1;
 }
 
-/* MAIN WRAPPER */
 .main-content-wrapper {
+    position: relative;
+    padding-top: 20px;
+    z-index: 10;
     width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 20px;
 }
 
 /* HEADER */
@@ -54,7 +55,7 @@ body {
     cursor: pointer;
 }
 
-/* AI MESSAGE (CENTERED TITLE) */
+/* CHAT AREA */
 .ai-message {
     margin-top: 120px;
     color: var(--white);
@@ -63,25 +64,107 @@ body {
     text-align: center;
 }
 
+.chat-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto 0;
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+    height: calc(100vh - 200px);
+}
+
+/* SCROLLBAR (mềm mượt) */
+.chat-container::-webkit-scrollbar {
+    width: 6px;
+}
+.chat-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+}
+
+/* BOT WALL MESSAGE */
+.bot-wall {
+    width: 100%;    
+    padding: 18px 20px;
+    
+    border-radius: 14px;
+    color: #fff;
+    font-size: 15px;
+    line-height: 1.6;
+    animation: fadeIn 0.25s ease;
+}
+
+/* Markdown in bot message */
+.bot-wall h1, 
+.bot-wall h2, 
+.bot-wall h3 {
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.bot-wall code {
+    background: rgba(0,0,0,0.35);
+    padding: 2px 5px;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+/* USER BUBBLE */
+.user-bubble {
+    max-width: 75%;
+    align-self: flex-end;
+
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+
+    border-radius: 18px 18px 4px 18px;
+
+    font-size: 15px;
+    line-height: 1.5;
+
+    animation: fadeInRight 0.25s ease;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
 /* ASK BAR */
 .ask-bar-container {
     position: fixed;
-    bottom: 45px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    max-width: 90%;
+    bottom: 30px;          
+    width: 100%;
     display: flex;
-    align-items: center;
+    justify-content: center;
+    z-index: 200;
 }
 
 .ask-input {
-    flex: 1;
-    padding: 16px 25px;
-    border-radius: 40px 40px 40px 40px;
+    width: 100%;
+    max-width: 600px;
+    padding: 15px 25px;
+    border-radius: 30px;
     background: rgba(0,0,0,0.45);
-    border: 1px solid rgba(255,255,255,0.32);
-    color: var(--white);
-    outline: none;
-    font-size: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.ask-input::placeholder {
+    color: rgba(255,255,255,0.7);
 }

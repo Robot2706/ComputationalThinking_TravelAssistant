@@ -12,23 +12,22 @@
     
     <script type="module" src="../js/chatbot-result.js" defer></script>
 </head>
+
 <body>
     <div class="background-main"></div>
     
-    <div class="mainmenu-container" id="menuScreen" style="display: none;">
-        </div>
-    
-    <div class="results-screen" id="resultsScreen" style="display: flex;">
+    <div class="results-screen" id="resultsScreen">
         <div class="main-content-wrapper">
             <header class="ai-header">
                 <img src="../assets/icons/logo.svg" alt="2rism Logo" class="header-logo">
-                <i class="fas fa-home home-icon"></i> <i class="fas fa-chevron-down dropdown-icon"></i> 
+                <i class="fas fa-home home-icon"></i> 
+                <i class="fas fa-chevron-down dropdown-icon"></i> 
             </header>
 
+            <h2 class="result-heading" id="resultHeading">Top 3 Recommended Hotels</h2>
+            
             <div class="carousel-container">
-
-                <div class="card-list" id="cardList">
-                    
+                <div class="card-list" id="cardList">  
                     <div class="hotel-card" data-index="0">
                         <div class="card-content-wrapper">
                             <div class="card-details">
@@ -37,11 +36,6 @@
                                     <span class="card-rating paragraph200regular">RATING</span>
                                 </div>
                                 <p class="card-description paragraph200regular">Thông tin chi tiết: <br> - Giới thiệu ngắn... <br> - Price: ... <br> - Address: ...</p>
-                                <!-- <div class="contact-info">
-                                    <h2 class="card-title heading400">Contact us</h2>
-                                    <span class="contact-icon">📞</span> 
-                                    <a href="tel:0909123456" class="contact-text">0909 123 456</a>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -54,11 +48,6 @@
                                     <span class="card-rating paragraph200regular">RATING</span>
                                 </div>
                                 <p class="card-description paragraph200regular">Thông tin chi tiết: <br> - Giới thiệu ngắn... <br> - Price: ... <br> - Address: ...</p>
-                                <!-- <div class="contact-info">
-                                    <h2 class="card-title heading400">Contact us</h2>
-                                    <span class="contact-icon">📞</span> 
-                                    <a href="tel:0909123456" class="contact-text">0909 123 456</a>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -71,14 +60,9 @@
                                     <span class="card-rating paragraph200regular">RATING</span>
                                 </div>
                                 <p class="card-description paragraph200regular">Thông tin chi tiết: <br> - Giới thiệu ngắn... <br> - Price: ... <br> - Address: ...</p>
-                                <!-- <div class="contact-info">
-                                    <h2 class="card-title heading400">Contact us</h2>
-                                    <span class="contact-icon">📞</span> 
-                                    <a href="tel:0909123456" class="contact-text">0909 123 456</a>
-                                </div> -->
                             </div>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
             
