@@ -351,6 +351,8 @@
             justify-content: center;
             align-items: center;
             display: inline-flex;
+            pointer-events: auto;
+            z-index: 50;
         }
         
         .Frame26 {
@@ -359,6 +361,7 @@
             align-items: center;
             gap: 140px;
             display: inline-flex;
+            pointer-events: auto;
         }
         
         /* ========== CHANGE YOUR PROFILE BUTTON (Like Logout) ========== */
@@ -724,6 +727,18 @@
             gap: 10px;
             width: 100%;
             padding-bottom: 10px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .FavoriteCardsContainer::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .FavoriteCardsContainer {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         
         .FavoriteCard {
@@ -732,6 +747,7 @@
             flex-direction: column;
             gap: 8px;
             min-width: 200px;
+            scroll-snap-align: start;
         }
         
         .FavoriteCardImage {
@@ -898,54 +914,8 @@
 
         <!-- Favorite Section with Horizontal Cards -->
         <div class="FavoriteSection">
-            <div class="FavoriteCardsContainer">
-                <!-- Card 1 -->
-                <div class="FavoriteCard">
-                    <div class="FavoriteCardImage"></div>
-                    <div class="FavoriteCardTitle">Monastero Santa Rosa</div>
-                    <div class="FavoriteCardInfo">
-                        <div class="FavoriteCardLocation">
-                            <img src="../assets/icons/map-pin.svg" alt="pin" style="width: 10px; height: 10px;">
-                            <span>Salerno, Italy</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 2 -->
-                <div class="FavoriteCard">
-                    <div class="FavoriteCardImage"></div>
-                    <div class="FavoriteCardTitle">Villa d'Este</div>
-                    <div class="FavoriteCardInfo">
-                        <div class="FavoriteCardLocation">
-                            <img src="../assets/icons/map-pin.svg" alt="pin" style="width: 10px; height: 10px;">
-                            <span>Tivoli, Italy</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 3 -->
-                <div class="FavoriteCard">
-                    <div class="FavoriteCardImage"></div>
-                    <div class="FavoriteCardTitle">Grand Hotel</div>
-                    <div class="FavoriteCardInfo">
-                        <div class="FavoriteCardLocation">
-                            <img src="../assets/icons/map-pin.svg" alt="pin" style="width: 10px; height: 10px;">
-                            <span>Rome, Italy</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 4 -->
-                <div class="FavoriteCard">
-                    <div class="FavoriteCardImage"></div>
-                    <div class="FavoriteCardTitle">Coastal Resort</div>
-                    <div class="FavoriteCardInfo">
-                        <div class="FavoriteCardLocation">
-                            <img src="../assets/icons/map-pin.svg" alt="pin" style="width: 10px; height: 10px;">
-                            <span>Amalfi, Italy</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="FavoriteCardsContainer" id="favoriteCardsContainer">
+                <!-- Cards will be populated from localStorage -->
             </div>
         </div>
 
@@ -961,13 +931,11 @@
 
         <!-- Carousel Dots for Favorite Section -->
 
-        <div data-layer="Carousel Dots" class="CarouselDots_favorite">
+        <div data-layer="Carousel Dots" class="CarouselDots_favorite" id="favoriteDotsContainer">
             <div class="CarouselDot active" data-index="0"></div>
             <div class="CarouselDot" data-index="1"></div>
             <div class="CarouselDot" data-index="2"></div>
             <div class="CarouselDot" data-index="3"></div>
-            <div class="CarouselDot" data-index="4"></div>
-            <div class="CarouselDot" data-index="5"></div>
         </div>
 
     </div>
@@ -1350,8 +1318,14 @@
             
             // Open modal when clicking "Change your profile"
             if (editProfileBtn) {
-                editProfileBtn.addEventListener('click', function() {
+                editProfileBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🔔 Change your profile button clicked!');
+                    
                     const user = auth.currentUser;
+                    console.log('👤 Current user:', user?.email);
+                    
                     if (!user) {
                         alert('Please login first');
                         return;
@@ -1361,23 +1335,64 @@
                     const currentUsername = document.querySelector('.username')?.textContent || user.email;
                     usernameInput.value = currentUsername;
                     
-                    // Load current avatar
+                    // Load current avatar from Ellipse1
                     const currentAvatar = document.querySelector('.Ellipse1');
-                    if (currentAvatar.style.backgroundImage) {
-                        avatarPreview.style.backgroundImage = currentAvatar.style.backgroundImage;
-                        avatarPreview.style.backgroundSize = 'cover';
-                        avatarPreview.style.backgroundPosition = 'center';
-                        avatarPreview.textContent = '';
-                    } else if (currentAvatar.textContent) {
-                        avatarPreview.style.background = 'linear-gradient(135deg, #2F80ED, #1e5cb8)';
-                        avatarPreview.style.display = 'flex';
-                        avatarPreview.textContent = currentAvatar.textContent;
-                        avatarPreview.style.fontSize = '50px';
-                        avatarPreview.style.color = 'white';
+                    console.log('🔍 Avatar Debug - currentAvatar:', currentAvatar);
+                    console.log('  HTML:', currentAvatar?.innerHTML);
+                    console.log('  textContent:', currentAvatar?.textContent);
+                    console.log('  backgroundImage:', currentAvatar?.style.backgroundImage);
+                    
+                    if (currentAvatar) {
+                        // Check if it has an img child (image avatar)
+                        const imgChild = currentAvatar.querySelector('img');
+                        console.log('  imgChild:', imgChild);
+                        
+                        if (imgChild) {
+                            console.log('✅ Using img child, src:', imgChild.src);
+                            avatarPreview.style.backgroundImage = `url('${imgChild.src}')`;
+                            avatarPreview.style.backgroundSize = 'cover';
+                            avatarPreview.style.backgroundPosition = 'center';
+                            avatarPreview.style.backgroundColor = 'transparent';
+                            avatarPreview.textContent = '';
+                            console.log('✅ Avatar preview set with image');
+                        }
+                        // Check if it has background image
+                        else if (currentAvatar.style.backgroundImage) {
+                            console.log('✅ Using background image:', currentAvatar.style.backgroundImage);
+                            avatarPreview.style.backgroundImage = currentAvatar.style.backgroundImage;
+                            avatarPreview.style.backgroundSize = 'cover';
+                            avatarPreview.style.backgroundPosition = 'center';
+                            avatarPreview.style.backgroundColor = 'transparent';
+                            avatarPreview.textContent = '';
+                            console.log('✅ Avatar preview set with background image');
+                        }
+                        // Check if it's initial letter
+                        else if (currentAvatar.textContent && currentAvatar.textContent.trim()) {
+                            console.log('✅ Using initial letter:', currentAvatar.textContent);
+                            avatarPreview.style.background = 'linear-gradient(135deg, #2F80ED, #1e5cb8)';
+                            avatarPreview.style.display = 'flex';
+                            avatarPreview.style.alignItems = 'center';
+                            avatarPreview.style.justifyContent = 'center';
+                            avatarPreview.textContent = currentAvatar.textContent;
+                            avatarPreview.style.fontSize = '50px';
+                            avatarPreview.style.color = 'white';
+                            console.log('✅ Avatar preview set with initial letter');
+                        } else {
+                            console.log('❌ No avatar found, showing fallback');
+                            avatarPreview.style.background = '#D9D9D9';
+                            avatarPreview.textContent = 'No Avatar';
+                            console.log('✅ Avatar preview set with fallback');
+                        }
                     }
                     
-                    // Show modal
-                    editProfileModal.classList.add('active');
+                    console.log('🔍 Avatar Preview after update:', avatarPreview);
+                    console.log('📍 About to show modal...');
+                    
+                    // Show modal immediately
+                    if (editProfileModal) {
+                        editProfileModal.classList.add('active');
+                        console.log('✅ Modal displayed');
+                    }
                 });
             }
             
@@ -1488,6 +1503,66 @@
                 }
             }, 5000);
 
+            // ========== LOAD FAVORITE HOTELS FROM LOCALSTORAGE ==========
+            let allFavoriteHotels = [];
+            function loadFavoriteHotels() {
+                const favoriteCardsContainer = document.getElementById('favoriteCardsContainer');
+                const favoriteDotsContainer = document.getElementById('favoriteDotsContainer');
+                
+                if (!favoriteCardsContainer || !favoriteDotsContainer) return;
+                
+                // Get all hotel favorite keys from localStorage
+                allFavoriteHotels = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('hotel_favorite_')) {
+                        const hotelId = key.replace('hotel_favorite_', '');
+                        const isFavorited = localStorage.getItem(key) === 'true';
+                        if (isFavorited) {
+                            // Get hotel data
+                            const hotelDataKey = `hotel_data_${hotelId}`;
+                            const hotelDataStr = localStorage.getItem(hotelDataKey);
+                            const hotelData = hotelDataStr ? JSON.parse(hotelDataStr) : null;
+                            
+                            allFavoriteHotels.push({ 
+                                id: hotelId, 
+                                name: hotelData?.name || `Hotel ${hotelId}`,
+                                image: hotelData?.image || hotelData?.images?.[0] || '../assets/images/background.jpg',
+                                district: hotelData?.district || hotelData?.address || 'Vietnam'
+                            });
+                        }
+                    }
+                }
+                
+                console.log('❤️ Loaded favorite hotels:', allFavoriteHotels);
+                
+                // Keep up to 9 favorites total
+                allFavoriteHotels = allFavoriteHotels.slice(0, 9);
+                
+                // Generate all cards
+                favoriteCardsContainer.innerHTML = allFavoriteHotels.map(hotel => `
+                    <div class="FavoriteCard" data-hotel-id="${hotel.id}" style="cursor: pointer;" onclick="window.location.href = '../pages/hotel-detail.html?id=${hotel.id}'">
+                        <div class="FavoriteCardImage" style="background-image: url('${hotel.image}'); background-size: cover; background-position: center;"></div>
+                        <div class="FavoriteCardTitle">${hotel.name}</div>
+                        <div class="FavoriteCardInfo">
+                            <div class="FavoriteCardLocation">
+                                <img src="../assets/icons/map-pin.svg" alt="pin" style="width: 10px; height: 10px;">
+                                <span>${hotel.district}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Generate 6 dots for sliding window (if at least 4 hotels)
+                const dotsCount = Math.max(1, Math.min(6, allFavoriteHotels.length - 3));
+                favoriteDotsContainer.innerHTML = Array.from({length: dotsCount}, (_, index) => 
+                    `<div class="CarouselDot ${index === 0 ? 'active' : ''}" data-index="${index}"></div>`
+                ).join('');
+            }
+            
+            // Load favorites on page load
+            loadFavoriteHotels();
+
             // ===== FAVORITE CAROUSEL (Bottom) =====
             const favoriteDots = document.querySelectorAll('.CarouselDots_favorite .CarouselDot');
             const favoriteContainer = document.querySelector('.FavoriteCardsContainer');
@@ -1500,22 +1575,50 @@
                 });
             });
 
+            // Update dot when user scrolls manually
+            if (favoriteContainer) {
+                favoriteContainer.addEventListener('scroll', function() {
+                    const card = favoriteContainer.querySelector('.FavoriteCard');
+                    if (card) {
+                        const cardWidth = card.offsetWidth + 10; // 10px gap
+                        const currentScroll = favoriteContainer.scrollLeft;
+                        const newIndex = Math.round(currentScroll / cardWidth);
+                        
+                        if (newIndex !== favoriteIndex) {
+                            favoriteIndex = newIndex;
+                            favoriteDots.forEach(dot => dot.classList.remove('active'));
+                            if (favoriteDots[favoriteIndex]) {
+                                favoriteDots[favoriteIndex].classList.add('active');
+                            }
+                        }
+                    }
+                });
+            }
+
             function updateFavoriteCarousel(index) {
                 favoriteDots.forEach(dot => dot.classList.remove('active'));
-                favoriteDots[index].classList.add('active');
-                
-                // Scroll favorite cards
-                if (favoriteContainer) {
-                    const cardWidth = favoriteContainer.querySelector('.FavoriteCard').offsetWidth + 5;
-                    favoriteContainer.scrollLeft = index * cardWidth;
+                if (favoriteDots[index]) {
+                    favoriteDots[index].classList.add('active');
                 }
-                console.log('Favorite carousel switched to item ' + (index + 1));
+                
+                // Scroll favorite cards - sliding window, each dot shifts by 1 card
+                if (favoriteContainer) {
+                    const card = favoriteContainer.querySelector('.FavoriteCard');
+                    if (card) {
+                        const cardWidth = card.offsetWidth + 10; // 10px gap
+                        const scrollAmount = index * cardWidth; // Each dot shifts by 1 card
+                        favoriteContainer.scrollLeft = scrollAmount;
+                    }
+                }
+                console.log('Favorite carousel switched to window starting at ' + (index + 1));
             }
 
             // Auto-rotate favorite carousel every 5 seconds
             setInterval(function() {
-                favoriteIndex = (favoriteIndex + 1) % favoriteDots.length;
-                updateFavoriteCarousel(favoriteIndex);
+                if (favoriteDots.length > 0) {
+                    favoriteIndex = (favoriteIndex + 1) % favoriteDots.length;
+                    updateFavoriteCarousel(favoriteIndex);
+                }
             }, 5000);
         });
         
@@ -1585,12 +1688,12 @@
             <h2>Edit Your Profile</h2>
             
             <form class="EditProfileForm" id="editProfileForm">
-                <!-- Avatar Preview & Upload -->
+                <!-- Avatar Preview (Display Only) -->
                 <div class="FormGroup">
                     <label>Profile Picture</label>
                     <div class="AvatarPreview" id="avatarPreview"></div>
-                    <input type="file" id="avatarFileInput" accept="image/*">
-                    <small style="color: #999; text-align: center;">Click to upload a new photo</small>
+                    <input type="file" id="avatarFileInput" accept="image/*" style="display: none;">
+                    <small style="color: #999; text-align: center;">Your profile picture</small>
                 </div>
 
                 <!-- Username Input -->

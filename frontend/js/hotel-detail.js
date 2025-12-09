@@ -116,6 +116,9 @@ async function saveHotelHistory(hotelData) {
 }
 
 function renderHotelData(data) {
+    // Store hotel data for favorite button
+    currentHotelData = data;
+    
     // ... (Giữ nguyên toàn bộ phần logic renderHotelData cũ không cần sửa gì cả) ...
     // ... (Phần render tên, giá, ảnh, sao, map... vẫn hoạt động tốt với data mới) ...
     
@@ -249,5 +252,59 @@ function showError(message) {
     const container = document.querySelector('.detail-page-container');
     if (container) {
         container.innerHTML = `<div style="text-align:center; margin-top:100px;"><h2>⚠️ ${message}</h2><a href="../index.html">Quay về trang chủ</a></div>`;
+    }
+}
+
+// ========== FAVORITE BUTTON HANDLER ==========
+let currentHotelId = null;
+let currentHotelData = null;
+let isFavorited = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const favoriteBtn = document.getElementById('favorite-btn');
+    const heartIcon = document.querySelector('.heart-icon');
+    
+    if (favoriteBtn && heartIcon) {
+        // Load favorite status from localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        currentHotelId = urlParams.get('id');
+        
+        if (currentHotelId) {
+            const favoriteKey = `hotel_favorite_${currentHotelId}`;
+            isFavorited = localStorage.getItem(favoriteKey) === 'true';
+            
+            // Set initial state
+            updateHeartIcon(isFavorited, heartIcon);
+            
+            // Add click handler
+            favoriteBtn.addEventListener('click', () => {
+                isFavorited = !isFavorited;
+                updateHeartIcon(isFavorited, heartIcon);
+                
+                // Save to localStorage with hotel data
+                if (isFavorited) {
+                    // Save both the flag and hotel data
+                    localStorage.setItem(favoriteKey, 'true');
+                    if (currentHotelData) {
+                        localStorage.setItem(`hotel_data_${currentHotelId}`, JSON.stringify(currentHotelData));
+                    }
+                    favoriteBtn.classList.add('liked');
+                } else {
+                    localStorage.removeItem(favoriteKey);
+                    localStorage.removeItem(`hotel_data_${currentHotelId}`);
+                    favoriteBtn.classList.remove('liked');
+                }
+            });
+        }
+    }
+});
+
+function updateHeartIcon(isFavorited, heartIcon) {
+    if (isFavorited) {
+        heartIcon.src = '../assets/icons/heart-fill.svg';
+        document.getElementById('favorite-btn').classList.add('liked');
+    } else {
+        heartIcon.src = '../assets/icons/heart-empty.svg';
+        document.getElementById('favorite-btn').classList.remove('liked');
     }
 }
