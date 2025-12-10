@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2rism - My Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ========== GLOBAL STYLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F5F5F5;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ========== MAIN CONTAINER ========== */
+        .Customer1 {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            background: #F5F5F5;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        
+        /* ========== MAIN BACKGROUND BOX ========== */
+        .Rectangle1 {
+            width: 1150px;
+            height: 1164px;
+            left: 285px;
+            top: 18px;
+            position: absolute;
+            background: white;
+            border-radius: 30px;
+        }
+        
+        /* ========== TAB HEADERS ========== */
+        .PersonalDetails, .History, .YourFavorite {
+            position: absolute;
+            opacity: 0.80;
+            color: #2F80ED;
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.20px;
+            word-wrap: break-word;
+        }
+        
+        .PersonalDetails {
+            left: 310px;
+            top: 71px;
+        }
+        
+        .History {
+            left: 1035px;
+            top: 71px;
+        }
+        
+        .YourFavorite {
+            left: 310px;
+            top: 650px;
+        }
+        
+        /* ========== USER PROFILE SECTION ========== */
+        .AccountOfficer {
+            left: 27px;
+            top: 71px;
+            position: absolute;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 23px;
+            display: inline-flex;
+        }
+        
+        .Ellipse1 {
+            width: 56px;
+            height: 57px;
+            background: #D9D9D9;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            flex-shrink: 0;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .Frame1 {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 4px;
+            display: inline-flex;
+        }
+        
+        .nameTag {
+            color: #333333;
+            font-size: 18px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.18px;
+            word-wrap: break-word;
+        }
+        
+        .CustomerOperations {
+            opacity: 0.60;
+            color: #333333;
+            font-size: 11px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.11px;
+            word-wrap: break-word;
+        }
+        
+        /* ========== NAVIGATION ITEMS ========== */
+        .Frame2 {
+            left: 30px;
+            top: 270px;
+            position: absolute;
+            opacity: 0.80;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 18px;
+            display: inline-flex;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .Frame2:hover {
+            opacity: 1;
+        }
+        
+        .IconMenuDashboard {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            opacity: 0.70;
+            overflow: visible;
+        }
+        
+        /* ========== HIGHLIGHT BOX ========== */
+        .Rectangle7 {
+            width: 200px;
+            height: 52px;
+            left: 27px;
+            top: 188px;
+            position: absolute;
+            opacity: 0.10;
+            background: #2F80ED;
+            border-radius: 50px;
+            transition: top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+        
+        /* Highlight moves on hover - Back to Home */
+        .Frame2:hover ~ .Rectangle7 {
+            top: 258px;
+        }
+        
+        /* Highlight moves on hover - Customers */
+        .Frame4:hover ~ .Rectangle7 {
+            top: 202px;
+            width: 238px;
+        }
+        
+        /* ========== MENU ITEMS ========== */
+        .Frame4 {
+            width: 238px;
+            left: 51px;
+            top: 202px;
+            position: absolute;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 20px;
+            display: inline-flex;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .Frame4:hover {
+            opacity: 1;
+        }
+        
+        .IconMenuContacts {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            opacity: 0.90;
+            overflow: visible;
+        }
+        
+        .Frame8 {
+            position: absolute;
+            left: 30px;
+            width: 198px;
+            justify-content: space-between;
+            align-items: flex-start;
+            display: flex;
+        }
+        
+        .Customers, .BackToHome {
+            color: #333333;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.15px;
+            word-wrap: break-word;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .Frame4:hover .Customers {
+            color: #2F80ED;
+        }
+        
+        .Frame2:hover .BackToHome {
+            color: #2F80ED;
+        }
+        
+        .ChevronUp {
+            width: 25.08px;
+            height: 24px;
+            position: relative;
+            transform: rotate(90deg);
+            transform-origin: top left;
+            overflow: visible;
+        }
+        
+        /* ========== VECTOR ICONS ========== */
+        .Vector {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* ========== USER INFO CARD ========== */
+        .Frame24 {
+            width: 514px;
+            height: 325px;
+            left: 387px;
+            top: 146px;
+            position: absolute;
+        }
+        
+        .UserPicture {
+            width: 258px;
+            height: 325px;
+            left: -75px;
+            top: -20px;
+            position: absolute;
+            background: #D9D9D9;
+            box-shadow: 0px 5px 25px rgba(47, 128, 237, 0.20);
+            border-radius: 30px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            font-weight: 600;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .Frame23 {
+            left: 292px;
+            top: 18.50px;
+            position: absolute;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 20px;
+            display: inline-flex;
+        }
+        
+        .Frame19 {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 7px;
+            display: flex;
+            position: absolute;  
+            left: -90px;   
+            white-space: nowrap;        
+            top: 0px;  
+        }
+
+        .Frame20 {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 7px;
+            display: flex;
+            position: absolute;  
+            left: -90px;
+            white-space: nowrap;
+            top: 80px;  
+        }
+        
+        .Name {
+            opacity: 0.50;
+            color: black;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.15px;
+            word-wrap: break-word;
+        }
+        
+        .username, .email {
+            color: black;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            word-wrap: break-word;
+        }
+        
+        /* ========== PROFILE CHANGE SECTION ========== */
+        .ImageTitle {
+            width: auto;
+            padding: 0;
+            left: 10%;
+            top: 80%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            background: transparent;
+            box-shadow: none;
+            overflow: visible;
+            border-radius: 0;
+            backdrop-filter: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            display: inline-flex;
+            pointer-events: auto;
+            z-index: 50;
+        }
+        
+        .Frame26 {
+            border-radius: 30px;
+            justify-content: center;
+            align-items: center;
+            gap: 140px;
+            display: inline-flex;
+            pointer-events: auto;
+        }
+        
+        /* ========== CHANGE YOUR PROFILE BUTTON (Like Logout) ========== */
+        .Frame26 {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #2F80ED;
+            border-radius: 50px;
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .Frame26:hover {
+            background: #2F80ED;
+            box-shadow: 0px 5px 20px rgba(47, 128, 237, 0.4);
+            transform: scale(1.05);
+        }
+
+        .Frame26:hover .ChangeYourProfile {
+            color: white;
+        }
+        
+        .Frame26:active {
+            transform: scale(0.98);
+        }
+        
+        .ChangeYourProfile {
+            color: #2F80ED;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.15px;
+            word-wrap: break-word;
+            transition: color 0.3s ease;
+        }
+        
+        /* ========== LOGOUT BUTTON ========== */
+        .Frame29 {
+            padding: 12px 30px;
+            position: fixed;
+            bottom: 30px;
+            left: 8.7%;
+            transform: translateX(-50%);
+            background: rgba(238, 29, 82, 0.22);
+            border: 2px solid #EE1D52;
+            border-radius: 70px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .Frame29:hover {
+            background: #EE1D52;
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0px 5px 20px rgba(238, 29, 82, 0.4);
+        }
+        
+        .Frame29:active {
+            transform: translateX(-50%) scale(0.98);
+        }
+
+        /* ========== PROFILE EDIT MODAL ========== */
+        .EditProfileModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .EditProfileModal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .EditProfileContent {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0px 10px 40px rgba(47, 128, 237, 0.25);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .EditProfileContent h2 {
+            color: #2F80ED;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .EditProfileForm {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .FormGroup {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .FormGroup label {
+            color: #333333;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .FormGroup input[type="text"],
+        .FormGroup input[type="file"] {
+            padding: 12px 15px;
+            border: 2px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .FormGroup input[type="text"]:focus,
+        .FormGroup input[type="file"]:focus {
+            border-color: #2F80ED;
+            outline: none;
+            box-shadow: 0px 0px 10px rgba(47, 128, 237, 0.2);
+        }
+
+        .AvatarPreview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #D9D9D9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px auto;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            font-size: 50px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .ButtonGroup {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: flex-end;
+        }
+
+        .CancelBtn, .SaveBtn {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .CancelBtn {
+            background: #F0F0F0;
+            color: #666666;
+        }
+
+        .CancelBtn:hover {
+            background: #E0E0E0;
+        }
+
+        .SaveBtn {
+            background: #2F80ED;
+            color: white;
+        }
+
+        .SaveBtn:hover {
+            background: #1e5cb8;
+            box-shadow: 0px 5px 15px rgba(47, 128, 237, 0.4);
+        }
+
+        .SaveBtn:active {
+            transform: scale(0.98);
+        }
+        
+        .Upgrade {
+            color: #EE1D52;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+            word-wrap: break-word;
+            transition: color 0.3s ease;
+        }
+        
+        .Frame29:hover .Upgrade {
+            color: white;
+        }
+
+        /* ========== FAVORITE SECTION ========== */
+        .favorite-hotel-section {
+            left: 310px;
+            top: 700px;
+            position: absolute;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 12px;
+            display: inline-flex;
+        }
+
+        .favorite-section {
+            position: absolute;
+            flex-direction: row;
+        }
+        
+        /* ========== HOTEL CARD SECTION ========== */
+        .HotelsAndRestaurants {
+            left: 1035px;
+            top: 120px;
+            position: absolute;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 12px;
+            display: inline-flex;
+        }
+        
+        .Img {
+            width: 258px;
+            height: 325px;
+            position: relative;
+            background: #D9D9D9;
+            box-shadow: 0px 5px 25px rgba(47, 128, 237, 0.20);
+            border-radius: 24px;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
+        }
+        
+        .Img.fade-out {
+            opacity: 0;
+        }
+        
+        .Title {
+            color: #161414;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            line-height: 28px;
+            word-wrap: break-word;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
+        }
+        
+        .Title.fade-out {
+            opacity: 0;
+        }
+        
+        /* ========== HOTEL INFO (LOCATION & RATING) ========== */
+        .Frame2-inner {
+            align-self: stretch;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 4px;
+            display: inline-flex;
+        }
+        
+        .Frame22 {
+            flex: 1 1 0;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 4px;
+            display: flex;
+        }
+        
+        .MapMapPinLine {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .Places {
+            color: #979797;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            line-height: 20px;
+            word-wrap: break-word;
+        }
+        
+        /* ========== STAR RATING ========== */
+        .RatingDefault {
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 2px;
+            display: flex;
+        }
+        
+        .SystemStarFill {
+            position: relative;
+            overflow: visible;
+        }
+
+        .SystemStarFill img {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .SystemStarLine {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            overflow: visible;
+        }
+
+        .SystemStarLine img {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* ========== FAVORITE SECTION (HORIZONTAL CARDS) ========== */
+        .FavoriteSection {
+            left: 310px;
+            top: 700px;
+            position: absolute;
+            width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+        }
+        
+        .FavoriteCardsContainer {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            padding-bottom: 10px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .FavoriteCardsContainer::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .FavoriteCardsContainer {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .FavoriteCard {
+            flex: 0 0 calc(25% - 4px);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 200px;
+            scroll-snap-align: start;
+        }
+        
+        .FavoriteCardImage {
+            width: 258px;
+            height: 325px;
+            background: #D9D9D9;
+            border-radius: 16px;
+            box-shadow: 0px 3px 15px rgba(47, 128, 237, 0.15);
+        }
+        
+        .FavoriteCardTitle {
+            color: #161414;
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            line-height: 20px;
+            word-wrap: break-word;
+        }
+        
+        .FavoriteCardInfo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+        }
+        
+        .FavoriteCardLocation {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #979797;
+        }
+        
+        .FavoriteCardRating {
+            display: flex;
+            gap: 1px;
+        }
+        
+        .FavoriteCardStar {
+            width: 12px;
+            height: 12px;
+        }
+        
+        /* ========== CAROUSEL DOTS (HOTEL HISTORY) ========== */
+        .CarouselDots_history {
+            left: 1035px;
+            top: 550px;
+            position: absolute;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .CarouselDots_favorite {
+            left: 790px;
+            top: 1120px;
+            position: absolute;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .CarouselDot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #D9D9D9;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .CarouselDot:hover {
+            background: #B0B0B0;
+            transform: scale(1.2);
+        }
+        
+        .CarouselDot.active {
+            background: #2F80ED;
+        }
+    </style>
+</head>
+<body>
+    <div data-layer="Customer 1" class="Customer1">
+        <div data-layer="Rectangle 1" class="Rectangle1"></div>
+        <div data-layer="Personal Details" class="PersonalDetails">Personal Details</div>
+        <div data-layer="History" class="History">History</div>
+        <div data-layer="Your favorite" class="YourFavorite">Your favorite</div>
+        
+        <div data-layer="Account Officer" class="AccountOfficer">
+            <div data-layer="Ellipse 1" class="Ellipse1"></div>
+            <div data-layer="Frame 1" class="Frame1">
+                <div data-layer="Anna George" class="nameTag">Anna George</div>
+                <div data-layer="Customer Operations" class="CustomerOperations">Have a good trip!</div>
+            </div>
+        </div>
+        
+        <div data-layer="Frame 2" class="Frame2">
+            <div data-layer="icon/menu/dashboard" class="IconMenuDashboard">
+                <div class="Vector"></div>
+                <div class="Vector"></div>
+            </div>
+            <div data-layer="Back to home" class="BackToHome">Back to home</div>
+        </div>
+        
+        <div data-layer="Rectangle 7" class="Rectangle7"></div>
+        
+        <div data-layer="Frame 4" class="Frame4">
+            <div data-layer="icon/menu/contacts" class="IconMenuContacts">
+                <div class="Vector"></div>
+                <div class="Vector"></div>
+            </div>
+            <div data-layer="Frame 8" class="Frame8">
+                <div data-layer="Customers" class="Customers">Customers</div>
+                <div data-layer="chevron-up" class="ChevronUp">
+                    <div class="Vector"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div data-layer="Frame 24" class="Frame24">
+            <div data-layer="Rectangle 11" class="UserPicture"></div>
+            <div data-layer="Frame 23" class="Frame23">
+                <div data-layer="Frame 19" class="Frame19">
+                    <div data-layer="Name" class="Name">Name</div>
+                    <div data-layer="Tomiwa Oyeledu Dolapo" class="username">Tomiwa Oyeledu Dolapo</div>
+                </div>
+                <div data-layer="Frame 20" class="Frame20">
+                    <div data-layer="Name" class="Name">Email</div>
+                    <div data-layer="Tomiwa Oyeledu Dolapo" class="email">email@gmail.com</div>
+                </div>
+                <div data-layer="Name" class="Name"></div>
+            </div>
+            <div data-layer="Image Title" class="ImageTitle">
+                <button type="button" data-layer="Frame 26" class="Frame26" id="changeProfileBtn">
+                    <span data-layer="Change your profile" class="ChangeYourProfile">Change your profile</span>
+                </button>
+            </div>
+        </div>
+        
+        <div data-layer="Frame 29" class="Frame29">
+            <div data-layer="Upgrade" class="Upgrade">Log out</div>
+        </div>
+        
+        <div data-layer="Hotels and Restaurants" class="HotelsAndRestaurants">
+            <div data-layer="img" class="Img"></div>
+            <div data-layer="Frame 1" class="Frame1">
+                <div data-layer="title" class="Title">Monastero Santa Rosa Hotel & Spa</div>
+                <div data-layer="Frame 2" class="Frame2-inner">
+                    <div data-layer="Frame 22" class="Frame22">
+                        <div data-layer="map / map-pin-line" class="MapMapPinLine">
+                            <div class="Vector">
+                                <img src="../assets/icons/map-pin.svg" alt="map pin icon" />
+                            </div>
+                            <div class="Vector"></div>
+                        </div>
+                        <div data-layer="Salerno, Italy" class="Places">Salerno, Italy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorite Section with Horizontal Cards -->
+        <div class="FavoriteSection">
+            <div class="FavoriteCardsContainer" id="favoriteCardsContainer">
+                <!-- Cards will be populated from localStorage -->
+            </div>
+        </div>
+
+        <!-- Carousel Dots for Hotel History -->
+        <div data-layer="Carousel Dots" class="CarouselDots_history">
+            <div class="CarouselDot active" data-index="0"></div>
+            <div class="CarouselDot" data-index="1"></div>
+            <div class="CarouselDot" data-index="2"></div>
+            <div class="CarouselDot" data-index="3"></div>
+            <div class="CarouselDot" data-index="4"></div>
+            <div class="CarouselDot" data-index="5"></div>
+        </div>
+
+        <!-- Carousel Dots for Favorite Section -->
+
+        <div data-layer="Carousel Dots" class="CarouselDots_favorite" id="favoriteDotsContainer">
+            <div class="CarouselDot active" data-index="0"></div>
+            <div class="CarouselDot" data-index="1"></div>
+            <div class="CarouselDot" data-index="2"></div>
+            <div class="CarouselDot" data-index="3"></div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { getFirestore, doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+
+        // Firebase Configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDF9lK914D_YpHAUNwD2lf8X5q27pH05AY",
+          authDomain: "rism-24a9a.firebaseapp.com",
+          projectId: "rism-24a9a",
+          storageBucket: "rism-24a9a.firebasestorage.app",
+          messagingSenderId: "1014525451464",
+          appId: "1:1014525451464:web:facd617d7d8c86212019fd",
+          measurementId: "G-LR7VE1J9XH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Get user data from Firestore and update UI
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                console.log('👤 Auth User Info:');
+                console.log('  UID:', user.uid);
+                console.log('  Email:', user.email);
+                console.log('  DisplayName:', user.displayName);
+                console.log('  PhotoURL:', user.photoURL);
+                console.log('  Metadata:', user.metadata);
+                
+                try {
+                    // Get user document from Firestore
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDocSnap = await getDoc(userDocRef);
+
+                    if (userDocSnap.exists()) {
+                        const userData = userDocSnap.data();
+                        console.log('Firebase user data:', userData);
+                        console.log('Auth user email:', user.email);
+                        
+                        // Update user name
+                        const nameElement = document.querySelector('.nameTag');
+                        if (nameElement) {
+                            const displayName = userData.displayName || user.displayName || user.email;
+                            nameElement.textContent = displayName;
+                            console.log('Updated nameTag with:', displayName);
+                        }
+
+                        // Update email
+                        const emailElement = document.querySelector('.email');
+                        if (emailElement) {
+                            const emailToShow = userData.email || user.email;
+                            emailElement.textContent = emailToShow;
+                            console.log('Updated email with:', emailToShow);
+                        }
+
+                        // Update username
+                        const usernameElement = document.querySelector('.username');
+                        if (usernameElement) {
+                            const username = userData.displayName || user.displayName || user.email;
+                            usernameElement.textContent = username;
+                            console.log('Updated username with:', username);
+                        }
+
+                        // Update avatar if available or create initial letter avatar
+                        const avatarElement = document.querySelector('.Ellipse1');
+                        if (avatarElement) {
+                            console.log('🔍 Avatar debug:');
+                            console.log('  user.photoURL:', user.photoURL);
+                            console.log('  userData.photoURL:', userData.photoURL);
+                            console.log('  user.displayName:', user.displayName);
+                            
+                            // Try Google profile photo first
+                            if (user.photoURL) {
+                                console.log('✅ Using Google photo:', user.photoURL);
+                                // Get larger image URL from Google
+                                const largePhotoURL = user.photoURL.replace('s96-c', 's200-c');
+                                console.log('🖼️ Large photo URL:', largePhotoURL);
+                                
+                                // Create img element for better display
+                                const img = document.createElement('img');
+                                img.src = largePhotoURL;
+                                img.style.width = '100%';
+                                img.style.height = '100%';
+                                img.style.objectFit = 'cover';
+                                img.style.borderRadius = '9999px';
+                                img.crossOrigin = 'anonymous';
+                                
+                                img.onload = () => console.log('✅ Avatar image loaded');
+                                img.onerror = () => {
+                                    console.error('❌ Avatar image failed to load, using fallback');
+                                    // Fallback to initial letter if image fails
+                                    const displayName = userData.displayName || user.email;
+                                    const firstLetter = displayName.charAt(0).toUpperCase();
+                                    
+                                    avatarElement.innerHTML = firstLetter;
+                                    avatarElement.style.background = 'linear-gradient(135deg, #2F80ED, #1e5cb8)';
+                                    avatarElement.style.display = 'flex';
+                                    avatarElement.style.alignItems = 'center';
+                                    avatarElement.style.justifyContent = 'center';
+                                    avatarElement.style.color = 'white';
+                                    avatarElement.style.fontSize = '24px';
+                                    avatarElement.style.fontWeight = '600';
+                                    avatarElement.style.fontFamily = 'Poppins, sans-serif';
+                                };
+                                
+                                avatarElement.innerHTML = '';
+                                avatarElement.appendChild(img);
+                                
+                                console.log('✅ Avatar image applied');
+                            }
+                            // Fallback to Firestore photoURL
+                            else if (userData.photoURL) {
+                                console.log('✅ Using Firestore photo:', userData.photoURL);
+                                
+                                const img = document.createElement('img');
+                                img.src = userData.photoURL;
+                                img.style.width = '100%';
+                                img.style.height = '100%';
+                                img.style.objectFit = 'cover';
+                                img.style.borderRadius = '9999px';
+                                img.crossOrigin = 'anonymous';
+                                
+                                img.onerror = () => {
+                                    console.error('❌ Firestore avatar failed, using fallback');
+                                    const displayName = userData.displayName || user.email;
+                                    const firstLetter = displayName.charAt(0).toUpperCase();
+                                    
+                                    avatarElement.innerHTML = firstLetter;
+                                    avatarElement.style.background = 'linear-gradient(135deg, #2F80ED, #1e5cb8)';
+                                    avatarElement.style.display = 'flex';
+                                    avatarElement.style.alignItems = 'center';
+                                    avatarElement.style.justifyContent = 'center';
+                                    avatarElement.style.color = 'white';
+                                    avatarElement.style.fontSize = '24px';
+                                    avatarElement.style.fontWeight = '600';
+                                    avatarElement.style.fontFamily = 'Poppins, sans-serif';
+                                };
+                                
+                                avatarElement.innerHTML = '';
+                                avatarElement.appendChild(img);
+                            }
+                            // Fallback to initial letter avatar
+                            else {
+                                const displayName = userData.displayName || user.email;
+                                const firstLetter = displayName.charAt(0).toUpperCase();
+                                
+                                avatarElement.style.background = 'linear-gradient(135deg, #2F80ED, #1e5cb8)';
+                                avatarElement.style.display = 'flex';
+                                avatarElement.style.alignItems = 'center';
+                                avatarElement.style.justifyContent = 'center';
+                                avatarElement.textContent = firstLetter;
+                                avatarElement.style.color = 'white';
+                                avatarElement.style.fontSize = '24px';
+                                avatarElement.style.fontWeight = '600';
+                                avatarElement.style.fontFamily = 'Poppins, sans-serif';
+                            }
+                        }
+
+                        // ========== UPDATE USER PICTURE (Large profile image) ==========
+                        const userPictureElement = document.querySelector('.UserPicture');
+                        if (userPictureElement) {
+                            console.log('🖼️ Updating UserPicture...');
+                            
+                            // Try Google profile photo first
+                            if (user.photoURL) {
+                                console.log('✅ UserPicture using Google photo');
+                                const largePhotoURL = user.photoURL.replace('s96-c', 's400-c');
+                                
+                                const img = document.createElement('img');
+                                img.src = largePhotoURL;
+                                img.style.width = '100%';
+                                img.style.height = '100%';
+                                img.style.objectFit = 'cover';
+                                img.style.borderRadius = '30px';
+                                img.crossOrigin = 'anonymous';
+                                
+                                img.onload = () => console.log('✅ UserPicture image loaded');
+                                img.onerror = () => {
+                                    console.error('❌ UserPicture image failed, using fallback');
+                                    const displayName = userData.displayName || user.email;
+                                    const firstLetter = displayName.charAt(0).toUpperCase();
+                                    
+                                    userPictureElement.innerHTML = firstLetter;
+                                    userPictureElement.style.background = 'linear-gradient(135deg, #2F80ED, #1e5cb8)';
+                                    userPictureElement.style.display = 'flex';
+                                    userPictureElement.style.alignItems = 'center';
+                                    userPictureElement.style.justifyContent = 'center';
+                                    userPictureElement.style.color = 'white';
+                                    userPictureElement.style.fontSize = '120px';
+                                    userPictureElement.style.fontWeight = '600';
+                                    userPictureElement.style.fontFamily = 'Poppins, sans-serif';
+                                };
+                                
+                                userPictureElement.innerHTML = '';
+                                userPictureElement.appendChild(img);
+                            }
+                            // Fallback to Firestore photoURL
+                            else if (userData.photoURL) {
+                                console.log('✅ UserPicture using Firestore photo');
+                                
+                                const img = document.createElement('img');
+                                img.src = userData.photoURL;
+                                img.style.width = '100%';
+                                img.style.height = '100%';
+                                img.style.objectFit = 'cover';
+                                img.style.borderRadius = '30px';
+                                img.crossOrigin = 'anonymous';
+                                
+                                img.onerror = () => {
+                                    console.error('❌ UserPicture Firestore photo failed');
+                                    const displayName = userData.displayName || user.email;
+                                    const firstLetter = displayName.charAt(0).toUpperCase();
+                                    
+                                    userPictureElement.innerHTML = firstLetter;
+                                    userPictureElement.style.background = 'linear-gradient(135deg, #2F80ED, #1e5cb8)';
+                                    userPictureElement.style.display = 'flex';
+                                    userPictureElement.style.alignItems = 'center';
+                                    userPictureElement.style.justifyContent = 'center';
+                                    userPictureElement.style.color = 'white';
+                                    userPictureElement.style.fontSize = '120px';
+                                    userPictureElement.style.fontWeight = '600';
+                                    userPictureElement.style.fontFamily = 'Poppins, sans-serif';
+                                };
+                                
+                                userPictureElement.innerHTML = '';
+                                userPictureElement.appendChild(img);
+                            }
+                            // Fallback to initial letter
+                            else {
+                                console.log('✅ UserPicture using initial letter');
+                                const displayName = userData.displayName || user.email;
+                                const firstLetter = displayName.charAt(0).toUpperCase();
+                                
+                                userPictureElement.style.background = 'linear-gradient(135deg, #2F80ED, #1e5cb8)';
+                                userPictureElement.style.display = 'flex';
+                                userPictureElement.style.alignItems = 'center';
+                                userPictureElement.style.justifyContent = 'center';
+                                userPictureElement.innerHTML = firstLetter;
+                                userPictureElement.style.color = 'white';
+                                userPictureElement.style.fontSize = '120px';
+                                userPictureElement.style.fontWeight = '600';
+                                userPictureElement.style.fontFamily = 'Poppins, sans-serif';
+                            }
+                        }
+
+                        console.log('User data loaded successfully:', userData);
+                    } else {
+                        console.log('No user document found in Firestore');
+                    }
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                }
+
+                // ========== LOAD HOTEL HISTORY ==========
+                try {
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDocSnap = await getDoc(userDocRef);
+
+                    if (userDocSnap.exists()) {
+                        const userData = userDocSnap.data();
+                        const hotelHistory = userData.hotelHistory || [];
+                        
+                        console.log('📍 Hotel History loaded:', hotelHistory);
+                        
+                        // Display recent hotels (last 6 for carousel)
+                        if (hotelHistory.length > 0) {
+                            // Get the most recent hotel (last in array)
+                            const recentHotels = hotelHistory.slice().reverse().slice(0, 6);
+                            
+                            // Update the hotel history section (right side)
+                            const hotelImg = document.querySelector('.Img');
+                            const hotelTitle = document.querySelector('.Title');
+                            const hotelPlace = document.querySelector('.Places');
+                            
+                            if (recentHotels.length > 0) {
+                                const latestHotel = recentHotels[0];
+                                
+                                // Update image
+                                if (hotelImg && latestHotel.image) {
+                                    hotelImg.style.backgroundImage = `url('${latestHotel.image}')`;
+                                    hotelImg.style.backgroundSize = 'cover';
+                                    hotelImg.style.backgroundPosition = 'center';
+                                    console.log('✅ Hotel history image updated:', latestHotel.image);
+                                }
+                                
+                                // Update title
+                                if (hotelTitle) {
+                                    hotelTitle.textContent = latestHotel.name;
+                                    console.log('✅ Hotel history title updated:', latestHotel.name);
+                                }
+                                
+                                // Update place (district)
+                                if (hotelPlace) {
+                                    hotelPlace.textContent = latestHotel.district || 'Vietnam';
+                                    console.log('✅ Hotel history place updated:', latestHotel.district);
+                                }
+                            }
+                            
+                            // Update carousel dots (6 dots for history)
+                            const historyDotsContainer = document.querySelector('.CarouselDots_history');
+                            if (historyDotsContainer) {
+                                historyDotsContainer.innerHTML = '';
+                                recentHotels.forEach((hotel, index) => {
+                                    const dot = document.createElement('div');
+                                    dot.className = `CarouselDot ${index === 0 ? 'active' : ''}`;
+                                    dot.dataset.index = index;
+                                    dot.addEventListener('click', () => {
+                                        updateHistoryCarouselUI(recentHotels, index);
+                                    });
+                                    historyDotsContainer.appendChild(dot);
+                                });
+                                
+                                // Auto-rotate carousel every 5 seconds
+                                let currentIndex = 0;
+                                setInterval(() => {
+                                    currentIndex = (currentIndex + 1) % recentHotels.length;
+                                    updateHistoryCarouselUI(recentHotels, currentIndex);
+                                }, 5000);
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading hotel history:', error);
+                }
+            } else {
+                // User not logged in - redirect to login
+                console.log('User not logged in');
+                window.location.href = './login.html';
+            }
+        });
+
+        // ========== CAROUSEL FUNCTIONALITY ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Back to Home click handler
+            const backToHomeBtn = document.querySelector('.Frame2');
+            if (backToHomeBtn) {
+                backToHomeBtn.addEventListener('click', function() {
+                    window.location.href = '../index.html';
+                });
+            }
+            
+            // Logout button click handler
+            const logoutBtn = document.querySelector('.Frame29');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    // Show confirmation dialog
+                    if (confirm('Do you want to logout?')) {
+                        // User confirmed - perform logout
+                        auth.signOut().then(() => {
+                            console.log('User logged out successfully');
+                            // Redirect to index.html
+                            window.location.href = '../index.html';
+                        }).catch((error) => {
+                            console.error('Error logging out:', error);
+                            alert('Error logging out. Please try again.');
+                        });
+                    }
+                });
+            }
+            
+            // ========== EDIT PROFILE MODAL HANDLER ==========
+            const editProfileBtn = document.getElementById('changeProfileBtn');
+            const editProfileModal = document.getElementById('editProfileModal');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const editProfileForm = document.getElementById('editProfileForm');
+            const usernameInput = document.getElementById('usernameInput');
+            const avatarFileInput = document.getElementById('avatarFileInput');
+            const avatarPreview = document.getElementById('avatarPreview');
+            const saveBtn = document.getElementById('saveBtn');
+            
+            let selectedAvatarFile = null;
+            
+            // Open modal when clicking "Change your profile"
+            if (editProfileBtn) {
+                editProfileBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🔔 Change your profile button clicked!');
+                    
+                    const user = auth.currentUser;
+                    console.log('👤 Current user:', user?.email);
+                    
+                    if (!user) {
+                        alert('Please login first');
+                        return;
+                    }
+                    
+                    // Load current username
+                    const currentUsername = document.querySelector('.username')?.textContent || user.email;
+                    usernameInput.value = currentUsername;
+                    
+                    // Load current avatar from Ellipse1
+                    const currentAvatar = document.querySelector('.Ellipse1');
+                    console.log('🔍 Avatar Debug - currentAvatar:', currentAvatar);
+                    console.log('  HTML:', currentAvatar?.innerHTML);
+                    console.log('  textContent:', currentAvatar?.textContent);
+                    console.log('  backgroundImage:', currentAvatar?.style.backgroundImage);
+                    
+                    if (currentAvatar) {
+                        // Check if it has an img child (image avatar)
+                        const imgChild = currentAvatar.querySelector('img');
+                        console.log('  imgChild:', imgChild);
+                        
+                        if (imgChild) {
+                            console.log('✅ Using img child, src:', imgChild.src);
+                            avatarPreview.style.backgroundImage = `url('${imgChild.src}')`;
+                            avatarPreview.style.backgroundSize = 'cover';
+                            avatarPreview.style.backgroundPosition = 'center';
+                            avatarPreview.style.backgroundColor = 'transparent';
+                            avatarPreview.textContent = '';
+                            console.log('✅ Avatar preview set with image');
+                        }
+                        // Check if it has background image
+                        else if (currentAvatar.style.backgroundImage) {
+                            console.log('✅ Using background image:', currentAvatar.style.backgroundImage);
+                            avatarPreview.style.backgroundImage = currentAvatar.style.backgroundImage;
+                            avatarPreview.style.backgroundSize = 'cover';
+                            avatarPreview.style.backgroundPosition = 'center';
+                            avatarPreview.style.backgroundColor = 'transparent';
+                            avatarPreview.textContent = '';
+                            console.log('✅ Avatar preview set with background image');
+                        }
+                        // Check if it's initial letter
+                        else if (currentAvatar.textContent && currentAvatar.textContent.trim()) {
+                            console.log('✅ Using initial letter:', currentAvatar.textContent);
+                            avatarPreview.style.background = 'linear-gradient(135deg, #2F80ED, #1e5cb8)';
+                            avatarPreview.style.display = 'flex';
+                            avatarPreview.style.alignItems = 'center';
+                            avatarPreview.style.justifyContent = 'center';
+                            avatarPreview.textContent = currentAvatar.textContent;
+                            avatarPreview.style.fontSize = '50px';
+                            avatarPreview.style.color = 'white';
+                            console.log('✅ Avatar preview set with initial letter');
+                        } else {
+                            console.log('❌ No avatar found, showing fallback');
+                            avatarPreview.style.background = '#D9D9D9';
+                            avatarPreview.textContent = 'No Avatar';
+                            console.log('✅ Avatar preview set with fallback');
+                        }
+                    }
+                    
+                    console.log('🔍 Avatar Preview after update:', avatarPreview);
+                    console.log('📍 About to show modal...');
+                    
+                    // Show modal immediately
+                    if (editProfileModal) {
+                        editProfileModal.classList.add('active');
+                        console.log('✅ Modal displayed');
+                    }
+                });
+            }
+            
+            // Handle avatar file selection
+            avatarFileInput.addEventListener('change', function(e) {
+                selectedAvatarFile = e.target.files[0];
+                if (selectedAvatarFile) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        avatarPreview.style.backgroundImage = `url('${event.target.result}')`;
+                        avatarPreview.style.backgroundSize = 'cover';
+                        avatarPreview.style.backgroundPosition = 'center';
+                        avatarPreview.style.background = 'none';
+                        avatarPreview.textContent = '';
+                    };
+                    reader.readAsDataURL(selectedAvatarFile);
+                }
+            });
+            
+            // Close modal when clicking cancel
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    editProfileModal.classList.remove('active');
+                    selectedAvatarFile = null;
+                });
+            }
+            
+            // Close modal when clicking outside
+            editProfileModal.addEventListener('click', function(e) {
+                if (e.target === editProfileModal) {
+                    editProfileModal.classList.remove('active');
+                    selectedAvatarFile = null;
+                }
+            });
+            
+            // Handle form submission
+            editProfileForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('Please login first');
+                    return;
+                }
+                
+                try {
+                    saveBtn.disabled = true;
+                    saveBtn.textContent = 'Saving...';
+                    
+                    const newUsername = usernameInput.value.trim();
+                    if (!newUsername) {
+                        alert('Please enter a display name');
+                        return;
+                    }
+                    
+                    // Update Firestore with new username only
+                    await updateDoc(doc(db, 'users', user.uid), {
+                        displayName: newUsername,
+                        updatedAt: new Date()
+                    });
+                    console.log('✅ Username updated in Firestore');
+                    
+                    // Update Firebase Auth profile
+                    await updateProfile(user, {
+                        displayName: newUsername
+                    });
+                    console.log('✅ Auth profile updated');
+                    
+                    // Reload page to reflect changes
+                    setTimeout(() => {
+                        location.reload();
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('❌ Error updating profile:', error);
+                    alert('Error updating profile. Please try again.');
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save Changes';
+                }
+            });
+            
+            // ===== HISTORY CAROUSEL (Right side) =====
+            const historyDots = document.querySelectorAll('.CarouselDots_history .CarouselDot');
+            const historyContainer = document.querySelector('.HotelsAndRestaurants');
+            let historyIndex = 0;
+
+            historyDots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    historyIndex = index;
+                    updateHistoryCarousel(historyIndex);
+                });
+            });
+
+            function updateHistoryCarousel(index) {
+                historyDots.forEach(dot => dot.classList.remove('active'));
+                if (historyDots[index]) {
+                    historyDots[index].classList.add('active');
+                }
+                console.log('History carousel switched to item ' + (index + 1));
+            }
+
+            // Auto-rotate history carousel every 5 seconds
+            setInterval(function() {
+                if (historyDots.length > 0) {
+                    historyIndex = (historyIndex + 1) % historyDots.length;
+                    updateHistoryCarousel(historyIndex);
+                }
+            }, 5000);
+
+            // ========== LOAD FAVORITE HOTELS FROM LOCALSTORAGE ==========
+            let allFavoriteHotels = [];
+            function loadFavoriteHotels() {
+                const favoriteCardsContainer = document.getElementById('favoriteCardsContainer');
+                const favoriteDotsContainer = document.getElementById('favoriteDotsContainer');
+                
+                if (!favoriteCardsContainer || !favoriteDotsContainer) return;
+                
+                // Get all hotel favorite keys from localStorage
+                allFavoriteHotels = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('hotel_favorite_')) {
+                        const hotelId = key.replace('hotel_favorite_', '');
+                        const isFavorited = localStorage.getItem(key) === 'true';
+                        if (isFavorited) {
+                            // Get hotel data
+                            const hotelDataKey = `hotel_data_${hotelId}`;
+                            const hotelDataStr = localStorage.getItem(hotelDataKey);
+                            const hotelData = hotelDataStr ? JSON.parse(hotelDataStr) : null;
+                            
+                            allFavoriteHotels.push({ 
+                                id: hotelId, 
+                                name: hotelData?.name || `Hotel ${hotelId}`,
+                                image: hotelData?.image || hotelData?.images?.[0] || '../assets/images/background.jpg',
+                                district: hotelData?.district || hotelData?.address || 'Vietnam'
+                            });
+                        }
+                    }
+                }
+                
+                console.log('❤️ Loaded favorite hotels:', allFavoriteHotels);
+                
+                // Keep up to 9 favorites total
+                allFavoriteHotels = allFavoriteHotels.slice(0, 9);
+                
+                // Generate all cards
+                favoriteCardsContainer.innerHTML = allFavoriteHotels.map(hotel => `
+                    <div class="FavoriteCard" data-hotel-id="${hotel.id}" style="cursor: pointer;" onclick="window.location.href = '../pages/hotel-detail.html?id=${hotel.id}'">
+                        <div class="FavoriteCardImage" style="background-image: url('${hotel.image}'); background-size: cover; background-position: center;"></div>
+                        <div class="FavoriteCardTitle">${hotel.name}</div>
+                        <div class="FavoriteCardInfo">
+                            <div class="FavoriteCardLocation">
+                                <img src="../assets/icons/map-pin.svg" alt="pin" style="width: 10px; height: 10px;">
+                                <span>${hotel.district}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Generate 6 dots for sliding window (if at least 4 hotels)
+                const dotsCount = Math.max(1, Math.min(6, allFavoriteHotels.length - 3));
+                favoriteDotsContainer.innerHTML = Array.from({length: dotsCount}, (_, index) => 
+                    `<div class="CarouselDot ${index === 0 ? 'active' : ''}" data-index="${index}"></div>`
+                ).join('');
+            }
+            
+            // Load favorites on page load
+            loadFavoriteHotels();
+
+            // ===== FAVORITE CAROUSEL (Bottom) =====
+            const favoriteDots = document.querySelectorAll('.CarouselDots_favorite .CarouselDot');
+            const favoriteContainer = document.querySelector('.FavoriteCardsContainer');
+            let favoriteIndex = 0;
+
+            favoriteDots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    favoriteIndex = index;
+                    updateFavoriteCarousel(favoriteIndex);
+                });
+            });
+
+            // Update dot when user scrolls manually
+            if (favoriteContainer) {
+                favoriteContainer.addEventListener('scroll', function() {
+                    const card = favoriteContainer.querySelector('.FavoriteCard');
+                    if (card) {
+                        const cardWidth = card.offsetWidth + 10; // 10px gap
+                        const currentScroll = favoriteContainer.scrollLeft;
+                        const newIndex = Math.round(currentScroll / cardWidth);
+                        
+                        if (newIndex !== favoriteIndex) {
+                            favoriteIndex = newIndex;
+                            favoriteDots.forEach(dot => dot.classList.remove('active'));
+                            if (favoriteDots[favoriteIndex]) {
+                                favoriteDots[favoriteIndex].classList.add('active');
+                            }
+                        }
+                    }
+                });
+            }
+
+            function updateFavoriteCarousel(index) {
+                favoriteDots.forEach(dot => dot.classList.remove('active'));
+                if (favoriteDots[index]) {
+                    favoriteDots[index].classList.add('active');
+                }
+                
+                // Scroll favorite cards - sliding window, each dot shifts by 1 card
+                if (favoriteContainer) {
+                    const card = favoriteContainer.querySelector('.FavoriteCard');
+                    if (card) {
+                        const cardWidth = card.offsetWidth + 10; // 10px gap
+                        const scrollAmount = index * cardWidth; // Each dot shifts by 1 card
+                        favoriteContainer.scrollLeft = scrollAmount;
+                    }
+                }
+                console.log('Favorite carousel switched to window starting at ' + (index + 1));
+            }
+
+            // Auto-rotate favorite carousel every 5 seconds
+            setInterval(function() {
+                if (favoriteDots.length > 0) {
+                    favoriteIndex = (favoriteIndex + 1) % favoriteDots.length;
+                    updateFavoriteCarousel(favoriteIndex);
+                }
+            }, 5000);
+        });
+        
+        // ========== HELPER FUNCTION FOR UPDATING CAROUSEL ==========
+        let currentHotelId = null;
+        
+        function updateHistoryCarouselUI(recentHotels, index) {
+            const hotelImg = document.querySelector('.Img');
+            const hotelTitle = document.querySelector('.Title');
+            const hotelPlace = document.querySelector('.Places');
+            const historyDots = document.querySelectorAll('.CarouselDots_history .CarouselDot');
+            
+            if (recentHotels && recentHotels[index]) {
+                const hotel = recentHotels[index];
+                currentHotelId = hotel.id;
+                
+                // Add fade-out effect
+                if (hotelImg) hotelImg.classList.add('fade-out');
+                if (hotelTitle) hotelTitle.classList.add('fade-out');
+                
+                // Wait for fade-out animation, then update content
+                setTimeout(() => {
+                    // Update image
+                    if (hotelImg && hotel.image) {
+                        hotelImg.style.backgroundImage = `url('${hotel.image}')`;
+                        hotelImg.style.backgroundSize = 'cover';
+                        hotelImg.style.backgroundPosition = 'center';
+                        hotelImg.style.cursor = 'pointer';
+                        hotelImg.classList.remove('fade-out');
+                    }
+                    
+                    // Update title
+                    if (hotelTitle) {
+                        hotelTitle.textContent = hotel.name;
+                        hotelTitle.classList.remove('fade-out');
+                    }
+                    
+                    // Update place
+                    if (hotelPlace) {
+                        hotelPlace.textContent = hotel.district || 'Vietnam';
+                    }
+                }, 250);
+                
+                // Update dots
+                historyDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+            }
+        }
+        
+        // Add click handler to hotel image in history
+        document.addEventListener('DOMContentLoaded', () => {
+            const hotelImg = document.querySelector('.Img');
+            if (hotelImg) {
+                hotelImg.addEventListener('click', () => {
+                    if (currentHotelId) {
+                        window.location.href = `./hotel-detail.html?id=${currentHotelId}`;
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- ========== EDIT PROFILE MODAL ========== -->
+    <div id="editProfileModal" class="EditProfileModal">
+        <div class="EditProfileContent">
+            <h2>Edit Your Profile</h2>
+            
+            <form class="EditProfileForm" id="editProfileForm">
+                <!-- Avatar Preview (Display Only) -->
+                <div class="FormGroup">
+                    <label>Profile Picture</label>
+                    <div class="AvatarPreview" id="avatarPreview"></div>
+                    <input type="file" id="avatarFileInput" accept="image/*" style="display: none;">
+                    <small style="color: #999; text-align: center;">Your profile picture</small>
+                </div>
+
+                <!-- Username Input -->
+                <div class="FormGroup">
+                    <label for="usernameInput">Display Name</label>
+                    <input type="text" id="usernameInput" placeholder="Enter your display name" required>
+                </div>
+
+                <!-- Buttons -->
+                <div class="ButtonGroup">
+                    <button type="button" class="CancelBtn" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="SaveBtn" id="saveBtn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

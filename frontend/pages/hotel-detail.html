@@ -25,6 +25,7 @@
                 <a href="hotels.html">hotels/homestays</a>
                 <a href="chat-ai.html">chat with AI</a>
                 <a href="about-us.html">about us</a>
+                <a href="user-account.html">your account</a>
             </div>
             <a href="signup.html">
                 <div class="glass-btn" style="top: 25px; transform: none; left: auto; right: 5%;">
@@ -51,7 +52,12 @@
                 </div>
 
                 <div class="detail-header-info">
-                    <h1 id="hotel-name">Loading...</h1>
+                    <div class="header-title-row">
+                        <h1 id="hotel-name">Loading...</h1>
+                        <button id="favorite-btn" class="favorite-btn">
+                            <img src="../assets/icons/heart-empty.svg" alt="Add to favorites" class="heart-icon">
+                        </button>
+                    </div>
                     <div id="hotel-stars" class="stars-display"></div>
                     
                     <div class="sub-info">
@@ -99,6 +105,6 @@
 
     </div>
 
-    <script src="../js/hotel-detail.js"></script>
+    <script type="module" src="../js/hotel-detail.js"></script>
 </body>
 </html>

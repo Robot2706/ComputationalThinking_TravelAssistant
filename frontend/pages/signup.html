@@ -14,6 +14,7 @@
     <style>
       .error-message,
       .success-message {
+        font-family: "Poppins", sans-serif;
         padding: 12px;
         margin-bottom: 15px;
         border-radius: 8px;
@@ -21,11 +22,13 @@
         font-size: 14px;
       }
       .error-message {
+        font-family: "Poppins", sans-serif;
         background-color: #ffe0e0;
         color: #d63031;
         border: 1px solid #d63031;
       }
       .success-message {
+        font-family: "Poppins", sans-serif;
         background-color: #e0ffe0;
         color: #27ae60;
         border: 1px solid #27ae60;
@@ -157,23 +160,47 @@
           signupBtn.querySelector(".fonts-create-account").textContent =
             "Creating account...";
 
-          signupWithEmail(email, password, name).catch(() => {
-            signupBtn.style.opacity = "1";
-            signupBtn.style.pointerEvents = "auto";
-            signupBtn.querySelector(".fonts-create-account").textContent =
-              "Create an account";
-          });
-        });
-
-        // Google signup button click
+          signupWithEmail(email, password, name)
+            .then((result) => {
+              if (result && result.success) {
+                // Show success message
+                window.showSuccess("✓ Account created successfully! You can now log in.");
+                // Clear form
+                nameInput.value = "";
+                emailInput.value = "";
+                passwordInput.value = "";
+                confirmPasswordInput.value = "";
+              }
+            })
+            .catch(() => {
+              signupBtn.style.opacity = "1";
+              signupBtn.style.pointerEvents = "auto";
+              signupBtn.querySelector(".fonts-create-account").textContent =
+                "Create an account";
+            });
+        });        // Google signup button click
         googleSignupBtn.addEventListener("click", () => {
           googleSignupBtn.style.opacity = "0.6";
           googleSignupBtn.style.pointerEvents = "none";
 
-          loginWithGoogle().catch(() => {
+          const resetBtn = () => {
             googleSignupBtn.style.opacity = "1";
             googleSignupBtn.style.pointerEvents = "auto";
-          });
+          };
+
+          loginWithGoogle()
+            .catch((error) => {
+              // Chỉ reset nút, không show lỗi khi user hủy
+              if (error.message === 'cancelled') {
+                // Silent cancel, just reset button
+              } else {
+                showError(error.message);
+              }
+              resetBtn();
+            });
+
+          // Timeout safety: reset nút sau 5 giây nếu chưa reset
+          setTimeout(resetBtn, 5000);
         });
 
         // Enter key to signup
@@ -192,6 +219,18 @@
             setTimeout(() => {
               errorDiv.style.display = "none";
             }, 5000);
+          }
+        };
+
+        // Success message function
+        window.showSuccess = function(message) {
+          const successDiv = document.getElementById("success-message");
+          if (successDiv) {
+            successDiv.textContent = message;
+            successDiv.style.display = "block";
+            setTimeout(() => {
+              successDiv.style.display = "none";
+            }, 10000);
           }
         };
       });

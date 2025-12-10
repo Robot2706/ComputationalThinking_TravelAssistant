@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Set flag để home.js biết phải restore kết quả khi user ấn back
+    sessionStorage.setItem('restoreFromBack', 'true');
+    
     const urlParams = new URLSearchParams(window.location.search);
     const hotelId = urlParams.get('id');
 
@@ -10,6 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
         showError("Không tìm thấy ID khách sạn!");
     }
 });
+
+// --- IMPORT FIREBASE ---
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getFirestore, doc, updateDoc, getDoc, arrayUnion, Timestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDF9lK914D_YpHAUNwD2lf8X5q27pH05AY",
+  authDomain: "rism-24a9a.firebaseapp.com",
+  projectId: "rism-24a9a",
+  storageBucket: "rism-24a9a.firebasestorage.app",
+  messagingSenderId: "1014525451464",
+  appId: "1:1014525451464:web:facd617d7d8c86212019fd",
+  measurementId: "G-LR7VE1J9XH"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 // --- HÀM MỚI: GỌI TRỰC TIẾP API BACKEND ---
 async function fetchHotelDetail(id) {
@@ -25,6 +47,9 @@ async function fetchHotelDetail(id) {
         
         // Có dữ liệu từ API -> Render ra màn hình
         renderHotelData(data);
+        
+        // ✅ SAVE HOTEL HISTORY TO FIREBASE
+        await saveHotelHistory(data);
 
     } catch (error) {
         console.error("Lỗi:", error);
@@ -32,7 +57,71 @@ async function fetchHotelDetail(id) {
     }
 }
 
+// ✅ FUNCTION TO SAVE HOTEL HISTORY
+async function saveHotelHistory(hotelData) {
+    try {
+        // Check if user is logged in
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const hotelHistory = {
+                    id: hotelData.id,
+                    name: hotelData.name,
+                    district: hotelData.district || hotelData.address,
+                    price: hotelData.price,
+                    rating: hotelData.rating || 0,
+                    image: hotelData.image || hotelData.images?.[0] || '',
+                    timestamp: Timestamp.now(),
+                    visitedAt: new Date().toISOString()
+                };
+
+                try {
+                    // Get current hotel history
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDocSnap = await getDoc(userDocRef);
+                    
+                    let updatedHistory = [];
+                    if (userDocSnap.exists() && userDocSnap.data().hotelHistory) {
+                        updatedHistory = [...userDocSnap.data().hotelHistory];
+                    }
+                    
+                    // Check if hotel already exists by ID
+                    const existingIndex = updatedHistory.findIndex(h => h.id === hotelData.id);
+                    
+                    if (existingIndex !== -1) {
+                        // Hotel already exists - remove it from old position
+                        updatedHistory.splice(existingIndex, 1);
+                        console.log('🔄 Hotel already in history, moving to top with updated time');
+                    }
+                    
+                    // Add hotel to the beginning (most recent)
+                    updatedHistory.unshift(hotelHistory);
+                    
+                    // Keep only last 6 hotels
+                    if (updatedHistory.length > 6) {
+                        updatedHistory = updatedHistory.slice(0, 6);
+                    }
+                    
+                    // Update user's hotel history in Firestore
+                    await updateDoc(userDocRef, {
+                        hotelHistory: updatedHistory
+                    });
+
+                    console.log('✅ Hotel history saved (max 6):', updatedHistory);
+                } catch (error) {
+                    console.error('❌ Error updating hotel history:', error);
+                }
+            }
+        });
+    } catch (error) {
+        console.error('❌ Error saving hotel history:', error);
+        // Don't throw error - let page load normally even if history save fails
+    }
+}
+
 function renderHotelData(data) {
+    // Store hotel data for favorite button
+    currentHotelData = data;
+    
     // ... (Giữ nguyên toàn bộ phần logic renderHotelData cũ không cần sửa gì cả) ...
     // ... (Phần render tên, giá, ảnh, sao, map... vẫn hoạt động tốt với data mới) ...
     
@@ -166,5 +255,59 @@ function showError(message) {
     const container = document.querySelector('.detail-page-container');
     if (container) {
         container.innerHTML = `<div style="text-align:center; margin-top:100px;"><h2>⚠️ ${message}</h2><a href="../index.html">Quay về trang chủ</a></div>`;
+    }
+}
+
+// ========== FAVORITE BUTTON HANDLER ==========
+let currentHotelId = null;
+let currentHotelData = null;
+let isFavorited = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const favoriteBtn = document.getElementById('favorite-btn');
+    const heartIcon = document.querySelector('.heart-icon');
+    
+    if (favoriteBtn && heartIcon) {
+        // Load favorite status from localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        currentHotelId = urlParams.get('id');
+        
+        if (currentHotelId) {
+            const favoriteKey = `hotel_favorite_${currentHotelId}`;
+            isFavorited = localStorage.getItem(favoriteKey) === 'true';
+            
+            // Set initial state
+            updateHeartIcon(isFavorited, heartIcon);
+            
+            // Add click handler
+            favoriteBtn.addEventListener('click', () => {
+                isFavorited = !isFavorited;
+                updateHeartIcon(isFavorited, heartIcon);
+                
+                // Save to localStorage with hotel data
+                if (isFavorited) {
+                    // Save both the flag and hotel data
+                    localStorage.setItem(favoriteKey, 'true');
+                    if (currentHotelData) {
+                        localStorage.setItem(`hotel_data_${currentHotelId}`, JSON.stringify(currentHotelData));
+                    }
+                    favoriteBtn.classList.add('liked');
+                } else {
+                    localStorage.removeItem(favoriteKey);
+                    localStorage.removeItem(`hotel_data_${currentHotelId}`);
+                    favoriteBtn.classList.remove('liked');
+                }
+            });
+        }
+    }
+});
+
+function updateHeartIcon(isFavorited, heartIcon) {
+    if (isFavorited) {
+        heartIcon.src = '../assets/icons/heart-fill.svg';
+        document.getElementById('favorite-btn').classList.add('liked');
+    } else {
+        heartIcon.src = '../assets/icons/heart-empty.svg';
+        document.getElementById('favorite-btn').classList.remove('liked');
     }
 }

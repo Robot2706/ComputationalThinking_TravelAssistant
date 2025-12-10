@@ -73,10 +73,44 @@ body.mode-locked .hero-section {
 .detail-header-info {
     margin-top: 20px;
 }
+
+.header-title-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
 .detail-header-info h1 {
     font-size: 32px;
-    margin: 0 0 10px 0;
+    margin: 0;
     color: #2D3436;
+    flex: 1;
+}
+
+.favorite-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.1);
+}
+
+.heart-icon {
+    width: 28px;
+    height: 28px;
+    transition: all 0.3s ease;
+}
+
+.favorite-btn.liked .heart-icon {
+    filter: drop-shadow(0 2px 4px rgba(238, 29, 82, 0.3));
 }
 .sub-info {
     display: flex;
