@@ -380,9 +380,10 @@ input[type=number] {
 
 .location-dropdown {
     width: 280px;
-    max-height: 320px;
+    max-height: 400px;
     padding: 0;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .budget-dropdown {
