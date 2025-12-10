@@ -376,6 +376,7 @@
             align-items: center;
             gap: 10px;
             transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
         }
         
         .Frame26:hover {
@@ -884,9 +885,9 @@
                 <div data-layer="Name" class="Name"></div>
             </div>
             <div data-layer="Image Title" class="ImageTitle">
-                <div data-layer="Frame 26" class="Frame26">
-                    <div data-layer="Change your profile" class="ChangeYourProfile">Change your profile</div>
-                </div>
+                <button type="button" data-layer="Frame 26" class="Frame26" id="changeProfileBtn">
+                    <span data-layer="Change your profile" class="ChangeYourProfile">Change your profile</span>
+                </button>
             </div>
         </div>
         
@@ -1305,7 +1306,7 @@
             }
             
             // ========== EDIT PROFILE MODAL HANDLER ==========
-            const editProfileBtn = document.querySelector('.ChangeYourProfile');
+            const editProfileBtn = document.getElementById('changeProfileBtn');
             const editProfileModal = document.getElementById('editProfileModal');
             const cancelBtn = document.getElementById('cancelBtn');
             const editProfileForm = document.getElementById('editProfileForm');

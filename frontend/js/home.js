@@ -109,8 +109,94 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /* =========================================
+       3. HÀM LƯU FORM DATA
+       ========================================= */
+    function saveFormData() {
+        const formData = {
+            location: selectedLocation,
+            budgetMin: selectedBudgetMin,
+            budgetMax: selectedBudgetMax,
+            budgetLabel: budgetDisplay?.textContent || '',
+            purpose: selectedPurpose,
+            purposeLabel: purposeDisplay?.textContent || '',
+            guests: currentGuests,
+            startDate: startDate ? startDate.toISOString() : null,
+            endDate: endDate ? endDate.toISOString() : null
+        };
+        localStorage.setItem('lastSearchFormData', JSON.stringify(formData));
+    }
+
+    /* =========================================
+       3B. HÀM RESET TỚI TRANG ĐẦU
+       ========================================= */
+    function resetToHomePage() {
+        // Xoá search results & form data
+        localStorage.removeItem('lastSearchResults');
+        localStorage.removeItem('lastSearchFormData');
+        
+        // Reset trạng thái scroll
+        isScrollLocked = true;
+        isPreventingScroll = false;
+        canScrollDown = false;
+        isLocked = false;
+        
+        // Reset form fields
+        selectedLocation = 'Quận 1';
+        selectedBudgetMin = null;
+        selectedBudgetMax = null;
+        selectedPurpose = 'leisure';
+        currentGuests = 1;
+        startDate = null;
+        endDate = null;
+        
+        // Reset UI
+        if (locationDisplay) {
+            locationDisplay.textContent = 'Select Location';
+            locationDisplay.style.color = '#888';
+            locationDisplay.style.fontWeight = '400';
+        }
+        if (budgetDisplay) {
+            budgetDisplay.textContent = 'Select Budget';
+            budgetDisplay.style.color = '#888';
+            budgetDisplay.style.fontWeight = '400';
+        }
+        if (purposeDisplay) {
+            purposeDisplay.textContent = 'Leisure';
+            purposeDisplay.style.color = '#888';
+            purposeDisplay.style.fontWeight = '400';
+        }
+        if (dateDisplay) {
+            dateDisplay.textContent = 'Choose a Date';
+            dateDisplay.style.color = '#888';
+        }
+        updateGuestUI();
+        
+        // Reset hero section
+        heroSection.classList.remove('shrink');
+        document.body.style.overflowY = 'auto';
+        
+        // Ẩn kết quả
+        const resultsContainer = document.querySelector('.results-container');
+        if (resultsContainer) resultsContainer.remove();
+        if (whiteSection) whiteSection.style.display = 'none';
+        const cardsGrid = document.querySelector('.cards-grid');
+        if (cardsGrid) cardsGrid.style.display = '';
+        
+        // Scroll lên đầu
+        window.scrollTo(0, 0);
+    }
+
+    /* =========================================
        4. LOGIC NÚT SEARCH
        ========================================= */
+    
+    // Logo click - reset về trang đầu
+    const logoContainer = document.querySelector('.logo-container');
+    if (logoContainer) {
+        logoContainer.addEventListener('click', (e) => {
+            resetToHomePage();
+        });
+    }
     
     if (searchBtn) {
         searchBtn.addEventListener('click', async (e) => {
@@ -122,6 +208,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert(validationErrors.join('\n'));
                 return;
             }
+
+            // LƯU FORM DATA
+            saveFormData();
 
             // 1. Mở khóa scroll xuống
             canScrollDown = true;
@@ -139,10 +228,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const resultsContainer = createResultsContainer();
             resultsContainer.innerHTML = '<div class="loading">Loading...</div>';
 
-            // Cuộn xuống phần nội dung mượt mà
+            // Cuộn xuống phần nội dung mượt mà (chặn scroll event trigger thêm animation)
             if (whiteSection) {
+                isPreventingScroll = true;
                 setTimeout(() => {
                     whiteSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    setTimeout(() => {
+                        isPreventingScroll = false;
+                    }, 1000);
                 }, 50);
             }
 
@@ -199,6 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
             locationDisplay.style.fontWeight = "600";
             dropdownItems.forEach(i => i.classList.remove('selected'));
             item.classList.add('selected');
+            saveFormData();
             setTimeout(() => {
                 locationDropdown.classList.remove('active');
                 locationSearch.value = '';
@@ -246,6 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
             budgetDisplay.style.fontWeight = "600";
             budgetItems.forEach(i => i.classList.remove('selected'));
             item.classList.add('selected');
+            saveFormData();
             setTimeout(() => {
                 budgetDropdown.classList.remove('active');
             }, 200);
@@ -279,6 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
             purposeDisplay.style.fontWeight = "600";
             purposeItems.forEach(i => i.classList.remove('selected'));
             item.classList.add('selected');
+            saveFormData();
             setTimeout(() => {
                 purposeDropdown.classList.remove('active');
             }, 200);
@@ -310,6 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentGuests < MAX_GUESTS) {
                 currentGuests++;
                 updateGuestUI();
+                saveFormData();
             }
         });
     }
@@ -319,6 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentGuests > MIN_GUESTS) {
                 currentGuests--;
                 updateGuestUI();
+                saveFormData();
             }
         });
     }
@@ -399,6 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (clickedDate < startDate) startDate = clickedDate;
             else {
                 endDate = clickedDate;
+                saveFormData();
                 setTimeout(() => calendarPopup.classList.remove('active'), 300);
             }
         }
@@ -638,40 +737,92 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /* =========================================
-       9. [QUAN TRỌNG] TỰ ĐỘNG KHÔI PHỤC KẾT QUẢ CŨ
+       9. [QUAN TRỌNG] TỰ ĐỘNG KHÔI PHỤC FORM DATA & KẾT QUẢ CŨ
        ========================================= */
     
-    // Xóa localStorage khi load trang để luôn bắt đầu fresh
-    localStorage.removeItem('lastSearchResults');
-    
-    const savedResults = localStorage.getItem('lastSearchResults');
-    if (savedResults) {
-        try {
-            const hotels = JSON.parse(savedResults);
-            if (Array.isArray(hotels) && hotels.length > 0) {
+    // Khôi phục form data CHỈ khi user ấn back từ hotel detail (không phải reload)
+    // Check nếu có flag từ hotel-detail page
+    const shouldRestoreFromBack = sessionStorage.getItem('restoreFromBack');
+    if (shouldRestoreFromBack === 'true') {
+        sessionStorage.removeItem('restoreFromBack');
+        
+        const savedFormData = localStorage.getItem('lastSearchFormData');
+        if (savedFormData) {
+            try {
+                const formData = JSON.parse(savedFormData);
+                selectedLocation = formData.location || 'Quận 1';
+                selectedBudgetMin = formData.budgetMin;
+                selectedBudgetMax = formData.budgetMax;
+                selectedPurpose = formData.purpose || 'leisure';
+                currentGuests = formData.guests || 1;
+                if (formData.startDate) startDate = new Date(formData.startDate);
+                if (formData.endDate) endDate = new Date(formData.endDate);
                 
-                // 1. [FIX] Bật scroll để người dùng có thể lướt xuống xem kết quả
-                document.body.style.overflowY = 'auto';
-
-                // 2. [FIX] Khóa Header để nó luôn ở trạng thái Shrink
-                isLocked = true;
-                heroSection.classList.add('shrink');
-
-                // 3. Hiển thị lại danh sách
-                displayResults(hotels);
-
-                // 4. Tự động cuộn xuống phần kết quả
-                const whiteSection = document.querySelector('.white-section');
-                if (whiteSection) {
-                    setTimeout(() => {
-                        whiteSection.scrollIntoView({ behavior: 'auto', block: 'start' });
-                    }, 100);
+                // Update UI
+                if (locationDisplay) {
+                    locationDisplay.textContent = selectedLocation;
+                    locationDisplay.style.color = "#000";
+                    locationDisplay.style.fontWeight = "600";
                 }
+                
+                if (budgetDisplay && formData.budgetLabel) {
+                    budgetDisplay.textContent = formData.budgetLabel;
+                    budgetDisplay.style.color = "#000";
+                    budgetDisplay.style.fontWeight = "600";
+                }
+                
+                if (purposeDisplay && formData.purposeLabel) {
+                    purposeDisplay.textContent = formData.purposeLabel;
+                    purposeDisplay.style.color = "#000";
+                    purposeDisplay.style.fontWeight = "600";
+                }
+                
+                updateGuestUI();
+                updateDateText();
+            } catch (e) {
+                console.error("Lỗi khi đọc form data cũ:", e);
             }
-        } catch (e) {
-            console.error("Lỗi khi đọc dữ liệu cũ:", e);
-            localStorage.removeItem('lastSearchResults');
         }
+        
+        const savedResults = localStorage.getItem('lastSearchResults');
+        if (savedResults) {
+            try {
+                const hotels = JSON.parse(savedResults);
+                if (Array.isArray(hotels) && hotels.length > 0) {
+                    
+                    // 1. [FIX] Bật scroll để người dùng có thể lướt xuống xem kết quả
+                    document.body.style.overflowY = 'auto';
+                    
+                    // [IMPORTANT] Mở khóa scroll
+                    isScrollLocked = false;
+                    canScrollDown = true;
+
+                    // 2. [FIX] Khóa Header để nó luôn ở trạng thái Shrink
+                    isLocked = true;
+                    heroSection.classList.add('shrink');
+
+                    // 3. Hiển thị lại danh sách
+                    displayResults(hotels);
+
+                    // 4. Tự động cuộn xuống phần kết quả
+                    const whiteSection = document.querySelector('.white-section');
+                    if (whiteSection) {
+                        setTimeout(() => {
+                            whiteSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+                        }, 100);
+                    }
+                }
+            } catch (e) {
+                console.error("Lỗi khi đọc dữ liệu cũ:", e);
+                localStorage.removeItem('lastSearchResults');
+            }
+        }
+    } else {
+        // Reload trang hoặc lần đầu vào - reset về trang đầu
+        localStorage.removeItem('lastSearchResults');
+        localStorage.removeItem('lastSearchFormData');
+        isScrollLocked = true;
+        document.body.style.overflowY = 'auto';
     }
 
     /* =========================================

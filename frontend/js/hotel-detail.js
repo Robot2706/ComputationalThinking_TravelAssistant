@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Set flag để home.js biết phải restore kết quả khi user ấn back
+    sessionStorage.setItem('restoreFromBack', 'true');
+    
     const urlParams = new URLSearchParams(window.location.search);
     const hotelId = urlParams.get('id');
 
