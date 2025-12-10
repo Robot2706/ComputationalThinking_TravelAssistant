@@ -450,7 +450,7 @@
   {
     "id": 8,
     "name": "Adventure Hotel",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "26/8 Truong Dinh street, Ben Thanh ward, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 2109805.0,
     "rating": 8.7,
@@ -1214,7 +1214,7 @@
   {
     "id": 20,
     "name": "M&H Hotel",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "26/12-13 Truong Dinh Street, Ward Ben Thanh, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 3027813.88,
     "rating": 7.8,
@@ -1790,7 +1790,7 @@
   {
     "id": 29,
     "name": "Justay BEN THANH TOWER",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "45 Đường Đặng Thị Nhu 6.5, TP. Hồ Chí Minh, Việt Nam",
     "price": 11403127.0,
     "rating": 8.6,
@@ -1978,7 +1978,7 @@
   {
     "id": 32,
     "name": "Ben Thanh Boutique Hotel",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "55/34 Le Thi Hong Gam, Nguyen Thai Binh, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 2656817.67,
     "rating": 8,
@@ -2042,7 +2042,7 @@
   {
     "id": 33,
     "name": "The One Premium Hotel Spa",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "27 Thủ Khoa Huân, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 2394311.97,
     "rating": 9.7,
@@ -2614,7 +2614,7 @@
   {
     "id": 42,
     "name": "A25 Hotel - 55 Lê Anh Xuân",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "53-55 Le Anh Xuan Street, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 2452079.67,
     "rating": 8.1,
@@ -2678,7 +2678,7 @@
   {
     "id": 43,
     "name": "Nesta Hotel Saigon",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "34 Thu Khoa Huan, District 1, Ho Chi Minh, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 1414002.0,
     "rating": 8.3,
@@ -2998,7 +2998,7 @@
   {
     "id": 48,
     "name": "Liberty Hotel Saigon Greenview",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "187 Pham Ngu Lao, Pham Ngu Lao Ward, District 1 , Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 1899842.5,
     "rating": 7.8,
@@ -3062,7 +3062,7 @@
   {
     "id": 49,
     "name": "Lucky Star Hotel - Bui Vien Walking Street",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "266A Đường Đề Thám, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 851048.0,
     "rating": 7.7,
@@ -3126,7 +3126,7 @@
   {
     "id": 50,
     "name": "Gemini Saigon CENTER - New & Quiet near Bui Vien Walking Street",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "135/22 Tran Hung Dao street, Cau Ong Lanh ward, district 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 3039578.2,
     "rating": 7.5,
@@ -3254,7 +3254,7 @@
   {
     "id": 52,
     "name": "THE RICE HOTEL",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "40/9 BUI VIEN, PHAM NGU LAO WARD DISTRICT 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 689695.0,
     "rating": 7.5,
@@ -3693,7 +3693,7 @@
   {
     "id": 59,
     "name": "Saigon Pink Hotel",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "100 Ho Tung Mau, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 649229.5,
     "rating": 7.5,
@@ -5025,7 +5025,7 @@
   {
     "id": 80,
     "name": "Anpha Boutique Hotel",
-    "district": "District 01",
+    "district": "Quận 01",
     "address": "202 Le Thanh Ton Street, District 01, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 1085188.0,
     "rating": 8,
@@ -5217,7 +5217,7 @@
   {
     "id": 83,
     "name": "Park View Luxury Hotel",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "171 Pham Ngu Lao, Pham Ngu Lao Ward, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 1076535.0,
     "rating": 8.2,
@@ -5281,7 +5281,7 @@
   {
     "id": 84,
     "name": "Nicecy Hotel - Lê Lai Street",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "82 Đường Lê Lai, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 15085738.63,
     "rating": 10,
@@ -5725,7 +5725,7 @@
   {
     "id": 91,
     "name": "Centana Ben Thanh Hotel",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "270 Ly Tu Trong Street, Ben Thanh Ward, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 505182.5,
     "rating": 6.5,
@@ -7125,7 +7125,7 @@
   {
     "id": 113,
     "name": "The Rixx Saigon Central - Next to Ben Thanh Market",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "10 Hẻm 24 Thủ Khoa Huân The Rixx, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 3696835.53,
     "rating": 8.9,
@@ -7889,7 +7889,7 @@
   {
     "id": 125,
     "name": "Lan Anh Hotel",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "252 De Tham Street, Pham Ngu Lao Ward, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 619962.0,
     "rating": 7,
@@ -8905,7 +8905,7 @@
   {
     "id": 141,
     "name": "Central Palace Hotel",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "39-39A Nguyen Trung Truc, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 1632872.0,
     "rating": 8,
@@ -9029,7 +9029,7 @@
   {
     "id": 143,
     "name": "Happy Life Grand Hotel & Rooftop Skybar",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "102-104-106 Le Thi Hong Gam Street, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 2043126.0,
     "rating": 8.1,
@@ -9217,7 +9217,7 @@
   {
     "id": 146,
     "name": "Rosa Hotel & Spa",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "55 Thu Khoa Huan, Ben Thanh Ward, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 785387.0,
     "rating": 7.3,
@@ -9345,7 +9345,7 @@
   {
     "id": 148,
     "name": "Nicecy Daily - Yersin Street",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "7-9-3/2 Yersin , Phường Bến Thành , Thành Phố Hồ Chí Minh, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 1319170.07,
     "rating": 6.8,
@@ -9725,7 +9725,7 @@
   {
     "id": 154,
     "name": "Galaxy Hotel - Ben Thanh Market",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "190a Lê Thánh Tôn, 70000 TP. Hồ Chí Minh, Việt Nam",
     "price": 2305586.32,
     "rating": 7.2,
@@ -9909,7 +9909,7 @@
   {
     "id": 157,
     "name": "Valentine Hotel - Bui Vien Street",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "27 Bùi Viện, phường Bến Thành. TP.HCM , 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 1026907.83,
     "rating": 7.1,
@@ -10097,7 +10097,7 @@
   {
     "id": 160,
     "name": "K&T Hotel - Bùi Viện Walking Street",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "64, Bui Vien Street, Pham Ngu Lao Ward, District 1, Ho Chi Minh City., Quận 1, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 836906.0,
     "rating": 7.4,
@@ -10161,7 +10161,7 @@
   {
     "id": 161,
     "name": "C Central Hotel- Đề Thám Bùi Viện Walking Street",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "216 De Tham Street, District 1, Quận 1, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 630905.5,
     "rating": 7.4,
@@ -10477,7 +10477,7 @@
   {
     "id": 166,
     "name": "Nam Anh Centre Hotel",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "25A CÔ BẮC, PHƯỜNG CẦU ÔNG LÃNH, TPHCM, 70000 TP. Hồ Chí Minh, Việt Nam",
     "price": 798112.0,
     "rating": 9.1,
@@ -11477,7 +11477,7 @@
   {
     "id": 182,
     "name": "Central Studios at Ben Thanh Market by CIRCADIAN",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "7/16 Nguyễn Trãi Pham Ngu Lao Ward, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 1145824.09,
     "rating": 8.8,
@@ -11537,7 +11537,7 @@
   {
     "id": 183,
     "name": "The One Premium Hotel",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "29 Thu Khoa Huan, Ben Thanh ward, district 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 2163437.77,
     "rating": 7.4,
@@ -11840,7 +11840,7 @@
   {
     "id": 188,
     "name": "Woody House Saigon Center",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "6/27 Cach Mang Thang 8, Ben Thanh Ward, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 5372495.0,
     "rating": 9.1,
@@ -12352,7 +12352,7 @@
   {
     "id": 196,
     "name": "M Hotel Saigon",
-    "district": "District 1",
+    "district": "Quận 1",
     "address": "39 Ton That Thiep Street, Ben Nghe Ward, District 1, Quận 1, TP. Hồ Chí Minh, Việt Nam",
     "price": 2660288.5,
     "rating": 8.6,
@@ -12608,7 +12608,7 @@
   {
     "id": 200,
     "name": "Saigon Downtown - Buivien Party street",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "35/7 Đường Bùi Viện, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 860403.74,
     "rating": 9.9,
@@ -13168,7 +13168,7 @@
   {
     "id": 209,
     "name": "Vinh Hoi D4 Emily in Saigon",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "70 Đ. Vĩnh Hội, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 4317741.8,
     "rating": 0,
@@ -13267,7 +13267,7 @@
   {
     "id": 211,
     "name": "Rivergate Apartment Central in HCM City",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "151 Bến Vân Đồn, 70000 TP. Hồ Chí Minh, Việt Nam",
     "price": 3680177.94,
     "rating": 6,
@@ -13387,7 +13387,7 @@
   {
     "id": 213,
     "name": "Cactusland Boutique Hotel",
-    "district": "District 3",
+    "district": "Quận 3",
     "address": "28 Rach Bung Binh Street, Ward 10, District 3, Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 1225332.11,
     "rating": 7.8,
@@ -13643,7 +13643,7 @@
   {
     "id": 217,
     "name": "Sai Gon home - Nguyen Thien Thuat food street D3",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "611/18 Đường Điện Biên Phủ, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 380375.62,
     "rating": 8,
@@ -15523,7 +15523,7 @@
   {
     "id": 247,
     "name": "T-Ritz Saigon Hotel & Apartment",
-    "district": "District 03",
+    "district": "Quận 03",
     "address": "20-22 Pham Ngoc Thach Street, Vo Thi Sau Ward, District 03, Ho Chi Minh, 700000., Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 5875736.36,
     "rating": 8.9,
@@ -15839,7 +15839,7 @@
   {
     "id": 252,
     "name": "SILA Urban Living",
-    "district": "District 3",
+    "district": "Quận 3",
     "address": "21 Ngo Thoi Nhiem Street, Ward 6, District 3, Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 4905044.37,
     "rating": 9.1,
@@ -16159,7 +16159,7 @@
   {
     "id": 257,
     "name": "Orchids Saigon Hotel",
-    "district": "District 3",
+    "district": "Quận 3",
     "address": "192 Pasteur Street, Ward 6, District 3, Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 5094074.03,
     "rating": 8.9,
@@ -16599,7 +16599,7 @@
   {
     "id": 264,
     "name": "NGAN HA Hotel",
-    "district": "District 5",
+    "district": "Quận 5",
     "address": "406 Tran Phu, Ward 7, District 5, Quận 5, TP. Hồ Chí Minh, Việt Nam",
     "price": 357246.75,
     "rating": 7.5,
@@ -16663,7 +16663,7 @@
   {
     "id": 265,
     "name": "HONG CUC Hotel",
-    "district": "District 5",
+    "district": "Quận 5",
     "address": "518 Ngo Gia Tu 5 Floor, District 5, Quận 5, TP. Hồ Chí Minh, Việt Nam",
     "price": 337936.12,
     "rating": 6.4,
@@ -16791,7 +16791,7 @@
   {
     "id": 267,
     "name": "Zazz Urban Ho Chi Minh",
-    "district": "District 5",
+    "district": "Quận 5",
     "address": "28 Su Van Hanh Ward 9, District 5, Quận 5, TP. Hồ Chí Minh, Việt Nam",
     "price": 1390365.73,
     "rating": 8.3,
@@ -17235,7 +17235,7 @@
   {
     "id": 274,
     "name": "Lucky Star Hotel Q5",
-    "district": "District 5",
+    "district": "Quận 5",
     "address": "60/5 Nguyen Trai Street, Ward 3, District 5, Quận 5, TP. Hồ Chí Minh, Việt Nam",
     "price": 4968197.3,
     "rating": 7,
@@ -17926,7 +17926,7 @@
   {
     "id": 285,
     "name": "Urban Stay District 3",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "112/5 Rạch Bùng Binh, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 1284157.24,
     "rating": 8.7,
@@ -18182,7 +18182,7 @@
   {
     "id": 289,
     "name": "Lunaria Maison - Thư Thái Homestay",
-    "district": "District 3",
+    "district": "Quận 3",
     "address": "73 Tran Van Dang, Ward 9, District 3, 722900 Ho Chi Minh City, Vietnam, Quận 3, 722900 TP. Hồ Chí Minh, Việt Nam",
     "price": 693246.22,
     "rating": 7.3,
@@ -18246,7 +18246,7 @@
   {
     "id": 290,
     "name": "C'Lavie Hotel - Saigon Airport Hotel",
-    "district": "District 3",
+    "district": "Quận 3",
     "address": "548A Cách Mạng Tháng 8, District 3, Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 1283084.42,
     "rating": 7.9,
@@ -18434,7 +18434,7 @@
   {
     "id": 293,
     "name": "Đô Thành Residence by DDH",
-    "district": "District 3",
+    "district": "Quận 3",
     "address": "No.18, Street No.3, Do Thanh Condominium, Ward 4, District 3, Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 3026262.61,
     "rating": 8,
@@ -18626,7 +18626,7 @@
   {
     "id": 296,
     "name": "Phòng cho thuê 216 Ga Sài Gòn",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "216 Nguyễn Phúc Nguyên, 70000 TP. Hồ Chí Minh, Việt Nam",
     "price": 453799.93,
     "rating": 8.6,
@@ -18686,7 +18686,7 @@
   {
     "id": 297,
     "name": "Downtown Retro Serviced Apartment",
-    "district": "District 3",
+    "district": "Quận 3",
     "address": "2k Ho Xuan Huong Street, District 3, Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 1737957.16,
     "rating": 8.5,
@@ -19378,7 +19378,7 @@
   {
     "id": 308,
     "name": "Tan Thu Do 2 Hotel 新首都2飯店",
-    "district": "District 5",
+    "district": "Quận 5",
     "address": "97A Nguyen Duy Duong, Ward 9, District 5, Quận 5, TP. Hồ Chí Minh, Việt Nam",
     "price": 482765.88,
     "rating": 6.9,
@@ -19942,7 +19942,7 @@
   {
     "id": 317,
     "name": "La Vela Saigon Hotel",
-    "district": "District 3",
+    "district": "Quận 3",
     "address": "280 Nam Ky Khoi Nghia, Ward 8, District 3, Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 7931199.7,
     "rating": 9,
@@ -20006,7 +20006,7 @@
   {
     "id": 318,
     "name": "Tago NTT",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 3",
     "address": "174 Đường Nguyễn Thiện Thuật, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 1141473.1,
     "rating": 8.5,
@@ -20758,7 +20758,7 @@
   {
     "id": 330,
     "name": "Sherwood Suites",
-    "district": "District 3",
+    "district": "Quận 3",
     "address": "192 Nam Ky Khoi Nghia, Vo Thi Sau Ward, District 3, , Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 3902269.98,
     "rating": 9.3,
@@ -20943,7 +20943,7 @@
   {
     "id": 333,
     "name": "Fortune 1127 - Central Hotel",
-    "district": "District 5",
+    "district": "Quận 5",
     "address": "1127 Tran Hung Dao, Ward 5, District 5, Quận 5, TP. Hồ Chí Minh, Việt Nam",
     "price": 862953.66,
     "rating": 9,
@@ -21007,8 +21007,8 @@
   {
     "id": 334,
     "name": "HOTEL BAN TÔI projects Room Myfriend",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "572 Đường Trần Hưng Đạo 5, 700000 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận 5",
+    "address": "572 Đường Trần Hưng Đạo Quận 5, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 1120719.04,
     "rating": 7.6,
     "stars": 3,
@@ -21319,7 +21319,7 @@
   {
     "id": 339,
     "name": "A In Hotel Riverside",
-    "district": "District 4",
+    "district": "Quận 4",
     "address": "188 Ben Van Don, District 4, Quận 4, TP. Hồ Chí Minh, Việt Nam",
     "price": 1066865.14,
     "rating": 7.8,
@@ -21383,7 +21383,7 @@
   {
     "id": 340,
     "name": "White Lion Hotel",
-    "district": "District 03",
+    "district": "Quận 03",
     "address": "15C Cao Thang, Ward 02, District 03, Quận 3, TP. Hồ Chí Minh, Việt Nam",
     "price": 1062084.93,
     "rating": 8,
@@ -21447,8 +21447,8 @@
   {
     "id": 341,
     "name": "HemTouch House - Nguyễn Văn Mai",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "31 Đường Nguyễn Văn Mai, 70000 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận 3",
+    "address": "31 Nguyễn Văn Mai, Phường Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh 72421, Vietnam",
     "price": 1733308.31,
     "rating": 9.1,
     "stars": 4,
@@ -21823,7 +21823,7 @@
   {
     "id": 347,
     "name": "Oakwood Residence Saigon",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "1056A Nguyen Van Linh Street, District 7, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 2560591.19,
     "rating": 9,
@@ -22139,7 +22139,7 @@
   {
     "id": 352,
     "name": "The Royal LandPark - Phu My Hung",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "25 Hung Gia 3 Street, Tan Phong Ward, District 7, Ho Chi Minh City, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 538776.5,
     "rating": 7.8,
@@ -22391,7 +22391,7 @@
   {
     "id": 356,
     "name": "Sabina Boutique Hotel 3",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "2 Đường Phan Khiêm Ích 2-4 Phan Khiem Ich street, Hung Gia 1 Town, Tan Phong Ward, District 7, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 4001163.6,
     "rating": 8.7,
@@ -22515,7 +22515,7 @@
   {
     "id": 358,
     "name": "Royal Crown Hotel",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 7",
     "address": "5-7 Phan Khiêm Ích, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 849667.95,
     "rating": 8,
@@ -23446,7 +23446,7 @@
   {
     "id": 373,
     "name": "Song Xanh Hotel near SECC - FV",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "19-21 street no 1, Tan Phu ward, district 7, Quận 7, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 485331.5,
     "rating": 6.7,
@@ -23754,7 +23754,7 @@
   {
     "id": 378,
     "name": "El Ocaso Hotel and Apartments",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "Internal Road, Hung Phuoc 2, District 7 , Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 668317.0,
     "rating": 9,
@@ -23818,7 +23818,7 @@
   {
     "id": 379,
     "name": "Simmi Signature Hotel & Apartment",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "25 Cao Trieu Phat Street, Tan Phong Ward, District 7, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 1019527.0,
     "rating": 7.9,
@@ -23946,7 +23946,7 @@
   {
     "id": 381,
     "name": "Saigon By Night Luxury Hotel",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "11A Nội Khu Hưng Gia 3 st., Tan Phong Ward, District 7, Ho Chi Minh city, Vietnam 11A Nội Khu Hưng Gia 3 st., Tan Phong Ward, District 7, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 1937500.39,
     "rating": 7.5,
@@ -24950,7 +24950,7 @@
   {
     "id": 397,
     "name": "Soi by La Doma Express",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 7",
     "address": "97 Đưong 43, 70000 TP. Hồ Chí Minh, Việt Nam",
     "price": 1193572.8,
     "rating": 9.3,
@@ -25198,7 +25198,7 @@
   {
     "id": 401,
     "name": "Victory Hotel 153-155",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 7",
     "address": "153-155 Đường Nguyễn Thị Thập, TP. Hồ Chí Minh, Việt Nam",
     "price": 427707.31,
     "rating": 8.3,
@@ -25441,7 +25441,7 @@
   {
     "id": 405,
     "name": "Scenic Valley Suite",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "Block G,Scenic Valley 1,Tan Phu Ward, District 7, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 2839990.33,
     "rating": 7.7,
@@ -25817,7 +25817,7 @@
   {
     "id": 411,
     "name": "Phu My Hung - Saigon South Serviced Apartments 2 - Near Vivo City Mall",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "R4-35 Hung Phuoc 4, District 7, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 407709.0,
     "rating": 8.8,
@@ -25877,7 +25877,7 @@
   {
     "id": 412,
     "name": "La Bonita Imperial Near SECC",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 7",
     "address": "41 Hưng Phước 4, Phường Tân Hưng, Thành phố Hồ Chí Minh 5, TP. Hồ Chí Minh, Việt Nam",
     "price": 1381675.95,
     "rating": 10,
@@ -26065,7 +26065,7 @@
   {
     "id": 415,
     "name": "La Serena Retreat",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 7",
     "address": "16-18 Hưng Phước 4, 90000 TP. Hồ Chí Minh, Việt Nam",
     "price": 1101165.71,
     "rating": 10,
@@ -26185,7 +26185,7 @@
   {
     "id": 417,
     "name": "La Bonita Hotel and Apartments",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "42 Hưng Phước 4, Tân Phong, District 7, Ho Chi Minh City, Vietnam, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 600111.0,
     "rating": 8.9,
@@ -26249,7 +26249,7 @@
   {
     "id": 418,
     "name": "Bin Bin Hotel 6 - Near SECC D7",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "89 6th Street, Hung Phuoc 4 Area, Phu My Hung, Tan Phong Ward, District 7, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 459627.0,
     "rating": 7.6,
@@ -27317,7 +27317,7 @@
   {
     "id": 435,
     "name": "Sabina Residence - Stellar Boutique Hotel",
-    "district": "District 7",
+    "district": "Quận 7",
     "address": "15-17 Cao Triều Phát, Tân Phong ward, District 7, Ho Chi Minh, Quận 7, TP. Hồ Chí Minh, Việt Nam",
     "price": 876498.0,
     "rating": 9.2,
@@ -27753,7 +27753,7 @@
   {
     "id": 442,
     "name": "Atana Airport Hotel",
-    "district": "District 12",
+    "district": "Quận 12",
     "address": "327 Phan Van Hon , District 12, Ho Chi Minh, Quận 12, TP. Hồ Chí Minh, Việt Nam",
     "price": 613184.19,
     "rating": 8.5,
@@ -28813,7 +28813,7 @@
   {
     "id": 459,
     "name": "Maison Landmark 81 SkyView",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "720A Đường Điện Biên Phủ, 72300 TP. Hồ Chí Minh, Việt Nam",
     "price": 22207230.43,
     "rating": 8.1,
@@ -29061,7 +29061,7 @@
   {
     "id": 463,
     "name": "The Landmark Plus Véra Suite",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 1",
     "address": "720A Đường Điện Biên Phủ,Thạnh Mỹ Tây, 72300 TP. Hồ Chí Minh, Việt Nam",
     "price": 5347741.17,
     "rating": 8.6,
@@ -29121,7 +29121,7 @@
   {
     "id": 464,
     "name": "Căn hộ phòng trọ BHA",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận 5",
     "address": "303 Lê Quang Định, 70000 TP. Hồ Chí Minh, Việt Nam",
     "price": 410351.0,
     "rating": 9,
@@ -29241,8 +29241,8 @@
   {
     "id": 466,
     "name": "HomyPlus Apartment",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "HomyPlus, 72300 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Bình Thạnh",
+    "address": "235/50/7/27, Đ. Đặng Thuỳ Trâm, Phường 13, Bình Thạnh, Thành phố Hồ Chí Minh 72300, Việt Nam",
     "price": 1072335.3,
     "rating": 9,
     "stars": 3,
@@ -29605,8 +29605,8 @@
   {
     "id": 472,
     "name": "Secret Garden Hotel Bình Thạnh",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "60/3 Phan Chu Trinh, Phường 14, TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Bình Thạnh",
+    "address": "60/3 Phan Chu Trinh, Phường 14, Bình Thạnh, Thành phố Hồ Chí Minh, Vietnam",
     "price": 1075978.76,
     "rating": 8.9,
     "stars": 3,
@@ -30353,7 +30353,7 @@
   {
     "id": 484,
     "name": "Lumiere City Central Parkview",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Tân Bình",
     "address": "Hado Residences, Duong Ba Thang Hai, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 6565615.95,
     "rating": 10,
@@ -30605,7 +30605,7 @@
   {
     "id": 488,
     "name": "Collection O District 10 - Bonita Grand Hotel",
-    "district": "District 10",
+    "district": "Quận 10",
     "address": "185 To Hien Thanh, District 10, Quận 10, TP. Hồ Chí Minh, Việt Nam",
     "price": 750463.35,
     "rating": 7.6,
@@ -30974,8 +30974,8 @@
   {
     "id": 494,
     "name": "TK Diamond Hotel - Saigon Center",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "283/76a Cách Mạng Tháng Tám, 700000 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận 10",
+    "address": "283/76 - 283/78, Cách Mạng Tháng Tám, Phường Hòa Hưng, Quận 10, Thành phố Hồ Chí Minh, Vietnam",
     "price": 1013808.35,
     "rating": 6.8,
     "stars": 3,
@@ -31094,8 +31094,8 @@
   {
     "id": 496,
     "name": "LowZ Staycation - D10 Saigon HCM",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "606/121 Đường 3/2 201 (tầng 2), 70000 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận 10",
+    "address": "606/121 Đ. 3 Tháng 2, Phường 14, Quận 10, Thành phố Hồ Chí Minh 700000, Vietnam",
     "price": 578353.52,
     "rating": 0,
     "stars": 4,
@@ -31625,7 +31625,7 @@
   {
     "id": 505,
     "name": "Tuong Vi Hotel Saigon",
-    "district": "District 10",
+    "district": "Quận 10",
     "address": "111 Trần Thiện Chánh, Ward 10, District 10, Quận 10, TP. Hồ Chí Minh, Việt Nam",
     "price": 2322968.03,
     "rating": 8.4,
@@ -31877,7 +31877,7 @@
   {
     "id": 509,
     "name": "Collection O District 12 - Mau Tim Hotel",
-    "district": "District 12",
+    "district": "Quận 12",
     "address": "847 Ha Huy Giap street, district 12, Ho Chi Minh city, Ho-Chi-Minh, TP. Hồ Chí Minh, Việt Nam",
     "price": 616206.23,
     "rating": 9.2,
@@ -32193,7 +32193,7 @@
   {
     "id": 514,
     "name": "Dancenter District 12 Near Quang Trung Exhibition Center Formerly Southern Star Hotel",
-    "district": "District 12",
+    "district": "Quận 12",
     "address": "41/2 Tan Thoi NHat 1 Street, District 12, Ho Chi Minh, Ho-Chi-Minh, TP. Hồ Chí Minh, Việt Nam",
     "price": 676433.71,
     "rating": 10,
@@ -32253,7 +32253,7 @@
   {
     "id": 515,
     "name": "THANH TAI HOTEL 2",
-    "district": "District 12",
+    "district": "Quận 12",
     "address": "15A Phan Văn Hớn Street, Tân Thới Nhất Ward, District 12, Hồ Chí Minh City, Việt Nam, Quận 12, TP. Hồ Chí Minh, Việt Nam",
     "price": 656309.81,
     "rating": 8.2,
@@ -32441,7 +32441,7 @@
   {
     "id": 518,
     "name": "Belvilla Near Quang Trung Exhibition Center District 12 Formerly Southern Star Hotel",
-    "district": "District 12",
+    "district": "Quận 12",
     "address": "41/2 Tan Thoi NHat 1 Street, District 12, Ho Chi Minh, Ho-Chi-Minh, TP. Hồ Chí Minh, Việt Nam",
     "price": 675912.55,
     "rating": 7.5,
@@ -32501,7 +32501,7 @@
   {
     "id": 519,
     "name": "Bich Thu Hotel",
-    "district": "District 12",
+    "district": "Quận 12",
     "address": "204 Hiep Thanh 17 Street, District 12, Quận 12, TP. Hồ Chí Minh, Việt Nam",
     "price": 366902.07,
     "rating": 9.1,
@@ -33693,7 +33693,7 @@
   {
     "id": 538,
     "name": "Tuong Vi Corner Hotel",
-    "district": "District 10",
+    "district": "Quận 10",
     "address": "740/15A Sư Vạn Hạnh, Ward 12, District 10, Quận 10, TP. Hồ Chí Minh, Việt Nam",
     "price": 2091985.48,
     "rating": 8.2,
@@ -33757,7 +33757,7 @@
   {
     "id": 539,
     "name": "Diamond Hotel CMT8 - Center SaiGon",
-    "district": "District 10",
+    "district": "Quận 10",
     "address": " 283/76 Cach Mang Thang 8 Street Ward 12, District 10., Quận 10, TP. Hồ Chí Minh, Việt Nam",
     "price": 1022748.45,
     "rating": 8,
@@ -34376,7 +34376,7 @@
   {
     "id": 549,
     "name": "Landmark Aurora by Vinhomes Apartment",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Bình Thạnh",
     "address": "720A Đường Điện Biên Phủ, 72300 TP. Hồ Chí Minh, Việt Nam",
     "price": 3910403.62,
     "rating": 8.9,
@@ -34692,7 +34692,7 @@
   {
     "id": 554,
     "name": "The Grand Residence at Vinhomes",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Bình Thạnh",
     "address": "720A Đường Điện Biên Phủ, 72300 TP. Hồ Chí Minh, Việt Nam",
     "price": 5526935.51,
     "rating": 8.9,
@@ -34948,7 +34948,7 @@
   {
     "id": 558,
     "name": "Duc Vuong Saigon Hotel - Cao Thang",
-    "district": "District 10",
+    "district": "Quận 10",
     "address": "348, Cao Thang,  Ward 12, District 10, Quận 10, TP. Hồ Chí Minh, Việt Nam",
     "price": 804609.48,
     "rating": 8.3,
@@ -35316,7 +35316,7 @@
   {
     "id": 564,
     "name": "The Suite Landmark Riverside Apartment",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Bình Thạnh",
     "address": "720A Đường Điện Biên Phủ, 72300 TP. Hồ Chí Minh, Việt Nam",
     "price": 4327513.34,
     "rating": 8.9,
@@ -36040,7 +36040,7 @@
   {
     "id": 576,
     "name": "Collection O District 10 Near Van Hanh Hospital Formerly Lan Rung Hotel",
-    "district": "District 10",
+    "district": "Quận 10",
     "address": "781/A11 Le Hong Phong street, Ward 12, District 10, Ho chi Minh City, Vietnamnull, Ho-Chi-Minh, Quận 10, TP. Hồ Chí Minh, Việt Nam",
     "price": 869712.66,
     "rating": 8,
@@ -37051,8 +37051,8 @@
   {
     "id": 593,
     "name": "hotel đặng hiền lương",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "195 Đường Tên Lửa 195, 700000 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Bình Tân",
+    "address": "195 Đ. Tên Lửa, Khu phố 3, Bình Tân, Thành phố Hồ Chí Minh 00700, Vietnam",
     "price": 293521.65,
     "rating": 7.5,
     "stars": 5,
@@ -39205,8 +39205,8 @@
   {
     "id": 628,
     "name": "La Hotel Nguyen Van Dung",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "1/37 Nguyen Van Dung, An Nhon Ward, TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Gò Vấp",
+    "address": "1/37 Đường Nguyễn Văn Dung, phường An Nhơn, Gò Vấp, Thành phố Hồ Chí Minh 007000, Vietnam",
     "price": 1157744.1,
     "rating": 10,
     "stars": 2,
@@ -40433,8 +40433,8 @@
   {
     "id": 648,
     "name": "Four P Stay Phu Nhuan",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "86/17 Đ. Thích Quảng Đức, TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Phú Nhuận",
+    "address": "28/2 Phan Tây Hồ, Phường 7, Phú Nhuận, Thành phố Hồ Chí Minh, Vietnam",
     "price": 1467530.28,
     "rating": 10,
     "stars": 3,
@@ -40869,7 +40869,7 @@
   {
     "id": 655,
     "name": "Four P Home",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Phú Nhuận",
     "address": "30 Phan Tây Hồ, TP. Hồ Chí Minh, Việt Nam",
     "price": 1644202.71,
     "rating": 9.3,
@@ -42785,7 +42785,7 @@
   {
     "id": 686,
     "name": "Four P Home Phu Nhuan",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Phú Nhuận",
     "address": "19 Hẻm 86 Thích Quảng Đức, TP. Hồ Chí Minh, Việt Nam",
     "price": 1554030.12,
     "rating": 8.8,
@@ -42969,7 +42969,7 @@
   {
     "id": 689,
     "name": "Khách sạn Mỹ Hằng Quận Phú Nhuận",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Phú Nhuận",
     "address": "46/11 Đ. Nhiêu Tứ 5, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 376732.94,
     "rating": 10,
@@ -43465,7 +43465,7 @@
   {
     "id": 697,
     "name": "Hạt Nắng House - Gò Vấp",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Gò Vấp",
     "address": "274 Đường Nguyễn Văn Lượng 274/27/6 Nguyễn Văn Lượng - Phường 17 - Gò Vấp, 70000 TP. Hồ Chí Minh, Việt Nam",
     "price": 610479.4,
     "rating": 9.8,
@@ -43586,8 +43586,8 @@
   {
     "id": 699,
     "name": "Đông Như 7 Hotel",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "340/18 Nguyễn Văn Lượng, Phường An Hội Đông, Thành Phố Hồ Chí Minh, TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Gò Vấp",
+    "address": "340/18 Đ. Nguyễn Văn Lượng, Phường 16, Gò Vấp, Thành phố Hồ Chí Minh 700000, Vietnam",
     "price": 620157.47,
     "rating": 9.7,
     "stars": 3,
@@ -43774,8 +43774,8 @@
   {
     "id": 702,
     "name": "hotel tân kim chung",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "305 Đường Tên Lửa 305, 70000 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Bình Tân",
+    "address": "305 Đ. Tên Lửa, Bình Trị Đông B, Bình Tân, Thành phố Hồ Chí Minh 71900, Vietnam",
     "price": 275176.55,
     "rating": 10,
     "stars": 1,
@@ -43958,7 +43958,7 @@
   {
     "id": 705,
     "name": "Du Thuyền 2 Hotel Hồ Chí Minh",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Phú Nhuận",
     "address": "18A Hẻm 137 Lê Văn Sỹ, phường 13, Phú Nhuận, Tp. Hồ Chí Minh, 700000 TP. Hồ Chí Minh, Việt Nam",
     "price": 1121447.26,
     "rating": 9,
@@ -44386,8 +44386,8 @@
   {
     "id": 712,
     "name": "Wander Lane Hotel & Coliving",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "20-22 Nguyễn Trọng Tuyển, TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Phú Nhuận",
+    "address": "Nguyễn Trọng Tuyển/20-22 Cầu Kiệu, Phường, Phú Nhuận, Thành phố Hồ Chí Minh, Vietnam",
     "price": 1024321.91,
     "rating": 8.7,
     "stars": 4,
@@ -45510,8 +45510,8 @@
   {
     "id": 730,
     "name": "Van Ha Boutique Hotel Etown - Nhà Ga T3",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "440A Đường Cộng Hòa, 700000 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Tân Bình",
+    "address": "440 Cộng Hòa, Phường Tân Bình, Tân Bình, Thành phố Hồ Chí Minh, Vietnam",
     "price": 1013808.35,
     "rating": 8.6,
     "stars": 3,
@@ -46367,7 +46367,7 @@
   {
     "id": 744,
     "name": "Collection O District Tan Phu - Tien Thang Hotel",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Tân Phú",
     "address": "321 D. Tan Ky Tan Quy, Tan Quy, Ho Chi Minh City, 700000, Vietnam, Ho-Chi-Minh, TP. Hồ Chí Minh, Việt Nam",
     "price": 676849.35,
     "rating": 8.8,
@@ -46867,7 +46867,7 @@
   {
     "id": 752,
     "name": "Lanura Saigon Boutique Hotel",
-    "district": "District Tan",
+    "district": "Quận Tan",
     "address": "No 99/18-18A , Nguyen Thai Binh Street, Ward 4, District Tan Binh, Quận Tân Bình, TP. Hồ Chí Minh, Việt Nam",
     "price": 434431.5,
     "rating": 8.3,
@@ -48804,8 +48804,8 @@
   {
     "id": 783,
     "name": "Lovera Hotel Airport",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "40/16 Đường Lam Sơn, TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Tân Bình",
+    "address": "40/16 Đ. Lam Sơn, Phường 2, Tân Bình, Thành phố Hồ Chí Minh, Vietnam",
     "price": 1282601.85,
     "rating": 10,
     "stars": 3,
@@ -48864,8 +48864,8 @@
   {
     "id": 784,
     "name": "Hotel Minh Hiếu",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "86 Thăng Long, 72100 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Tân Bình",
+    "address": "Khu Dân cư Vĩnh Phú 2, Đường Vĩnh Phú 41, KP. Phú Hội, Tp, Thuận An, Bình Dương 75000, Vietnam",
     "price": 337936.12,
     "rating": 9.3,
     "stars": 2,
@@ -49748,7 +49748,7 @@
   {
     "id": 798,
     "name": "Ciao SaiGon Hotel & Spa",
-    "district": "District Tan",
+    "district": "Quận Tan",
     "address": "1 Dong Da, Ward 2, District Tan Binh, Quận Tân Bình, TP. Hồ Chí Minh, Việt Nam",
     "price": 1338161.0,
     "rating": 8,
@@ -50818,8 +50818,8 @@
   {
     "id": 815,
     "name": "G8 Center Hotel and Apartment",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "226/38 Đường Lê Văn Sỹ 7, 700000 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Tân Bình",
+    "address": "226/38 Đ. Lê Văn Sỹ, Phường 1, Tân Bình, Thành phố Hồ Chí Minh 700000, Vietnam",
     "price": 352482.5,
     "rating": 10,
     "stars": 2,
@@ -53042,8 +53042,8 @@
   {
     "id": 851,
     "name": "Golden Sun Hotel 6 - Sân Bay",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "18 Đ. Lam Sơn, TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Tân Bình",
+    "address": "18 Đ. Lam Sơn, Tân Sơn Hòa, Tân Bình, Thành phố Hồ Chí Minh 76000, Vietnam",
     "price": 976036.74,
     "rating": 7.2,
     "stars": 4,
@@ -53102,7 +53102,7 @@
   {
     "id": 852,
     "name": "Tago Airport Hotel",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Tân Bình",
     "address": "101 Đường Bạch Đằng, 760000 TP. Hồ Chí Minh, Việt Nam",
     "price": 1566794.72,
     "rating": 10,
@@ -53798,7 +53798,7 @@
   {
     "id": 863,
     "name": "Minh Hồng Hotel",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Tân Bình",
     "address": "175 Đường Phan Huy Ích, TP. Hồ Chí Minh, Việt Nam",
     "price": 260693.57,
     "rating": 9.3,
@@ -54106,8 +54106,8 @@
   {
     "id": 868,
     "name": "HOTEL Ánh Hồng",
-    "district": "Thành phố Hồ Chí Minh",
-    "address": "29 Đường Sầm Sơn, 700000 TP. Hồ Chí Minh, Việt Nam",
+    "district": "Quận Tân Bình",
+    "address": "29 Đ. Sầm Sơn, Phường 4, Tân Bình, Thành phố Hồ Chí Minh 700000, Vietnam",
     "price": 299314.84,
     "rating": 7,
     "stars": 2,
@@ -55865,7 +55865,7 @@
   {
     "id": 896,
     "name": "Khách Sạn Thu Hà",
-    "district": "Thành phố Hồ Chí Minh",
+    "district": "Quận Tân Bình",
     "address": "2 Đường Nguyễn Minh Hoàng 4, 70000 TP. Hồ Chí Minh, Việt Nam",
     "price": 399515.59,
     "rating": 8.2,
