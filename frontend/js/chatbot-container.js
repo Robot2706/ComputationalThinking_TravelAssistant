@@ -15,7 +15,6 @@ class ChatbotContainer {
             topHotels: [],
             selectedHotel: null,
             conversationHistory: [],
-            sessionId: this.generateSessionId()
         };
         
         // API endpoint
@@ -42,22 +41,55 @@ class ChatbotContainer {
     }
     
     /**
-     * Generate unique session ID
-     */
-    generateSessionId() {
-        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
-    
-    /**
      * Initialize chatbot
      */
     init() {
+        this.loadMarkedLibrary();
         this.createContainer();
         this.attachEventListeners();
         this.loadHistoryFromStorage();
         console.log('✅ ChatbotContainer initialized with session:', this.state.sessionId);
     }
+    /**
+     * ✅ THÊM: Load Marked.js library
+     */
+    loadMarkedLibrary() {
+        if (typeof marked === 'undefined') {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+            script.async = false;
+            document.head.appendChild(script);
+            
+            script.onload = () => {
+                console.log('✅ Marked.js loaded');
+                // ✅ Configure marked options
+                if (typeof marked !== 'undefined' && marked.setOptions) {
+                    marked.setOptions({
+                        breaks: true,        // Convert \n to <br>
+                        gfm: true,          // GitHub Flavored Markdown
+                        headerIds: false,   // Don't add IDs to headers
+                        mangle: false       // Don't escape autolinked email
+                    });
+                }
+            };
+        }
+    }
     
+    /**
+     * ✅ THÊM: Parse Markdown to HTML
+     */
+    parseMarkdown(text) {
+        if (typeof marked !== 'undefined' && marked.parse) {
+            try {
+                return marked.parse(text);
+            } catch (e) {
+                console.error('Markdown parse error:', e);
+                return this.escapeHtml(text).replace(/\n/g, '<br>');
+            }
+        }
+        // Fallback nếu marked chưa load
+        return this.escapeHtml(text).replace(/\n/g, '<br>');
+    }
     /**
      * ========================================
      * TASK 2: CHAT HISTORY PERSISTENCE
@@ -225,7 +257,7 @@ class ChatbotContainer {
                                 <i class="fas fa-arrow-left"></i>
                             </button>
                             <img src="assets/icons/logo.svg" alt="2rism" class="chatbot-logo">
-                            <span class="chatbot-title">2rism Assistant</span>
+                            <span class="chatbot-title">Touriri</span>
                         </div>
                         <div class="header-right">
                             <button class="btn-clear-history" id="btnClearHistory" title="Xóa lịch sử chat">
@@ -340,17 +372,45 @@ class ChatbotContainer {
      * Handle clear history button click
      */
     handleClearHistory() {
-        if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử chat?')) {
-            this.clearHistory();
-            
-            // Clear messages from UI
-            document.getElementById('resultMessages').innerHTML = '';
-            document.getElementById('reviewMessages').innerHTML = '';
-            
-            alert('✅ Đã xóa lịch sử chat!');
-        }
+    if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử chat?')) {
+        this.clearHistory();
+        
+        // ✅ Clear ALL message containers
+        const chatMessages = document.getElementById('chatMessages');
+        const resultMessages = document.getElementById('resultMessages');
+        const reviewMessages = document.getElementById('reviewMessages');
+        
+        if (chatMessages) chatMessages.innerHTML = '';
+        if (resultMessages) resultMessages.innerHTML = '';
+        if (reviewMessages) reviewMessages.innerHTML = '';
+        
+        alert('✅ Đã xóa lịch sử chat!');
+    }
     }
     
+    /**
+    * Update hotels (called when user searches again)
+    */
+    updateHotels(hotels) {
+        if (!hotels || hotels.length === 0) return;
+        
+        this.state.topHotels = hotels.slice(0, 3);
+        this.saveHistoryToStorage();
+        
+        // Re-render hotels list
+        this.renderHotelsList();
+        
+        // Update modal if exists
+        if (document.getElementById('touririModal')) {
+            this.loadHotelsToModal();
+        }
+        
+        // Update badge
+        this.badge.textContent = this.state.topHotels.length;
+        
+        console.log('✅ Updated to', this.state.topHotels.length, 'new hotels');
+    }
+
     /**
      * Show chatbot after search
      */
@@ -363,6 +423,14 @@ class ChatbotContainer {
         
         // Save top hotels to storage
         this.saveHistoryToStorage();
+
+        if (this.state.isOpen) {
+            this.renderHotelsList();
+            // Cập nhật modal nếu đã tạo
+            if (document.getElementById('touririModal')) {
+                this.loadHotelsToModal();
+            }
+        }
         
         // Show container
         this.container.style.display = 'block';
@@ -539,6 +607,9 @@ class ChatbotContainer {
             if (!response.ok) throw new Error('API Error');
             
             const data = await response.json();
+
+            // ✅ QUAN TRỌNG: Parse Markdown
+            const htmlContent = this.parseMarkdown(data.answer || data.response);
             
             reviewContent.innerHTML = `
                 <div class="review-summary">
@@ -601,16 +672,14 @@ class ChatbotContainer {
     /**
      * Send message to AI
      */
-    async sendMessage() {
+        async sendMessage() {
         const message = this.input.value.trim();
         if (!message) return;
         
-        // Add user message to UI
         this.addUserMessageToDOM(message, true);
         this.input.value = '';
         this.input.disabled = true;
         
-        // Show loading
         this.addLoadingMessage();
         
         try {
@@ -634,14 +703,11 @@ class ChatbotContainer {
             
             const data = await response.json();
             
-            // Remove loading
             this.removeLoadingMessage();
             
-            // Add bot response to UI
             const botAnswer = data.answer || data.response || 'Xin lỗi, tôi không hiểu câu hỏi.';
             this.addBotMessageToDOM(botAnswer, true);
             
-            // Save to history
             this.addToHistory(message, botAnswer);
             
         } catch (error) {
@@ -663,11 +729,9 @@ class ChatbotContainer {
         const container = this.getMessagesContainer();
         const messageBox = document.createElement('div');
         messageBox.className = 'message user-message';
-        messageBox.innerHTML = `<p>${this.escapeHtml(text)}</p>`;
+        messageBox.innerHTML = `<div class="message-content">${this.escapeHtml(text)}</div>`;
         
         container.appendChild(messageBox);
-        
-        // ✅ TASK 1: Auto-scroll after adding message
         this.scrollToBottom();
     }
     
@@ -676,15 +740,17 @@ class ChatbotContainer {
      * @param {string} html - Message HTML
      * @param {boolean} shouldSave - Save to history or not
      */
-    addBotMessageToDOM(html, shouldSave = true) {
+    addBotMessageToDOM(text, shouldSave = true) {
         const container = this.getMessagesContainer();
         const messageBox = document.createElement('div');
         messageBox.className = 'message bot-message';
-        messageBox.innerHTML = `<p>${html}</p>`;
+        
+        // ✅ QUAN TRỌNG: Parse Markdown to HTML
+        const htmlContent = this.parseMarkdown(text);
+        
+        messageBox.innerHTML = `<div class="message-content markdown-content">${htmlContent}</div>`;
         
         container.appendChild(messageBox);
-        
-        // ✅ TASK 1: Auto-scroll after adding message
         this.scrollToBottom();
     }
     
@@ -704,31 +770,20 @@ class ChatbotContainer {
         `;
         
         container.appendChild(loadingBox);
-        
-        // ✅ TASK 1: Auto-scroll after adding loading
         this.scrollToBottom();
     }
     
-    /**
-     * Remove loading message
-     */
     removeLoadingMessage() {
         const loadingMsg = document.querySelector('.loading-message');
         if (loadingMsg) loadingMsg.remove();
     }
     
-    /**
-     * Get current messages container
-     */
     getMessagesContainer() {
         return this.state.currentView === 'result' 
             ? document.getElementById('resultMessages')
             : document.getElementById('reviewMessages');
     }
     
-    /**
-     * Escape HTML
-     */
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
