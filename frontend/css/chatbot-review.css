@@ -38,7 +38,9 @@ body {
 
 /* HEADER */
 /* HEADER ĐƠN GIẢN (2rism) */
+/* HEADER */
 .ai-header {
+    position: fixed;
     width: 100%;
     padding: 20px 40px;
     display: flex;
