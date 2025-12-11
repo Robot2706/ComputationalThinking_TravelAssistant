@@ -579,7 +579,7 @@ def search_with_expansion(hotels: List[Hotel], inp: UserInput, topN: int = 5,
             sc = compute_score(h, temp_input, lam=lam,
                              tau_low=current_tau_low, tau_high=current_tau_high)
             
-            if sc > 0.1:
+            if sc > 0.5:
                 scored.append((h, sc))
 
         scored.sort(key=lambda x: x[1], reverse=True)
