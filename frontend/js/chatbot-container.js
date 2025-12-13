@@ -257,7 +257,7 @@ class ChatbotContainer {
                             <button class="btn-back" id="btnBack" style="display: none;">
                                 <i class="fas fa-arrow-left"></i>
                             </button>
-                            <img src="assets/icons/logo.svg" alt="2rism" class="chatbot-logo">
+                            <img src="assets/images/chatbot.png" alt="2rism" class="chatbot-logo">
                             <span class="chatbot-title">Touriri</span>
                         </div>
                         <div class="header-right">
@@ -301,11 +301,7 @@ class ChatbotContainer {
                             <div class="review-content" id="reviewContent">
                                 <!-- AI review summary -->
                             </div>
-                            
-                            <div class="ai-question-box">
-                                <p>Bạn muốn hỏi gì thêm về khách sạn này?</p>
-                            </div>
-                            
+
                             <!-- Messages container for review view -->
                             <div class="messages-container" id="reviewMessages"></div>
                         </div>
@@ -487,9 +483,11 @@ class ChatbotContainer {
         if (this.state.isFullscreen) {
             this.window.classList.add('fullscreen');
             btnIcon.className = 'fas fa-compress';  // Change to compress icon
+            this.icon.style.display = 'none';
         } else {
             this.window.classList.remove('fullscreen');
             btnIcon.className = 'fas fa-expand';    // Back to expand icon
+            this.icon.style.display = 'block';
         }
     }
 
