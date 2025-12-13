@@ -877,3 +877,320 @@
 .chatbot-window.fullscreen .hotel-card-image {
     display: block;  /* HIỆN ở fullscreen */
 }
+
+/* ========================================
+   HOTEL DETAIL OVERLAY (GLASSMORPHISM)
+   Based on Reference Image Design
+   ======================================== */
+
+/* Overlay Background (Blur + Dark) */
+#hotel-detail-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    animation: overlayFadeIn 0.3s ease;
+}
+
+#hotel-detail-overlay.active {
+    display: flex;
+}
+
+@keyframes overlayFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Main Card Container (Glass Effect) */
+.detail-modal-card {
+    width: 90%;
+    max-width: 1000px;
+    height: 85vh;
+    max-height: 600px;
+    background: rgba(40, 44, 52, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    animation: cardSlideUp 0.4s ease;
+}
+
+@keyframes cardSlideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Close Button (Top Right) */
+.detail-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s;
+}
+
+.detail-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+/* Left Side - Image (40%) */
+.detail-modal-image {
+    flex: 0 0 45%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.detail-modal-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.4));
+}
+
+/* Right Side - Content (60%) */
+.detail-modal-content {
+    flex: 1;
+    padding: 50px 40px 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background: rgba(30, 34, 42, 0.6);
+}
+
+.detail-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.detail-modal-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+/* Hotel Name */
+.detail-modal-name {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+/* Rating Section */
+.detail-modal-rating {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.detail-rating-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: rgba(102, 126, 234, 0.2);
+    border: 2px solid #667eea;
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.detail-rating-stars {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-rating-stars .stars {
+    font-size: 20px;
+    color: #f39c12;
+}
+
+.detail-rating-stars .reviews {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Info Grid */
+.detail-modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border-left: 3px solid #667eea;
+}
+
+.detail-info-item i {
+    color: #667eea;
+    font-size: 18px;
+    margin-top: 2px;
+    width: 20px;
+    flex-shrink: 0;
+}
+
+.detail-info-item .info-content {
+    flex: 1;
+}
+
+.detail-info-item .info-label {
+    display: block;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-info-item .info-value {
+    display: block;
+    font-size: 15px;
+    color: white;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.detail-info-item.price .info-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+/* Description Section */
+.detail-modal-description {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-modal-description h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+}
+
+.detail-modal-description p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Action Button */
+.detail-modal-actions {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-detail-review {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-detail-review:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+}
+
+/* Responsive - Tablet & Mobile */
+@media (max-width: 768px) {
+    .detail-modal-card {
+        flex-direction: column;
+        width: 95%;
+        height: 90vh;
+        max-height: none;
+    }
+    
+    .detail-modal-image {
+        flex: 0 0 250px;
+    }
+    
+    .detail-modal-content {
+        padding: 30px 20px;
+    }
+    
+    .detail-modal-name {
+        font-size: 24px;
+    }
+    
+    .detail-rating-badge {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+/* Clickable Card Cursor */
+.hotel-card-compact {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.hotel-card-compact:hover {
+    transform: translateY(-4px);
+}

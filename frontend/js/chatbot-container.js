@@ -550,11 +550,18 @@ class ChatbotContainer {
             </div>
         `;
         
-        card.querySelector('.btn-review').addEventListener('click', () => {
+        // ✅ CRITICAL: Review button - Stop Propagation
+        const reviewBtn = card.querySelector('.btn-review');
+        reviewBtn.addEventListener('click', (e) => {
+            e.stopPropagation();  // Prevent card click
             this.showReviewView(hotel);
         });
         
-        return card;
+        // ✅ Card click - Show glassmorphism detail overlay
+        card.addEventListener('click', () => {
+            this.showDetailOverlay(hotel);
+        });
+            return card;
     }
     
     async showReviewView(hotel) {
@@ -800,6 +807,174 @@ class ChatbotContainer {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+        /**
+     * ========================================
+     * HOTEL DETAIL OVERLAY (GLASSMORPHISM)
+     * ========================================
+     */
+
+    /**
+     * Show detail overlay modal
+     */
+    showDetailOverlay(hotel) {
+        // Create overlay if not exists
+        let overlay = document.getElementById('hotel-detail-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'hotel-detail-overlay';
+            document.body.appendChild(overlay);
+        }
+        
+        // Render content
+        overlay.innerHTML = this.renderDetailOverlayHTML(hotel);
+        overlay.classList.add('active');
+        
+        // Attach event listeners
+        const closeBtn = overlay.querySelector('.detail-modal-close');
+        const reviewBtn = overlay.querySelector('.btn-detail-review');
+        
+        closeBtn.addEventListener('click', () => this.closeDetailOverlay());
+        
+        // Click outside to close
+        overlay.addEventListener('click', (e) => {
+            if (e.target.id === 'hotel-detail-overlay') {
+                this.closeDetailOverlay();
+            }
+        });
+        
+        // Review button
+        if (reviewBtn) {
+            reviewBtn.addEventListener('click', () => {
+                this.closeDetailOverlay();
+                this.showReviewView(hotel);
+            });
+        }
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Close detail overlay
+     */
+    closeDetailOverlay() {
+        const overlay = document.getElementById('hotel-detail-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                overlay.remove();
+            }, 300);
+        }
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+    }
+
+    /**
+     * Generate HTML for detail overlay (Glassmorphism Design)
+     */
+    renderDetailOverlayHTML(hotel) {
+        const rating = hotel.rating || 4;
+        const stars = '⭐'.repeat(Math.floor(rating / 2));
+        const price = hotel.price ? new Intl.NumberFormat('vi-VN').format(hotel.price) : 'Liên hệ';
+        const imageUrl = hotel.image || (hotel.images && hotel.images[0]) || 'assets/images/hotel-placeholder.jpg';
+        
+        // Extract specific address or fallback
+        const specificAddress = hotel.address || `${hotel.district || 'TP. Hồ Chí Minh'}`;
+        
+        // Description (use details field or generate)
+        const description = hotel.details || hotel.description || this.generateFallbackDescription(hotel);
+        
+        return `
+            <div class="detail-modal-card">
+                <!-- Close Button -->
+                <button class="detail-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <!-- Left: Image -->
+                <div class="detail-modal-image" style="background-image: url('${imageUrl}')"></div>
+                
+                <!-- Right: Content -->
+                <div class="detail-modal-content">
+                    <!-- Hotel Name -->
+                    <h1 class="detail-modal-name">${hotel.name || hotel.hotel_name}</h1>
+                    
+                    <!-- Rating -->
+                    <div class="detail-modal-rating">
+                        <div class="detail-rating-badge">${rating.toFixed(1)}</div>
+                        <div class="detail-rating-stars">
+                            <span class="stars">${stars}</span>
+                            ${hotel.reviews_count ? `<span class="reviews">${hotel.reviews_count} đánh giá</span>` : '<span class="reviews">Chưa có đánh giá</span>'}
+                        </div>
+                    </div>
+                    
+                    <!-- Info Grid -->
+                    <div class="detail-modal-info">
+                        <!-- Price -->
+                        <div class="detail-info-item price">
+                            <i class="fas fa-tag"></i>
+                            <div class="info-content">
+                                <span class="info-label">Giá phòng</span>
+                                <span class="info-value">${price} VND/đêm</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Address -->
+                        <div class="detail-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div class="info-content">
+                                <span class="info-label">Địa chỉ</span>
+                                <span class="info-value">${specificAddress}</span>
+                            </div>
+                        </div>
+                        
+                        ${hotel.stars ? `
+                        <div class="detail-info-item">
+                            <i class="fas fa-star"></i>
+                            <div class="info-content">
+                                <span class="info-label">Hạng</span>
+                                <span class="info-value">Khách sạn ${hotel.stars} sao</span>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="detail-modal-description">
+                        <h3>Về khách sạn</h3>
+                        <p>${description}</p>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="detail-modal-actions">
+                        <button class="btn-detail-review">
+                            <i class="fas fa-comment-dots"></i>
+                            Xem Reviews Chi Tiết
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Generate fallback description from category reviews
+     */
+    generateFallbackDescription(hotel) {
+        if (hotel.category_reviews && hotel.category_reviews.length > 0) {
+            const topCategories = hotel.category_reviews
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 3)
+                .map(cat => `${cat.title} (${cat.score}/10)`)
+                .join(', ');
+            
+            return `Khách sạn được đánh giá cao về: ${topCategories}. ${hotel.reviews_count ? `Với ${hotel.reviews_count} đánh giá từ khách hàng, ` : ''}khách sạn này là lựa chọn tuyệt vời cho kỳ nghỉ của bạn tại ${hotel.district || 'TP.HCM'}.`;
+        }
+        
+        return `Khách sạn tọa lạc tại ${hotel.district || 'TP.HCM'}, mang đến không gian thoải mái và tiện nghi hiện đại. Hãy xem reviews chi tiết để biết thêm thông tin!`;
     }
 }
 
