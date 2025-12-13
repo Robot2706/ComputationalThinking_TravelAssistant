@@ -1,9 +1,3 @@
-/* ========================================
-   CHATBOT CONTAINER STYLES
-   Tích hợp từ chatbot.css có sẵn
-   ======================================== */
-
-/* Container */
 .chatbot-container {
     position: fixed;
     bottom: 0;
@@ -11,14 +5,12 @@
     z-index: 10000;
 }
 
-/* Floating Icon */
 .chatbot-icon {
     position: fixed;
     bottom: 30px;
     right: 30px;
     z-index: 10001;
 }
-
 .chatbot-icon-btn {
     width: 60px;
     height: 60px;
@@ -33,7 +25,6 @@
     position: relative;
     transition: all 0.3s ease;
 }
-
 .chatbot-icon-btn:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
@@ -93,7 +84,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.3);
     z-index: 0;
     border-radius: 20px;
     pointer-events: none;
@@ -741,4 +732,148 @@
 
 .markdown-content:contains("✅") {
     color: #48bb78;
+}
+
+/* ========================================
+   FULLSCREEN RESPONSIVE MODE
+   ======================================== */
+
+/* Normal mode - Cards vertical */
+.hotels-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 16px 0;
+}
+
+/* Fullscreen mode - Cards horizontal */
+.chatbot-window.fullscreen .hotels-list {
+    flex-direction: row !important;
+    gap: 40px;
+    justify-content: center;
+    align-items: stretch;
+    margin: 80px auto 60px;
+    max-width: 1400px;
+    padding: 0 40px;
+}
+
+.chatbot-window.fullscreen .hotel-card-compact {
+    flex: 1;
+    max-width: 420px;
+    min-height: 500px;
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35) !important;
+}
+
+.chatbot-window.fullscreen .hotel-card-compact:hover {
+    transform: translateY(-8px);
+}
+
+/* Fullscreen input area - centered at bottom */
+.chatbot-window.fullscreen .chatbot-input-area {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 700px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 30px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.chatbot-window.fullscreen .chatbot-input {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    font-size: 15px;
+}
+
+.chatbot-window.fullscreen .chatbot-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatbot-window.fullscreen .btn-send {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+}
+
+/* Text colors for fullscreen */
+.chatbot-window.fullscreen .hotel-card-compact {
+    color: white;
+}
+
+.chatbot-window.fullscreen .hotel-name,
+.chatbot-window.fullscreen .hotel-price,
+.chatbot-window.fullscreen .hotel-location,
+.chatbot-window.fullscreen .hotel-rating {
+    color: white;
+}
+
+.chatbot-window.fullscreen .hotel-rating .stars {
+    color: #f39c12;
+}
+
+.chatbot-window.fullscreen .ai-message-box,
+.chatbot-window.fullscreen .ai-question-box {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Review view in fullscreen */
+.chatbot-window.fullscreen .review-header,
+.chatbot-window.fullscreen .review-content {
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    background: rgba(255, 255, 255, 0.85); /* ✅ Nền trắng đục */
+    backdrop-filter: blur(15px);
+    color: #2c3e50;                        /* ✅ Chữ xám đậm */
+}
+
+.chatbot-window.fullscreen .review-header h2,
+.chatbot-window.fullscreen .review-summary {
+    color: #2c3e50;                        /* ✅ Chữ xám đậm */
+}
+
+/* Messages in fullscreen */
+.chatbot-window.fullscreen .messages-container {
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+.chatbot-window.fullscreen .bot-message {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    color:#2c3e50;
+}
+
+.chatbot-window.fullscreen .user-message {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* ✅ THÊM: Hotel card image trong fullscreen */
+.hotel-card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+    margin-bottom: 12px;
+    display: none;  /* ẨN ở normal mode */
+}
+
+.chatbot-window.fullscreen .hotel-card-image {
+    display: block;  /* HIỆN ở fullscreen */
 }

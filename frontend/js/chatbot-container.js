@@ -13,6 +13,7 @@ class ChatbotContainer {
             isOpen: false,
             isFullscreen: false,
             currentView: 'result',
+            carouselIndex: 0,
             topHotels: [],
             selectedHotel: null,
             conversationHistory: [],
@@ -482,12 +483,14 @@ class ChatbotContainer {
         
         if (this.state.isFullscreen) {
             this.window.classList.add('fullscreen');
-            btnIcon.className = 'fas fa-compress';  // Change to compress icon
+            btnIcon.className = 'fas fa-compress';
             this.icon.style.display = 'none';
+            this.renderHotelsList();
         } else {
             this.window.classList.remove('fullscreen');
-            btnIcon.className = 'fas fa-expand';    // Back to expand icon
+            btnIcon.className = 'fas fa-expand';
             this.icon.style.display = 'block';
+            this.renderHotelsList();
         }
     }
 
@@ -513,9 +516,6 @@ class ChatbotContainer {
         });
     }
     
-    /**
-     * Create hotel card
-     */
     createHotelCard(hotel, index) {
         const card = document.createElement('div');
         card.className = 'hotel-card-compact';
@@ -524,7 +524,12 @@ class ChatbotContainer {
         const stars = '⭐'.repeat(Math.floor((hotel.rating || 4) / 2));
         const price = hotel.price ? new Intl.NumberFormat('vi-VN').format(hotel.price) : 'Liên hệ';
         
+        // ✅ Get hotel image
+        const imageUrl = hotel.image || (hotel.images && hotel.images[0]) || 'assets/images/hotel-placeholder.jpg';
+        
         card.innerHTML = `
+            <img src="${imageUrl}" alt="${hotel.name || hotel.hotel_name}" class="hotel-card-image">
+            
             <div class="hotel-card-header">
                 <h3 class="hotel-name">${hotel.name || hotel.hotel_name}</h3>
                 <div class="hotel-rating">
@@ -552,9 +557,6 @@ class ChatbotContainer {
         return card;
     }
     
-    /**
-     * Show review view
-     */
     async showReviewView(hotel) {
         this.state.currentView = 'review';
         this.state.selectedHotel = hotel;
@@ -574,22 +576,15 @@ class ChatbotContainer {
         this.scrollToBottom();
     }
     
-    /**
-     * Show result view
-     */
     showResultView() {
         this.state.currentView = 'result';
         this.state.selectedHotel = null;
-        
         this.resultView.style.display = 'block';
         this.reviewView.style.display = 'none';
-        
         document.getElementById('btnBack').style.display = 'none';
-        
-        // Auto-scroll
         this.scrollToBottom();
     }
-    
+
     /**
      * Load review summary
      */
@@ -690,7 +685,7 @@ class ChatbotContainer {
     /**
      * Send message to AI
      */
-        async sendMessage() {
+    async sendMessage() {
         const message = this.input.value.trim();
         if (!message) return;
         
@@ -737,8 +732,7 @@ class ChatbotContainer {
             this.input.focus();
         }
     }
-    
-    /**
+     /**
      * Add user message to DOM
      * @param {string} text - Message text
      * @param {boolean} shouldSave - Save to history or not
