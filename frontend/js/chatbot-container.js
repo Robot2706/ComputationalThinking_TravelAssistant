@@ -11,6 +11,7 @@ class ChatbotContainer {
         this.state = {
             isVisible: false,
             isOpen: false,
+            isFullscreen: false,
             currentView: 'result',
             topHotels: [],
             selectedHotel: null,
@@ -260,11 +261,11 @@ class ChatbotContainer {
                             <span class="chatbot-title">Touriri</span>
                         </div>
                         <div class="header-right">
+                            <button class="btn-fullscreen" id="btnFullscreen" title="Toàn màn hình">
+                                <i class="fas fa-expand"></i>
+                            </button>
                             <button class="btn-clear-history" id="btnClearHistory" title="Xóa lịch sử chat">
                                 <i class="fas fa-trash-alt"></i>
-                            </button>
-                            <button class="btn-close" id="btnClose">
-                                <i class="fas fa-times"></i>
                             </button>
                         </div>
                     </div>
@@ -348,10 +349,7 @@ class ChatbotContainer {
      */
     attachEventListeners() {
         // Icon click
-        this.icon.addEventListener('click', () => this.openChatWindow());
-        
-        // Close button
-        document.getElementById('btnClose').addEventListener('click', () => this.closeChatWindow());
+        this.icon.addEventListener('click', () => this.toggleChatWindow());
         
         // Back button
         document.getElementById('btnBack').addEventListener('click', () => this.showResultView());
@@ -359,6 +357,9 @@ class ChatbotContainer {
         // Clear history button
         document.getElementById('btnClearHistory').addEventListener('click', () => this.handleClearHistory());
         
+        // Fullscreen button
+        document.getElementById('btnFullscreen').addEventListener('click', () => this.toggleFullscreen());
+
         // Send message
         document.getElementById('btnSend').addEventListener('click', () => this.sendMessage());
         
@@ -470,7 +471,28 @@ class ChatbotContainer {
         // Focus input
         setTimeout(() => this.input.focus(), 300);
     }
-    
+
+    toggleChatWindow() {
+        if (this.state.isOpen) {
+            this.closeChatWindow();
+        } else {
+            this.openChatWindow();
+        }
+    }
+
+    toggleFullscreen() {
+        this.state.isFullscreen = !this.state.isFullscreen;
+        const btnIcon = document.querySelector('#btnFullscreen i');
+        
+        if (this.state.isFullscreen) {
+            this.window.classList.add('fullscreen');
+            btnIcon.className = 'fas fa-compress';  // Change to compress icon
+        } else {
+            this.window.classList.remove('fullscreen');
+            btnIcon.className = 'fas fa-expand';    // Back to expand icon
+        }
+    }
+
     /**
      * Close chat window
      */
@@ -608,14 +630,12 @@ class ChatbotContainer {
             
             const data = await response.json();
 
-            // ✅ QUAN TRỌNG: Parse Markdown
+            // Parse Markdown to HTML
             const htmlContent = this.parseMarkdown(data.answer || data.response);
             
             reviewContent.innerHTML = `
-                <div class="review-summary">
-                    <div class="ai-message-box">
-                        ${this.formatReviewText(data.answer || data.response)}
-                    </div>
+                <div class="review-summary markdown-content">
+                    ${htmlContent}
                 </div>
             `;
             
