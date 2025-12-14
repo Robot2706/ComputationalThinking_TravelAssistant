@@ -1194,3 +1194,23 @@
 .hotel-card-compact:hover {
     transform: translateY(-4px);
 }
+
+/* Hotels as message wrapper */
+.hotels-message-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 16px;
+    max-width: 100%;
+    animation: messageSlide 0.3s ease;
+}
+
+.hotels-message-wrapper .ai-message-box,
+.hotels-message-wrapper .ai-question-box {
+    align-self: flex-start;
+    max-width: 90%;
+}
+
+.hotels-message-wrapper .hotels-list {
+    width: 100%;
+}

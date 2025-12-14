@@ -276,18 +276,6 @@ class ChatbotContainer {
                         
                         <!-- RESULT VIEW -->
                         <div class="chatbot-view chatbot-result-view" id="resultView">
-                            <div class="ai-message-box">
-                                <p id="aiWelcomeMessage">👋 Xin chào! Tôi đã tìm thấy <strong>Top 3 khách sạn</strong> phù hợp nhất cho bạn:</p>
-                            </div>
-                            
-                            <div class="hotels-list" id="hotelsList">
-                                <!-- Hotels will be rendered here -->
-                            </div>
-                            
-                            <div class="ai-question-box">
-                                <p>Bạn có muốn xem chi tiết review của khách sạn nào không? Hoặc hỏi tôi bất kỳ điều gì!</p>
-                            </div>
-                            
                             <!-- Messages container for result view -->
                             <div class="messages-container" id="resultMessages"></div>
                         </div>
@@ -395,8 +383,8 @@ class ChatbotContainer {
         this.state.topHotels = hotels.slice(0, 3);
         this.saveHistoryToStorage();
         
-        // Re-render hotels list
-        this.renderHotelsList();
+        // ✅ Add hotels list as NEW message at bottom
+        this.addHotelsListMessage();
         
         // Update modal if exists
         if (document.getElementById('touririModal')) {
@@ -412,6 +400,9 @@ class ChatbotContainer {
     /**
      * Show chatbot after search
      */
+    /**
+     * Show chatbot after search
+     */
     showChatbot(hotels) {
         if (!hotels || hotels.length === 0) return;
         
@@ -423,8 +414,10 @@ class ChatbotContainer {
         this.saveHistoryToStorage();
 
         if (this.state.isOpen) {
-            this.renderHotelsList();
-            // Cập nhật modal nếu đã tạo
+            // ✅ If already open, add as new message
+            this.addHotelsListMessage();
+            
+            // Update modal if exists
             if (document.getElementById('touririModal')) {
                 this.loadHotelsToModal();
             }
@@ -454,13 +447,13 @@ class ChatbotContainer {
         // Hide badge
         this.badge.style.display = 'none';
         
-        // Render hotels if needed
-        if (document.getElementById('hotelsList').children.length === 0) {
-            this.renderHotelsList();
-        }
-        
         // Restore chat history
         this.restoreMessagesToUI();
+
+        // ✅ Add hotels list as first message if has hotels
+        if (this.state.topHotels.length > 0) {
+            this.addHotelsListMessage();
+        }
         
         // Auto-scroll to bottom
         this.scrollToBottom();
@@ -975,6 +968,62 @@ class ChatbotContainer {
         }
         
         return `Khách sạn tọa lạc tại ${hotel.district || 'TP.HCM'}, mang đến không gian thoải mái và tiện nghi hiện đại. Hãy xem reviews chi tiết để biết thêm thông tin!`;
+    }
+
+    /**
+     * Add hotels list as a message in chat
+     */
+    addHotelsListMessage() {
+        const container = document.getElementById('resultMessages');
+        
+        // Remove old hotels message if exists
+        const oldHotelsMsg = container.querySelector('.hotels-message-wrapper');
+        if (oldHotelsMsg) oldHotelsMsg.remove();
+        
+        // Create new hotels message
+        const hotelsWrapper = document.createElement('div');
+        hotelsWrapper.className = 'hotels-message-wrapper message';
+        
+        hotelsWrapper.innerHTML = `
+            <div class="ai-message-box">
+                <p>👋 Xin chào! Tôi đã tìm thấy <strong>Top 3 khách sạn</strong> phù hợp nhất cho bạn:</p>
+            </div>
+            
+            <div class="hotels-list" id="hotelsList">
+                <!-- Hotels will be rendered here -->
+            </div>
+            
+            <div class="ai-question-box">
+                <p>Bạn có muốn xem chi tiết review của khách sạn nào không? Hoặc hỏi tôi bất kỳ điều gì!</p>
+            </div>
+        `;
+        
+        container.appendChild(hotelsWrapper);
+        
+        // Now render hotel cards
+        this.renderHotelsList();
+        
+        // Scroll to bottom
+        this.scrollToBottom();
+    }
+
+    /**
+     * Render hotels list (now inside message)
+     */
+    renderHotelsList() {
+        const hotelsList = document.getElementById('hotelsList');
+        if (!hotelsList) {
+            console.warn('hotelsList not found, calling addHotelsListMessage first');
+            this.addHotelsListMessage();
+            return;
+        }
+        
+        hotelsList.innerHTML = '';
+        
+        this.state.topHotels.forEach((hotel, index) => {
+            const hotelCard = this.createHotelCard(hotel, index);
+            hotelsList.appendChild(hotelCard);
+        });
     }
 }
 
