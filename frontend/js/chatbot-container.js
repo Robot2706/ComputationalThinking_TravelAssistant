@@ -22,6 +22,10 @@ class ChatbotContainer {
         // API endpoint
         this.API_URL = "http://127.0.0.1:8000/api/chat";
         
+        // ✅ THÊM: Cache toàn bộ hotels từ database
+        this.allHotels = [];
+        this.allHotelsLoaded = false;
+        
         // localStorage keys
         this.STORAGE_KEYS = {
             HISTORY: 'chatbotHistory_2rism',
@@ -50,7 +54,28 @@ class ChatbotContainer {
         this.createContainer();
         this.attachEventListeners();
         this.loadHistoryFromStorage();
+        this.loadAllHotels(); // ✅ Load tất cả hotels từ backend
         console.log('✅ ChatbotContainer initialized with session:', this.state.sessionId);
+    }
+    
+    /**
+     * ✅ THÊM: Load tất cả hotels từ backend để match tên
+     */
+    async loadAllHotels() {
+        if (this.allHotelsLoaded) return; // Đã load rồi thì skip
+        
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/hotels');
+            if (response.ok) {
+                this.allHotels = await response.json();
+                this.allHotelsLoaded = true;
+                console.log('✅ Loaded', this.allHotels.length, 'hotels from database');
+            } else {
+                console.warn('⚠️ Failed to load hotels from backend');
+            }
+        } catch (error) {
+            console.error('❌ Error loading all hotels:', error);
+        }
     }
     /**
      * ✅ THÊM: Load Marked.js library
@@ -100,6 +125,63 @@ class ChatbotContainer {
         // Kiểm tra nếu đang ở trong thư mục pages/
         const isInPagesFolder = window.location.pathname.includes('/pages/');
         return isInPagesFolder ? '../' + path : path;
+    }
+    
+    /**
+     * ✅ THÊM: Add "Chi tiết" buttons next to hotel names in bot responses
+     */
+    addDetailButtonsToHotels(htmlContent) {
+        // ✅ Sử dụng allHotels (toàn bộ database) thay vì chỉ topHotels
+        // Fallback về topHotels nếu allHotels chưa load
+        const hotelsData = this.allHotels.length > 0 ? this.allHotels : (this.state.topHotels || []);
+        
+        // Nếu không có hotels, return nguyên
+        if (!hotelsData || hotelsData.length === 0) {
+            return htmlContent;
+        }
+        
+        // Tạo map: tên khách sạn -> hotel object
+        const hotelMap = new Map();
+        hotelsData.forEach(hotel => {
+            if (hotel.name) {
+                hotelMap.set(hotel.name.trim(), hotel);
+            }
+        });
+        
+        console.log('🔍 Matching hotels in response:', hotelMap.size, 'hotels available');
+        
+        // Regex để tìm tên khách sạn trong response
+        // Tìm pattern: "**Tên Khách Sạn**" hoặc "Tên Khách Sạn" theo sau bởi dấu ngắt dòng/câu
+        let modifiedContent = htmlContent;
+        
+        hotelMap.forEach((hotel, hotelName) => {
+            // Escape special regex characters trong tên khách sạn
+            const escapedName = hotelName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            
+            // Pattern 1: Tìm trong thẻ <strong> hoặc <b>
+            const pattern1 = new RegExp(`(<strong>|<b>)(${escapedName})(</strong>|</b>)`, 'gi');
+            
+            // Pattern 2: Tìm trong heading
+            const pattern2 = new RegExp(`(<h[1-6][^>]*>)(${escapedName})(</h[1-6]>)`, 'gi');
+            
+            // Pattern 3: Tìm standalone (có emoji trước như 🏨)
+            const pattern3 = new RegExp(`(🏨\\s*)(${escapedName})([\\s:<br>])`, 'gi');
+            
+            // Tạo button HTML với link tương đối
+            const isInPagesFolder = window.location.pathname.includes('/pages/');
+            const hotelDetailPath = isInPagesFolder 
+                ? `hotel-detail.html?id=${hotel.id}` 
+                : `pages/hotel-detail.html?id=${hotel.id}`;
+            
+            const detailButton = `<a href="${hotelDetailPath}" class="hotel-detail-btn" target="_blank" title="Xem chi tiết ${hotelName}">Chi tiết</a>`;
+            
+            // Replace với button
+            modifiedContent = modifiedContent.replace(pattern1, `$1$2$3 ${detailButton}`);
+            modifiedContent = modifiedContent.replace(pattern2, `$1$2$3 ${detailButton}`);
+            modifiedContent = modifiedContent.replace(pattern3, `$1$2 ${detailButton}$3`);
+        });
+        
+        return modifiedContent;
     }
     
     /**
@@ -775,7 +857,10 @@ class ChatbotContainer {
         messageBox.className = 'message bot-message';
         
         // ✅ QUAN TRỌNG: Parse Markdown to HTML
-        const htmlContent = this.parseMarkdown(text);
+        let htmlContent = this.parseMarkdown(text);
+        
+        // ✅ THÊM: Thêm nút "Chi tiết" bên cạnh tên khách sạn
+        htmlContent = this.addDetailButtonsToHotels(htmlContent);
         
         messageBox.innerHTML = `<div class="message-content markdown-content">${htmlContent}</div>`;
         
