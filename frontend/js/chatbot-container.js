@@ -92,6 +92,16 @@ class ChatbotContainer {
         // Fallback nếu marked chưa load
         return this.escapeHtml(text).replace(/\n/g, '<br>');
     }
+    
+    /**
+     * ✅ THÊM: Get asset path with auto-detection for pages/ subdirectory
+     */
+    getAssetPath(path) {
+        // Kiểm tra nếu đang ở trong thư mục pages/
+        const isInPagesFolder = window.location.pathname.includes('/pages/');
+        return isInPagesFolder ? '../' + path : path;
+    }
+    
     /**
      * ========================================
      * TASK 2: CHAT HISTORY PERSISTENCE
@@ -208,6 +218,13 @@ class ChatbotContainer {
     }
     
     /**
+     * Generate unique session ID
+     */
+    generateSessionId() {
+        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    /**
      * Restore chat messages to UI
      */
     restoreMessagesToUI() {
@@ -258,7 +275,7 @@ class ChatbotContainer {
                             <button class="btn-back" id="btnBack" style="display: none;">
                                 <i class="fas fa-arrow-left"></i>
                             </button>
-                            <img src="assets/images/chatbot.png" alt="2rism" class="chatbot-logo">
+                            <img src="${this.getAssetPath('assets/images/chatbot.png')}" alt="2rism" class="chatbot-logo">
                             <span class="chatbot-title">Touriri</span>
                         </div>
                         <div class="header-right">
@@ -1027,5 +1044,12 @@ class ChatbotContainer {
     }
 }
 
-// Initialize
-window.chatbotContainer = new ChatbotContainer();
+// Initialize with error handling
+try {
+    console.log('🚀 Initializing ChatbotContainer...');
+    window.chatbotContainer = new ChatbotContainer();
+    console.log('✅ ChatbotContainer initialized:', window.chatbotContainer);
+    console.log('📊 State:', window.chatbotContainer.state);
+} catch (error) {
+    console.error('❌ Failed to initialize ChatbotContainer:', error);
+}

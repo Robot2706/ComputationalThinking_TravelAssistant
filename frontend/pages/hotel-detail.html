@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="../css/fonts.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- ✅ THÊM: Chatbot Container CSS -->
+    <link rel="stylesheet" href="../css/chatbot-container.css">
+    
+    <!-- ✅ THÊM: Marked.js cho parse Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body class="mode-locked">
@@ -103,6 +109,9 @@
 
     </div>
 
+    <!-- ✅ Load chatbot trước để đảm bảo window.chatbotContainer sẵn sàng -->
+    <script src="../js/chatbot-container.js"></script>
+    
     <script type="module" src="../js/hotel-detail.js"></script>
 </body>
 </html>

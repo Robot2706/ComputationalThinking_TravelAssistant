@@ -311,3 +311,27 @@ function updateHeartIcon(isFavorited, heartIcon) {
         document.getElementById('favorite-btn').classList.remove('liked');
     }
 }
+
+// ✅ THÊM: Hiển thị chatbot trên trang hotel detail
+// Chatbot sẽ luôn hiện để người dùng có thể hỏi về các khách sạn khác
+setTimeout(() => {
+    if (window.chatbotContainer) {
+        console.log('✅ Showing chatbot on hotel-detail page');
+        // Lấy hotels từ localStorage nếu có
+        const lastSearchResults = localStorage.getItem('lastSearchResults');
+        if (lastSearchResults) {
+            const hotels = JSON.parse(lastSearchResults);
+            if (hotels && hotels.length > 0) {
+                window.chatbotContainer.showChatbot(hotels);
+            } else {
+                // Nếu không có search results, vẫn hiển thị chatbot (không có hotels)
+                window.chatbotContainer.showChatbot([]);
+            }
+        } else {
+            // Không có search results, vẫn hiển thị chatbot
+            window.chatbotContainer.showChatbot([]);
+        }
+    } else {
+        console.error('❌ window.chatbotContainer NOT FOUND on hotel-detail page');
+    }
+}, 1000);
