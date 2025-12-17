@@ -11,7 +11,9 @@ class ChatbotContainer {
         this.state = {
             isVisible: false,
             isOpen: false,
+            isFullscreen: false,
             currentView: 'result',
+            carouselIndex: 0,
             topHotels: [],
             selectedHotel: null,
             conversationHistory: [],
@@ -19,6 +21,10 @@ class ChatbotContainer {
         
         // API endpoint
         this.API_URL = "http://127.0.0.1:8000/api/chat";
+        
+        // ✅ THÊM: Cache toàn bộ hotels từ database
+        this.allHotels = [];
+        this.allHotelsLoaded = false;
         
         // localStorage keys
         this.STORAGE_KEYS = {
@@ -48,7 +54,28 @@ class ChatbotContainer {
         this.createContainer();
         this.attachEventListeners();
         this.loadHistoryFromStorage();
+        this.loadAllHotels(); // ✅ Load tất cả hotels từ backend
         console.log('✅ ChatbotContainer initialized with session:', this.state.sessionId);
+    }
+    
+    /**
+     * ✅ THÊM: Load tất cả hotels từ backend để match tên
+     */
+    async loadAllHotels() {
+        if (this.allHotelsLoaded) return; // Đã load rồi thì skip
+        
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/hotels');
+            if (response.ok) {
+                this.allHotels = await response.json();
+                this.allHotelsLoaded = true;
+                console.log('✅ Loaded', this.allHotels.length, 'hotels from database');
+            } else {
+                console.warn('⚠️ Failed to load hotels from backend');
+            }
+        } catch (error) {
+            console.error('❌ Error loading all hotels:', error);
+        }
     }
     /**
      * ✅ THÊM: Load Marked.js library
@@ -90,6 +117,74 @@ class ChatbotContainer {
         // Fallback nếu marked chưa load
         return this.escapeHtml(text).replace(/\n/g, '<br>');
     }
+    
+    /**
+     * ✅ THÊM: Get asset path with auto-detection for pages/ subdirectory
+     */
+    getAssetPath(path) {
+        // Kiểm tra nếu đang ở trong thư mục pages/
+        const isInPagesFolder = window.location.pathname.includes('/pages/');
+        return isInPagesFolder ? '../' + path : path;
+    }
+    
+    /**
+     * ✅ THÊM: Add "Chi tiết" buttons next to hotel names in bot responses
+     */
+    addDetailButtonsToHotels(htmlContent) {
+        // ✅ Sử dụng allHotels (toàn bộ database) thay vì chỉ topHotels
+        // Fallback về topHotels nếu allHotels chưa load
+        const hotelsData = this.allHotels.length > 0 ? this.allHotels : (this.state.topHotels || []);
+        
+        // Nếu không có hotels, return nguyên
+        if (!hotelsData || hotelsData.length === 0) {
+            return htmlContent;
+        }
+        
+        // Tạo map: tên khách sạn -> hotel object
+        const hotelMap = new Map();
+        hotelsData.forEach(hotel => {
+            if (hotel.name) {
+                hotelMap.set(hotel.name.trim(), hotel);
+            }
+        });
+        
+        console.log('🔍 Matching hotels in response:', hotelMap.size, 'hotels available');
+        
+        // Regex để tìm tên khách sạn trong response
+        // Tìm pattern: "**Tên Khách Sạn**" hoặc "Tên Khách Sạn" theo sau bởi dấu ngắt dòng/câu
+        let modifiedContent = htmlContent;
+        
+        hotelMap.forEach((hotel, hotelName) => {
+            // Escape special regex characters trong tên khách sạn
+            const escapedName = hotelName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            
+            // Pattern 1: Tìm trong thẻ <strong> hoặc <b>
+            const pattern1 = new RegExp(`(<strong>|<b>)(${escapedName})(</strong>|</b>)`, 'gi');
+            
+            // Pattern 2: Tìm trong heading
+            const pattern2 = new RegExp(`(<h[1-6][^>]*>)(${escapedName})(</h[1-6]>)`, 'gi');
+            
+            // Pattern 3: Tìm standalone (có emoji trước như 🏨)
+            const pattern3 = new RegExp(`(🏨\\s*)(${escapedName})([\\s:<br>])`, 'gi');
+            
+            // Tạo button HTML với link tương đối
+            const isInPagesFolder = window.location.pathname.includes('/pages/');
+            const hotelDetailPath = isInPagesFolder 
+                ? `hotel-detail.html?id=${hotel.id}` 
+                : `pages/hotel-detail.html?id=${hotel.id}`;
+            
+            // ✅ Nút mũi tên chéo đơn giản
+            const detailButton = `<a href="${hotelDetailPath}" class="hotel-detail-btn" title="Xem chi tiết ${hotelName}" aria-label="Chi tiết"></a>`;
+            
+            // Replace với button
+            modifiedContent = modifiedContent.replace(pattern1, `$1$2$3 ${detailButton}`);
+            modifiedContent = modifiedContent.replace(pattern2, `$1$2$3 ${detailButton}`);
+            modifiedContent = modifiedContent.replace(pattern3, `$1$2 ${detailButton}$3`);
+        });
+        
+        return modifiedContent;
+    }
+    
     /**
      * ========================================
      * TASK 2: CHAT HISTORY PERSISTENCE
@@ -206,6 +301,13 @@ class ChatbotContainer {
     }
     
     /**
+     * Generate unique session ID
+     */
+    generateSessionId() {
+        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    /**
      * Restore chat messages to UI
      */
     restoreMessagesToUI() {
@@ -256,15 +358,15 @@ class ChatbotContainer {
                             <button class="btn-back" id="btnBack" style="display: none;">
                                 <i class="fas fa-arrow-left"></i>
                             </button>
-                            <img src="assets/icons/logo.svg" alt="2rism" class="chatbot-logo">
+                            <img src="${this.getAssetPath('assets/images/chatbot.png')}" alt="2rism" class="chatbot-logo">
                             <span class="chatbot-title">Touriri</span>
                         </div>
                         <div class="header-right">
+                            <button class="btn-fullscreen" id="btnFullscreen" title="Toàn màn hình">
+                                <i class="fas fa-expand"></i>
+                            </button>
                             <button class="btn-clear-history" id="btnClearHistory" title="Xóa lịch sử chat">
                                 <i class="fas fa-trash-alt"></i>
-                            </button>
-                            <button class="btn-close" id="btnClose">
-                                <i class="fas fa-times"></i>
                             </button>
                         </div>
                     </div>
@@ -274,18 +376,6 @@ class ChatbotContainer {
                         
                         <!-- RESULT VIEW -->
                         <div class="chatbot-view chatbot-result-view" id="resultView">
-                            <div class="ai-message-box">
-                                <p id="aiWelcomeMessage">👋 Xin chào! Tôi đã tìm thấy <strong>Top 3 khách sạn</strong> phù hợp nhất cho bạn:</p>
-                            </div>
-                            
-                            <div class="hotels-list" id="hotelsList">
-                                <!-- Hotels will be rendered here -->
-                            </div>
-                            
-                            <div class="ai-question-box">
-                                <p>Bạn có muốn xem chi tiết review của khách sạn nào không? Hoặc hỏi tôi bất kỳ điều gì!</p>
-                            </div>
-                            
                             <!-- Messages container for result view -->
                             <div class="messages-container" id="resultMessages"></div>
                         </div>
@@ -300,11 +390,7 @@ class ChatbotContainer {
                             <div class="review-content" id="reviewContent">
                                 <!-- AI review summary -->
                             </div>
-                            
-                            <div class="ai-question-box">
-                                <p>Bạn muốn hỏi gì thêm về khách sạn này?</p>
-                            </div>
-                            
+
                             <!-- Messages container for review view -->
                             <div class="messages-container" id="reviewMessages"></div>
                         </div>
@@ -348,10 +434,7 @@ class ChatbotContainer {
      */
     attachEventListeners() {
         // Icon click
-        this.icon.addEventListener('click', () => this.openChatWindow());
-        
-        // Close button
-        document.getElementById('btnClose').addEventListener('click', () => this.closeChatWindow());
+        this.icon.addEventListener('click', () => this.toggleChatWindow());
         
         // Back button
         document.getElementById('btnBack').addEventListener('click', () => this.showResultView());
@@ -359,6 +442,9 @@ class ChatbotContainer {
         // Clear history button
         document.getElementById('btnClearHistory').addEventListener('click', () => this.handleClearHistory());
         
+        // Fullscreen button
+        document.getElementById('btnFullscreen').addEventListener('click', () => this.toggleFullscreen());
+
         // Send message
         document.getElementById('btnSend').addEventListener('click', () => this.sendMessage());
         
@@ -397,8 +483,8 @@ class ChatbotContainer {
         this.state.topHotels = hotels.slice(0, 3);
         this.saveHistoryToStorage();
         
-        // Re-render hotels list
-        this.renderHotelsList();
+        // ✅ Add hotels list as NEW message at bottom
+        this.addHotelsListMessage();
         
         // Update modal if exists
         if (document.getElementById('touririModal')) {
@@ -414,6 +500,9 @@ class ChatbotContainer {
     /**
      * Show chatbot after search
      */
+    /**
+     * Show chatbot after search
+     */
     showChatbot(hotels) {
         if (!hotels || hotels.length === 0) return;
         
@@ -425,8 +514,10 @@ class ChatbotContainer {
         this.saveHistoryToStorage();
 
         if (this.state.isOpen) {
-            this.renderHotelsList();
-            // Cập nhật modal nếu đã tạo
+            // ✅ If already open, add as new message
+            this.addHotelsListMessage();
+            
+            // Update modal if exists
             if (document.getElementById('touririModal')) {
                 this.loadHotelsToModal();
             }
@@ -456,13 +547,13 @@ class ChatbotContainer {
         // Hide badge
         this.badge.style.display = 'none';
         
-        // Render hotels if needed
-        if (document.getElementById('hotelsList').children.length === 0) {
-            this.renderHotelsList();
-        }
-        
         // Restore chat history
         this.restoreMessagesToUI();
+
+        // ✅ Add hotels list as first message if has hotels
+        if (this.state.topHotels.length > 0) {
+            this.addHotelsListMessage();
+        }
         
         // Auto-scroll to bottom
         this.scrollToBottom();
@@ -470,7 +561,32 @@ class ChatbotContainer {
         // Focus input
         setTimeout(() => this.input.focus(), 300);
     }
-    
+
+    toggleChatWindow() {
+        if (this.state.isOpen) {
+            this.closeChatWindow();
+        } else {
+            this.openChatWindow();
+        }
+    }
+
+    toggleFullscreen() {
+        this.state.isFullscreen = !this.state.isFullscreen;
+        const btnIcon = document.querySelector('#btnFullscreen i');
+        
+        if (this.state.isFullscreen) {
+            this.window.classList.add('fullscreen');
+            btnIcon.className = 'fas fa-compress';
+            this.icon.style.display = 'none';
+            this.renderHotelsList();
+        } else {
+            this.window.classList.remove('fullscreen');
+            btnIcon.className = 'fas fa-expand';
+            this.icon.style.display = 'block';
+            this.renderHotelsList();
+        }
+    }
+
     /**
      * Close chat window
      */
@@ -493,9 +609,6 @@ class ChatbotContainer {
         });
     }
     
-    /**
-     * Create hotel card
-     */
     createHotelCard(hotel, index) {
         const card = document.createElement('div');
         card.className = 'hotel-card-compact';
@@ -504,7 +617,12 @@ class ChatbotContainer {
         const stars = '⭐'.repeat(Math.floor((hotel.rating || 4) / 2));
         const price = hotel.price ? new Intl.NumberFormat('vi-VN').format(hotel.price) : 'Liên hệ';
         
+        // ✅ Get hotel image
+        const imageUrl = hotel.image || (hotel.images && hotel.images[0]) || 'assets/images/hotel-placeholder.jpg';
+        
         card.innerHTML = `
+            <img src="${imageUrl}" alt="${hotel.name || hotel.hotel_name}" class="hotel-card-image">
+            
             <div class="hotel-card-header">
                 <h3 class="hotel-name">${hotel.name || hotel.hotel_name}</h3>
                 <div class="hotel-rating">
@@ -525,16 +643,20 @@ class ChatbotContainer {
             </div>
         `;
         
-        card.querySelector('.btn-review').addEventListener('click', () => {
+        // ✅ CRITICAL: Review button - Stop Propagation
+        const reviewBtn = card.querySelector('.btn-review');
+        reviewBtn.addEventListener('click', (e) => {
+            e.stopPropagation();  // Prevent card click
             this.showReviewView(hotel);
         });
         
-        return card;
+        // ✅ Card click - Show glassmorphism detail overlay
+        card.addEventListener('click', () => {
+            this.showDetailOverlay(hotel);
+        });
+            return card;
     }
     
-    /**
-     * Show review view
-     */
     async showReviewView(hotel) {
         this.state.currentView = 'review';
         this.state.selectedHotel = hotel;
@@ -554,22 +676,15 @@ class ChatbotContainer {
         this.scrollToBottom();
     }
     
-    /**
-     * Show result view
-     */
     showResultView() {
         this.state.currentView = 'result';
         this.state.selectedHotel = null;
-        
         this.resultView.style.display = 'block';
         this.reviewView.style.display = 'none';
-        
         document.getElementById('btnBack').style.display = 'none';
-        
-        // Auto-scroll
         this.scrollToBottom();
     }
-    
+
     /**
      * Load review summary
      */
@@ -608,14 +723,12 @@ class ChatbotContainer {
             
             const data = await response.json();
 
-            // ✅ QUAN TRỌNG: Parse Markdown
+            // Parse Markdown to HTML
             const htmlContent = this.parseMarkdown(data.answer || data.response);
             
             reviewContent.innerHTML = `
-                <div class="review-summary">
-                    <div class="ai-message-box">
-                        ${this.formatReviewText(data.answer || data.response)}
-                    </div>
+                <div class="review-summary markdown-content">
+                    ${htmlContent}
                 </div>
             `;
             
@@ -672,7 +785,7 @@ class ChatbotContainer {
     /**
      * Send message to AI
      */
-        async sendMessage() {
+    async sendMessage() {
         const message = this.input.value.trim();
         if (!message) return;
         
@@ -719,8 +832,7 @@ class ChatbotContainer {
             this.input.focus();
         }
     }
-    
-    /**
+     /**
      * Add user message to DOM
      * @param {string} text - Message text
      * @param {boolean} shouldSave - Save to history or not
@@ -746,7 +858,10 @@ class ChatbotContainer {
         messageBox.className = 'message bot-message';
         
         // ✅ QUAN TRỌNG: Parse Markdown to HTML
-        const htmlContent = this.parseMarkdown(text);
+        let htmlContent = this.parseMarkdown(text);
+        
+        // ✅ THÊM: Thêm nút "Chi tiết" bên cạnh tên khách sạn
+        htmlContent = this.addDetailButtonsToHotels(htmlContent);
         
         messageBox.innerHTML = `<div class="message-content markdown-content">${htmlContent}</div>`;
         
@@ -789,7 +904,238 @@ class ChatbotContainer {
         div.textContent = text;
         return div.innerHTML;
     }
+
+        /**
+     * ========================================
+     * HOTEL DETAIL OVERLAY (GLASSMORPHISM)
+     * ========================================
+     */
+
+    /**
+     * Show detail overlay modal
+     */
+    showDetailOverlay(hotel) {
+        // Create overlay if not exists
+        let overlay = document.getElementById('hotel-detail-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'hotel-detail-overlay';
+            document.body.appendChild(overlay);
+        }
+        
+        // Render content
+        overlay.innerHTML = this.renderDetailOverlayHTML(hotel);
+        overlay.classList.add('active');
+        
+        // Attach event listeners
+        const closeBtn = overlay.querySelector('.detail-modal-close');
+        const reviewBtn = overlay.querySelector('.btn-detail-review');
+        
+        closeBtn.addEventListener('click', () => this.closeDetailOverlay());
+        
+        // Click outside to close
+        overlay.addEventListener('click', (e) => {
+            if (e.target.id === 'hotel-detail-overlay') {
+                this.closeDetailOverlay();
+            }
+        });
+        
+        // Review button
+        if (reviewBtn) {
+            reviewBtn.addEventListener('click', () => {
+                this.closeDetailOverlay();
+                this.showReviewView(hotel);
+            });
+        }
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Close detail overlay
+     */
+    closeDetailOverlay() {
+        const overlay = document.getElementById('hotel-detail-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                overlay.remove();
+            }, 300);
+        }
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+    }
+
+    /**
+     * Generate HTML for detail overlay (Glassmorphism Design)
+     */
+    renderDetailOverlayHTML(hotel) {
+        const rating = hotel.rating || 4;
+        const stars = '⭐'.repeat(Math.floor(rating / 2));
+        const price = hotel.price ? new Intl.NumberFormat('vi-VN').format(hotel.price) : 'Liên hệ';
+        const imageUrl = hotel.image || (hotel.images && hotel.images[0]) || 'assets/images/hotel-placeholder.jpg';
+        
+        // Extract specific address or fallback
+        const specificAddress = hotel.address || `${hotel.district || 'TP. Hồ Chí Minh'}`;
+        
+        // Description (use details field or generate)
+        const description = hotel.details || hotel.description || this.generateFallbackDescription(hotel);
+        
+        return `
+            <div class="detail-modal-card">
+                <!-- Close Button -->
+                <button class="detail-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <!-- Left: Image -->
+                <div class="detail-modal-image" style="background-image: url('${imageUrl}')"></div>
+                
+                <!-- Right: Content -->
+                <div class="detail-modal-content">
+                    <!-- Hotel Name -->
+                    <h1 class="detail-modal-name">${hotel.name || hotel.hotel_name}</h1>
+                    
+                    <!-- Rating -->
+                    <div class="detail-modal-rating">
+                        <div class="detail-rating-badge">${rating.toFixed(1)}</div>
+                        <div class="detail-rating-stars">
+                            <span class="stars">${stars}</span>
+                            ${hotel.reviews_count ? `<span class="reviews">${hotel.reviews_count} đánh giá</span>` : '<span class="reviews">Chưa có đánh giá</span>'}
+                        </div>
+                    </div>
+                    
+                    <!-- Info Grid -->
+                    <div class="detail-modal-info">
+                        <!-- Price -->
+                        <div class="detail-info-item price">
+                            <i class="fas fa-tag"></i>
+                            <div class="info-content">
+                                <span class="info-label">Giá phòng</span>
+                                <span class="info-value">${price} VND/đêm</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Address -->
+                        <div class="detail-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div class="info-content">
+                                <span class="info-label">Địa chỉ</span>
+                                <span class="info-value">${specificAddress}</span>
+                            </div>
+                        </div>
+                        
+                        ${hotel.stars ? `
+                        <div class="detail-info-item">
+                            <i class="fas fa-star"></i>
+                            <div class="info-content">
+                                <span class="info-label">Hạng</span>
+                                <span class="info-value">Khách sạn ${hotel.stars} sao</span>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="detail-modal-description">
+                        <h3>Về khách sạn</h3>
+                        <p>${description}</p>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="detail-modal-actions">
+                        <button class="btn-detail-review">
+                            <i class="fas fa-comment-dots"></i>
+                            Xem Reviews Chi Tiết
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Generate fallback description from category reviews
+     */
+    generateFallbackDescription(hotel) {
+        if (hotel.category_reviews && hotel.category_reviews.length > 0) {
+            const topCategories = hotel.category_reviews
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 3)
+                .map(cat => `${cat.title} (${cat.score}/10)`)
+                .join(', ');
+            
+            return `Khách sạn được đánh giá cao về: ${topCategories}. ${hotel.reviews_count ? `Với ${hotel.reviews_count} đánh giá từ khách hàng, ` : ''}khách sạn này là lựa chọn tuyệt vời cho kỳ nghỉ của bạn tại ${hotel.district || 'TP.HCM'}.`;
+        }
+        
+        return `Khách sạn tọa lạc tại ${hotel.district || 'TP.HCM'}, mang đến không gian thoải mái và tiện nghi hiện đại. Hãy xem reviews chi tiết để biết thêm thông tin!`;
+    }
+
+    /**
+     * Add hotels list as a message in chat
+     */
+    addHotelsListMessage() {
+        const container = document.getElementById('resultMessages');
+        
+        // Remove old hotels message if exists
+        const oldHotelsMsg = container.querySelector('.hotels-message-wrapper');
+        if (oldHotelsMsg) oldHotelsMsg.remove();
+        
+        // Create new hotels message
+        const hotelsWrapper = document.createElement('div');
+        hotelsWrapper.className = 'hotels-message-wrapper message';
+        
+        hotelsWrapper.innerHTML = `
+            <div class="ai-message-box">
+                <p>👋 Xin chào! Tôi đã tìm thấy <strong>Top 3 khách sạn</strong> phù hợp nhất cho bạn:</p>
+            </div>
+            
+            <div class="hotels-list" id="hotelsList">
+                <!-- Hotels will be rendered here -->
+            </div>
+            
+            <div class="ai-question-box">
+                <p>Bạn có muốn xem chi tiết review của khách sạn nào không? Hoặc hỏi tôi bất kỳ điều gì!</p>
+            </div>
+        `;
+        
+        container.appendChild(hotelsWrapper);
+        
+        // Now render hotel cards
+        this.renderHotelsList();
+        
+        // Scroll to bottom
+        this.scrollToBottom();
+    }
+
+    /**
+     * Render hotels list (now inside message)
+     */
+    renderHotelsList() {
+        const hotelsList = document.getElementById('hotelsList');
+        if (!hotelsList) {
+            console.warn('hotelsList not found, calling addHotelsListMessage first');
+            this.addHotelsListMessage();
+            return;
+        }
+        
+        hotelsList.innerHTML = '';
+        
+        this.state.topHotels.forEach((hotel, index) => {
+            const hotelCard = this.createHotelCard(hotel, index);
+            hotelsList.appendChild(hotelCard);
+        });
+    }
 }
 
-// Initialize
-window.chatbotContainer = new ChatbotContainer();
+// Initialize with error handling
+try {
+    console.log('🚀 Initializing ChatbotContainer...');
+    window.chatbotContainer = new ChatbotContainer();
+    console.log('✅ ChatbotContainer initialized:', window.chatbotContainer);
+    console.log('📊 State:', window.chatbotContainer.state);
+} catch (error) {
+    console.error('❌ Failed to initialize ChatbotContainer:', error);
+}

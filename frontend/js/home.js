@@ -611,14 +611,20 @@ document.addEventListener('DOMContentLoaded', function() {
         triggerChatbot(hotels);
 
         // ✅ THÊM: Trigger chatbot container
+        console.log('🔍 Checking chatbot:', window.chatbotContainer);
         if (window.chatbotContainer) {
+            console.log('✅ Chatbot found! Showing...');
             setTimeout(() => {
                 if (window.chatbotContainer.state.isVisible) {
+                    console.log('📝 Updating hotels in existing chatbot');
                     window.chatbotContainer.updateHotels(hotels);
                 } else {
+                    console.log('🚀 Showing new chatbot with', hotels.length, 'hotels');
                     window.chatbotContainer.showChatbot(hotels);
                 }
             }, 500);
+        } else {
+            console.error('❌ window.chatbotContainer NOT FOUND!');
         }
     }
 

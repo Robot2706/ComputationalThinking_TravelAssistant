@@ -177,6 +177,18 @@ def get_districts():
         logger.error(f"Error loading districts: {e}")
         raise HTTPException(status_code=500, detail="Error loading data")
 
+# [NEW] Endpoint Get All Hotels (for chatbot name matching)
+@app.get("/api/hotels", response_model=List[dict])
+def get_all_hotels():
+    """Return simplified list of all hotels (id, name only) for chatbot matching"""
+    try:
+        hotels = recmod.load_hotels_from_json(HOTELS_JSON_PATH)
+        # Chỉ trả về id và name để giảm payload
+        return [{"id": h.id, "name": str(h.name or "")} for h in hotels]
+    except Exception as e:
+        logger.error(f"Error loading all hotels: {e}")
+        raise HTTPException(status_code=500, detail=f"Error loading hotels: {str(e)}")
+
 # [DEMO] Endpoint Get Hotel Details (Fix mapping fields mới)
 @app.get("/api/hotels/{hotel_id}", response_model=HotelOut)
 def get_hotel(hotel_id: int):
