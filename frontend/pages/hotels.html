@@ -1,49 +1,96 @@
 <!DOCTYPE html>
-<html lang ="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2rism - Hotels</title>
-    
-    <link rel="stylesheet" href="../css/hotels.css">
-    <link rel="stylesheet" href="../css/fonts.css">
-    
-    <link rel="stylesheet" href="../css/home.css">
-</head>
-<body>
+
+    <link rel="stylesheet" href="../css/hotels.css" />
+    <link rel="stylesheet" href="../css/fonts.css" />
+
+    <link rel="stylesheet" href="../css/home.css" />
+  </head>
+  <body>
     <div class="featuring-bg"></div>
 
     <div class="featuring-component">
-        <a class="icon-effect" href="../index.html">
-            <img src="../assets/icons/logo.svg" alt="Logo" />
+      <a class="icon-effect" href="../index.html">
+        <img src="../assets/icons/logo.svg" alt="Logo" />
+      </a>
+
+      <div class="header-component">
+        <div class="paragraph200regular header-effect">hotels/homestay</div>
+      </div>
+
+      <div class="header-component">
+        <a class="link-underline" href="chat-ai.html">
+          <div class="paragraph200regular">chat with AI</div>
         </a>
-        
-        <div class="header-component">
-            <div class="paragraph200regular header-effect">hotels/homestay</div>
+      </div>
+
+      <div class="header-component">
+        <a class="link-underline" href="about-us.html">
+          <div class="paragraph200regular">about us</div>
+        </a>
+      </div>
+
+      <div class="header-component">
+        <a class="link-underline" id="account-link" href="#" onclick="checkAuthAndRedirect(event)">
+          <div class="paragraph200regular">your account</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="featuring-title-box">
+      <div class="heading100">Featuring hotels this week</div>
+    </div>
+
+    <div class="featuring-complete">
+      <div class="featuring-group">
+        <div class="featuring-img"></div>
+        <div class="featuring-content">
+          <div class="heading300">Hotel name</div>
+          <div class="paragraph100regular">Brief description</div>
         </div>
-        
-        <div class="header-component">
-            <a class="link-underline" href="chat-ai.html">
-                <div class="paragraph200regular">chat with AI</div>
-            </a>
-        </div>
-        
-        <div class="header-component">
-            <a class="link-underline" href="about-us.html">
-                <div class="paragraph200regular">about us</div>
-            </a>
-        </div>
-        
-        <div class="header-component">
-            <a class="link-underline" href="user-account.html">
-                <div class="paragraph200regular">your account</div>
-            </a>
+      </div>
+
+        <div class="featuring-group">
+            <div class="featuring-img"></div>
+            <div class="featuring-content">
+                <div class="heading300">Hotel name</div>
+                <div class="paragraph100regular">Brief description</div>
+            </div>
         </div>
     </div>
     
-    <div class="featuring-title-box">
-        <div class="heading100">Featuring hotels this week</div>
-    </div>
-
-</body>
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+      import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+      
+      const firebaseConfig = {
+        apiKey: "AIzaSyDF9lK914D_YpHAUNwD2lf8X5q27pH05AY",
+        authDomain: "rism-24a9a.firebaseapp.com",
+        projectId: "rism-24a9a",
+        storageBucket: "rism-24a9a.firebasestorage.app",
+        messagingSenderId: "1014525451464",
+        appId: "1:1014525451464:web:facd617d7d8c86212019fd",
+        measurementId: "G-LR7VE1J9XH"
+      };
+      
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      
+      window.checkAuthAndRedirect = function(event) {
+        event.preventDefault();
+        onAuthStateChanged(auth, user => {
+          if (user) {
+            window.location.href = 'user-account.html';
+          } else {
+            window.location.href = 'login.html';
+          }
+        });
+      };
+    </script>
+    <script src="../js/featuring.js"></script>
+  </body>
 </html>

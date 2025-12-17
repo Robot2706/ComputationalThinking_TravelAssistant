@@ -20,17 +20,17 @@ body {
     position: absolute;
     display: flex;
     top: 12%;
-    left: 20%;
+    left: 13%;
     align-items: center;
     white-space: nowrap;
-    gap: 200px;
+    gap: 150px;
 }
 
 .header-component {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    gap: 4px;
+    gap: 2px;
 }
 
 .header-effect {
