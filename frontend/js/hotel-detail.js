@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (hotelId) {
         document.getElementById('hotel-name').innerText = "Đang tải thông tin...";
+        // Track click vào hotel này
+        trackHotelClick(hotelId);
         // Gọi hàm fetch API
         fetchHotelDetail(hotelId); 
     } else {
@@ -32,6 +34,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// --- HÀM TRACK CLICK HOTEL ---
+async function trackHotelClick(hotelId) {
+    try {
+        const response = await fetch('http://localhost:8000/api/hotels/track-click', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ hotel_id: hotelId })
+        });
+        
+        if (response.ok) {
+            console.log('✅ Tracked click for hotel', hotelId);
+        } else {
+            console.error('⚠️ Error tracking click:', response.status);
+        }
+    } catch (e) {
+        console.error('❌ Error sending click to backend:', e);
+    }
+}
 
 // --- HÀM MỚI: GỌI TRỰC TIẾP API BACKEND ---
 async function fetchHotelDetail(id) {

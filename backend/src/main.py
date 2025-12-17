@@ -1,6 +1,9 @@
 import os
+import json
+import random
 from typing import List, Optional
 from contextlib import asynccontextmanager
+from datetime import datetime, timedelta
 
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -33,12 +36,19 @@ chatbot_instance: Optional[HotelChatbot] = None
 # --- Path Setup ---
 BASE_DIR = get_project_root()
 HOTELS_JSON_PATH = str(BASE_DIR / "data" / "processed" / "hotels_parsed.json")
+CLICKS_JSON_PATH = str(BASE_DIR / "data" / "processed" / "hotel_clicks.json")
 
 # Kiểm tra data
 if not os.path.exists(HOTELS_JSON_PATH):
     logger.warning(f"⚠️ DATA NOT FOUND at: {HOTELS_JSON_PATH}")
 else:
     logger.info(f"✅ Data loaded from: {HOTELS_JSON_PATH}")
+
+# Tạo file tracking clicks nếu chưa có
+if not os.path.exists(CLICKS_JSON_PATH):
+    with open(CLICKS_JSON_PATH, 'w') as f:
+        json.dump({"weekly_clicks": {}}, f)
+    logger.info(f"✅ Created clicks tracking file at: {CLICKS_JSON_PATH}")
 
 
 # --- Pydantic Models ---
@@ -94,6 +104,14 @@ class RecommendResponse(BaseModel):
     results: List[HotelOut]
     meta: dict
 
+# [CLICK TRACKING] Model request cho tracking hotel clicks
+class HotelClickRequest(BaseModel):
+    hotel_id: int = Field(..., description="ID của hotel được click")
+
+class TopHotelsResponse(BaseModel):
+    hotels: List[int] = Field(..., description="Danh sách hotel ID top clicked")
+    meta: dict
+
 # --- Lifespan Manager (Từ branch Chatbot) ---
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -132,6 +150,85 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# --- CLICK TRACKING HELPER FUNCTIONS ---
+def get_current_week_key():
+    """Lấy key tuần hiện tại (Monday-based)"""
+    now = datetime.now()
+    day_of_week = now.weekday()  # Monday = 0
+    start_of_week = now - timedelta(days=day_of_week)
+    return start_of_week.strftime('%Y-%m-%d')
+
+def load_clicks_data():
+    """Load dữ liệu clicks từ file JSON"""
+    try:
+        with open(CLICKS_JSON_PATH, 'r') as f:
+            return json.load(f)
+    except:
+        return {"weekly_clicks": {}}
+
+def save_clicks_data(data):
+    """Lưu dữ liệu clicks vào file JSON"""
+    try:
+        with open(CLICKS_JSON_PATH, 'w') as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        logger.error(f"Error saving clicks data: {e}")
+
+def track_hotel_click(hotel_id: int):
+    """Ghi nhận một click cho hotel"""
+    week_key = get_current_week_key()
+    data = load_clicks_data()
+    
+    if week_key not in data["weekly_clicks"]:
+        data["weekly_clicks"][week_key] = {}
+    
+    hotel_id_str = str(hotel_id)
+    if hotel_id_str not in data["weekly_clicks"][week_key]:
+        data["weekly_clicks"][week_key][hotel_id_str] = 0
+    
+    data["weekly_clicks"][week_key][hotel_id_str] += 1
+    save_clicks_data(data)
+    logger.info(f"📍 Tracked click for hotel {hotel_id} (week: {week_key})")
+
+def get_top_hotels_this_week(limit: int = 2):
+    """Lấy top N hotels được click nhiều nhất tuần này"""
+    week_key = get_current_week_key()
+    data = load_clicks_data()
+    
+    clicks = data.get("weekly_clicks", {}).get(week_key, {})
+    
+    # Sort theo click count
+    sorted_hotels = sorted(
+        [(int(hotel_id), count) for hotel_id, count in clicks.items()],
+        key=lambda x: x[1],
+        reverse=True
+    )
+    
+    return [hotel_id for hotel_id, count in sorted_hotels[:limit]]
+
+def get_random_fallback_hotels(limit: int = 2):
+    """Lấy random fallback hotels cho tuần này (random 1 lần per week, rồi cố định)"""
+    week_key = get_current_week_key()
+    data = load_clicks_data()
+    
+    if "random_fallback" not in data:
+        data["random_fallback"] = {}
+    
+    # Nếu tuần này chưa có random fallback, tạo mới
+    if week_key not in data["random_fallback"]:
+        try:
+            hotels = recmod.load_hotels_from_json(HOTELS_JSON_PATH)
+            hotel_ids = [h.id for h in hotels]
+            random_hotels = random.sample(hotel_ids, min(limit, len(hotel_ids)))
+            data["random_fallback"][week_key] = random_hotels
+            save_clicks_data(data)
+            logger.info(f"✨ Generated random fallback hotels for week {week_key}: {random_hotels}")
+        except Exception as e:
+            logger.error(f"Error generating random fallback: {e}")
+            return []
+    
+    return data["random_fallback"][week_key]
 
 # --- Endpoints ---
 
@@ -176,6 +273,60 @@ def get_districts():
     except Exception as e:
         logger.error(f"Error loading districts: {e}")
         raise HTTPException(status_code=500, detail="Error loading data")
+
+# [DEMO] Endpoint Get All Hotels
+@app.get("/api/hotels", response_model=List[HotelOut])
+def get_all_hotels():
+    try:
+        hotels = recmod.load_hotels_from_json(HOTELS_JSON_PATH)
+        out_hotels = []
+        for h in hotels:
+            out_hotels.append(HotelOut(
+                id=h.id,
+                name=str(h.name or ""),
+                district=str(h.district or ""),
+                price=float(h.price or 0.0),
+                rating=float(h.rating or 0.0),
+                amenities=h.amenities or [],
+                score=None,
+                
+                details=str(h.details or ""),
+                image=str(h.image or ""),
+                
+                # Mapping các trường mới từ branch Demo
+                images=h.images or [],
+                address=str(h.address or ""),
+                stars=int(h.stars or 0),
+                reviews_count=int(h.reviews_count or 0),
+                category_reviews=h.category_reviews or []
+            ))
+        return out_hotels
+    except Exception as e:
+        logger.error(f"Error loading all hotels: {e}")
+        raise HTTPException(status_code=500, detail="Error loading data")
+
+# [CLICK TRACKING] Endpoint Get Top Hotels (MUST be before /{hotel_id} route)
+@app.get("/api/hotels/top-clicked", response_model=TopHotelsResponse)
+def get_top_clicked_hotels():
+    try:
+        top_hotels = get_top_hotels_this_week(limit=2)
+        week_key = get_current_week_key()
+        
+        # Nếu không đủ 2 hotels clicked, dùng random fallback
+        if len(top_hotels) < 2:
+            fallback_hotels = get_random_fallback_hotels(limit=2 - len(top_hotels))
+            top_hotels.extend(fallback_hotels)
+            meta_type = "mixed"  # top + fallback
+        else:
+            meta_type = "clicked"  # all from clicks
+        
+        return TopHotelsResponse(
+            hotels=top_hotels,
+            meta={"week": week_key, "count": len(top_hotels), "type": meta_type}
+        )
+    except Exception as e:
+        logger.error(f"Error getting top hotels: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 # [DEMO] Endpoint Get Hotel Details (Fix mapping fields mới)
 @app.get("/api/hotels/{hotel_id}", response_model=HotelOut)
@@ -265,6 +416,39 @@ def recommend(req: SearchRequest):
         ))
 
     return RecommendResponse(results=out_results, meta=meta)
+
+# [CLICK TRACKING] Endpoint Track Hotel Click
+@app.post("/api/hotels/track-click", summary="Ghi nhận click cho một hotel")
+def track_click(req: HotelClickRequest):
+    try:
+        track_hotel_click(req.hotel_id)
+        return {"status": "ok", "message": f"Click tracked for hotel {req.hotel_id}"}
+    except Exception as e:
+        logger.error(f"Error tracking click: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# [CLICK TRACKING] Endpoint Get Top Hotels
+@app.get("/api/hotels/top-clicked", response_model=TopHotelsResponse)
+def get_top_clicked_hotels():
+    try:
+        top_hotels = get_top_hotels_this_week(limit=2)
+        week_key = get_current_week_key()
+        
+        # Nếu không đủ 2 hotels clicked, dùng random fallback
+        if len(top_hotels) < 2:
+            fallback_hotels = get_random_fallback_hotels(limit=2 - len(top_hotels))
+            top_hotels.extend(fallback_hotels)
+            meta_type = "mixed"  # top + fallback
+        else:
+            meta_type = "clicked"  # all from clicks
+        
+        return TopHotelsResponse(
+            hotels=top_hotels,
+            meta={"week": week_key, "count": len(top_hotels), "type": meta_type}
+        )
+    except Exception as e:
+        logger.error(f"Error getting top hotels: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
