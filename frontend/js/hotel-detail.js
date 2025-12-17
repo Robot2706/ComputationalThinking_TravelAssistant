@@ -334,3 +334,74 @@ function updateHeartIcon(isFavorited, heartIcon) {
         document.getElementById('favorite-btn').classList.remove('liked');
     }
 }
+
+// ✅ THÊM: Hiển thị chatbot trên trang hotel detail
+// Chatbot sẽ luôn hiện để người dùng có thể hỏi về các khách sạn khác
+setTimeout(() => {
+    if (window.chatbotContainer) {
+        console.log('✅ Showing chatbot on hotel-detail page');
+        // Lấy hotels từ localStorage nếu có
+        const lastSearchResults = localStorage.getItem('lastSearchResults');
+        if (lastSearchResults) {
+            const hotels = JSON.parse(lastSearchResults);
+            if (hotels && hotels.length > 0) {
+                window.chatbotContainer.showChatbot(hotels);
+            } else {
+                // Nếu không có search results, vẫn hiển thị chatbot (không có hotels)
+                window.chatbotContainer.showChatbot([]);
+            }
+        } else {
+            // Không có search results, vẫn hiển thị chatbot
+            window.chatbotContainer.showChatbot([]);
+        }
+    } else {
+        console.error('❌ window.chatbotContainer NOT FOUND on hotel-detail page');
+    }
+}, 1000);
+
+// ✅ THÊM: Event listener cho nút "Tóm tắt reviews"
+document.addEventListener('DOMContentLoaded', () => {
+    const reviewBtn = document.getElementById('btn-review-summary');
+    if (reviewBtn) {
+        reviewBtn.addEventListener('click', () => {
+            console.log('🔍 Review button clicked');
+            
+            // Kiểm tra chatbot container đã ready chưa
+            if (!window.chatbotContainer) {
+                console.error('❌ Chatbot container not ready');
+                alert('Chatbot chưa sẵn sàng. Vui lòng đợi vài giây và thử lại.');
+                return;
+            }
+            
+            // Kiểm tra có hotel data không
+            if (!currentHotelData) {
+                console.error('❌ No hotel data available');
+                alert('Không tìm thấy thông tin khách sạn.');
+                return;
+            }
+            
+            console.log('📊 Chatbot state:', {
+                isVisible: window.chatbotContainer.state.isVisible,
+                isOpen: window.chatbotContainer.state.isOpen
+            });
+            
+            // ✅ Bước 1: Đảm bảo chatbot icon visible
+            if (!window.chatbotContainer.state.isVisible) {
+                console.log('📱 Step 1: Showing chatbot icon...');
+                window.chatbotContainer.showChatbot([currentHotelData]);
+            }
+            
+            // ✅ Bước 2: Mở chatbot window nếu chưa mở
+            if (!window.chatbotContainer.state.isOpen) {
+                console.log('📱 Step 2: Opening chatbot window...');
+                window.chatbotContainer.openChatWindow();
+            }
+            
+            // ✅ Bước 3: Show review view
+            setTimeout(() => {
+                console.log('📝 Step 3: Showing review view for:', currentHotelData.name);
+                window.chatbotContainer.showReviewView(currentHotelData);
+            }, 300);
+        });
+    }
+});

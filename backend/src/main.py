@@ -274,37 +274,6 @@ def get_districts():
         logger.error(f"Error loading districts: {e}")
         raise HTTPException(status_code=500, detail="Error loading data")
 
-# [DEMO] Endpoint Get All Hotels
-@app.get("/api/hotels", response_model=List[HotelOut])
-def get_all_hotels():
-    try:
-        hotels = recmod.load_hotels_from_json(HOTELS_JSON_PATH)
-        out_hotels = []
-        for h in hotels:
-            out_hotels.append(HotelOut(
-                id=h.id,
-                name=str(h.name or ""),
-                district=str(h.district or ""),
-                price=float(h.price or 0.0),
-                rating=float(h.rating or 0.0),
-                amenities=h.amenities or [],
-                score=None,
-                
-                details=str(h.details or ""),
-                image=str(h.image or ""),
-                
-                # Mapping các trường mới từ branch Demo
-                images=h.images or [],
-                address=str(h.address or ""),
-                stars=int(h.stars or 0),
-                reviews_count=int(h.reviews_count or 0),
-                category_reviews=h.category_reviews or []
-            ))
-        return out_hotels
-    except Exception as e:
-        logger.error(f"Error loading all hotels: {e}")
-        raise HTTPException(status_code=500, detail="Error loading data")
-
 # [CLICK TRACKING] Endpoint Get Top Hotels (MUST be before /{hotel_id} route)
 @app.get("/api/hotels/top-clicked", response_model=TopHotelsResponse)
 def get_top_clicked_hotels():
@@ -327,6 +296,18 @@ def get_top_clicked_hotels():
     except Exception as e:
         logger.error(f"Error getting top hotels: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+        
+# [NEW] Endpoint Get All Hotels (for chatbot name matching)
+@app.get("/api/hotels", response_model=List[dict])
+def get_all_hotels():
+    """Return simplified list of all hotels (id, name only) for chatbot matching"""
+    try:
+        hotels = recmod.load_hotels_from_json(HOTELS_JSON_PATH)
+        # Chỉ trả về id và name để giảm payload
+        return [{"id": h.id, "name": str(h.name or "")} for h in hotels]
+    except Exception as e:
+        logger.error(f"Error loading all hotels: {e}")
+        raise HTTPException(status_code=500, detail=f"Error loading hotels: {str(e)}")
 
 # [DEMO] Endpoint Get Hotel Details (Fix mapping fields mới)
 @app.get("/api/hotels/{hotel_id}", response_model=HotelOut)
