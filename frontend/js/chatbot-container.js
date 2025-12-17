@@ -131,12 +131,18 @@ class ChatbotContainer {
      * ✅ THÊM: Add "Chi tiết" buttons next to hotel names in bot responses
      */
     addDetailButtonsToHotels(htmlContent) {
+        console.log('🔍 addDetailButtonsToHotels called');
+        console.log('📊 allHotels:', this.allHotels.length, 'topHotels:', this.state.topHotels.length);
+        
         // ✅ Sử dụng allHotels (toàn bộ database) thay vì chỉ topHotels
         // Fallback về topHotels nếu allHotels chưa load
         const hotelsData = this.allHotels.length > 0 ? this.allHotels : (this.state.topHotels || []);
         
+        console.log('📝 Using hotels data:', hotelsData.length, 'hotels');
+        
         // Nếu không có hotels, return nguyên
         if (!hotelsData || hotelsData.length === 0) {
+            console.warn('⚠️ No hotels data available for matching');
             return htmlContent;
         }
         
@@ -148,24 +154,21 @@ class ChatbotContainer {
             }
         });
         
-        console.log('🔍 Matching hotels in response:', hotelMap.size, 'hotels available');
+        console.log('🔍 Hotel map size:', hotelMap.size);
+        console.log('📄 HTML content preview:', htmlContent.substring(0, 200));
         
         // Regex để tìm tên khách sạn trong response
         // Tìm pattern: "**Tên Khách Sạn**" hoặc "Tên Khách Sạn" theo sau bởi dấu ngắt dòng/câu
         let modifiedContent = htmlContent;
         
+        let matchCount = 0;
         hotelMap.forEach((hotel, hotelName) => {
             // Escape special regex characters trong tên khách sạn
             const escapedName = hotelName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             
-            // Pattern 1: Tìm trong thẻ <strong> hoặc <b>
-            const pattern1 = new RegExp(`(<strong>|<b>)(${escapedName})(</strong>|</b>)`, 'gi');
-            
-            // Pattern 2: Tìm trong heading
-            const pattern2 = new RegExp(`(<h[1-6][^>]*>)(${escapedName})(</h[1-6]>)`, 'gi');
-            
-            // Pattern 3: Tìm standalone (có emoji trước như 🏨)
-            const pattern3 = new RegExp(`(🏨\\s*)(${escapedName})([\\s:<br>])`, 'gi');
+            // ✅ Tìm tên khách sạn trong bất kỳ context nào (có thể có số, emoji, dấu chấm phía trước)
+            // Pattern: tìm tên trong <strong> hoặc <b>, bỏ qua ký tự trước
+            const pattern = new RegExp(`(<strong>|<b>)([^<]*?)(${escapedName})([^<]*?)(</strong>|</b>)`, 'gi');
             
             // Tạo button HTML với link tương đối
             const isInPagesFolder = window.location.pathname.includes('/pages/');
@@ -174,13 +177,19 @@ class ChatbotContainer {
                 : `pages/hotel-detail.html?id=${hotel.id}`;
             
             // ✅ Nút mũi tên chéo đơn giản
-            const detailButton = `<a href="${hotelDetailPath}" class="hotel-detail-btn" title="Xem chi tiết ${hotelName}" aria-label="Chi tiết"></a>`;
+            const detailButton = ` <a href="${hotelDetailPath}" class="hotel-detail-btn" title="Xem chi tiết ${hotelName}" aria-label="Chi tiết"></a>`;
             
-            // Replace với button
-            modifiedContent = modifiedContent.replace(pattern1, `$1$2$3 ${detailButton}`);
-            modifiedContent = modifiedContent.replace(pattern2, `$1$2$3 ${detailButton}`);
-            modifiedContent = modifiedContent.replace(pattern3, `$1$2 ${detailButton}$3`);
+            // Check if pattern matches
+            if (pattern.test(modifiedContent)) {
+                matchCount++;
+                console.log('✅ Matched hotel:', hotelName);
+            }
+            
+            // Replace: giữ nguyên phần trước và sau tên, chỉ thêm button sau tên
+            modifiedContent = modifiedContent.replace(pattern, `$1$2$3$4$5${detailButton}`);
         });
+        
+        console.log('🎯 Total matches:', matchCount);
         
         return modifiedContent;
     }
