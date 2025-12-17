@@ -173,7 +173,8 @@ class ChatbotContainer {
                 ? `hotel-detail.html?id=${hotel.id}` 
                 : `pages/hotel-detail.html?id=${hotel.id}`;
             
-            const detailButton = `<a href="${hotelDetailPath}" class="hotel-detail-btn" target="_blank" title="Xem chi tiết ${hotelName}">Chi tiết</a>`;
+            // ✅ Nút mũi tên chéo đơn giản
+            const detailButton = `<a href="${hotelDetailPath}" class="hotel-detail-btn" title="Xem chi tiết ${hotelName}" aria-label="Chi tiết"></a>`;
             
             // Replace với button
             modifiedContent = modifiedContent.replace(pattern1, `$1$2$3 ${detailButton}`);
