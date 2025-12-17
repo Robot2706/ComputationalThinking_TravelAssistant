@@ -82,3 +82,16 @@ function getCurrentUserData() {
     const userData = localStorage.getItem('currentUser');
     return userData ? JSON.parse(userData) : null;
 }
+
+// Check if user is logged in before navigating to protected pages
+export function redirectIfNotAuthenticated(targetPage = 'user-account.html') {
+    onAuthStateChanged(auth, user => {
+        if (!user) {
+            console.log('❌ User not logged in, redirecting to login...');
+            window.location.href = 'login.html';
+        } else {
+            console.log('✅ User authenticated, access granted');
+        }
+    });
+}
+

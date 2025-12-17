@@ -35,7 +35,7 @@
       </div>
 
       <div class="header-component">
-        <a class="link-underline" href="user-account.html">
+        <a class="link-underline" id="account-link" href="#" onclick="checkAuthAndRedirect(event)">
           <div class="paragraph200regular">your account</div>
         </a>
       </div>
@@ -63,6 +63,34 @@
         </div>
     </div>
     
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+      import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+      
+      const firebaseConfig = {
+        apiKey: "AIzaSyDF9lK914D_YpHAUNwD2lf8X5q27pH05AY",
+        authDomain: "rism-24a9a.firebaseapp.com",
+        projectId: "rism-24a9a",
+        storageBucket: "rism-24a9a.firebasestorage.app",
+        messagingSenderId: "1014525451464",
+        appId: "1:1014525451464:web:facd617d7d8c86212019fd",
+        measurementId: "G-LR7VE1J9XH"
+      };
+      
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      
+      window.checkAuthAndRedirect = function(event) {
+        event.preventDefault();
+        onAuthStateChanged(auth, user => {
+          if (user) {
+            window.location.href = 'user-account.html';
+          } else {
+            window.location.href = 'login.html';
+          }
+        });
+      };
+    </script>
     <script src="../js/featuring.js"></script>
   </body>
 </html>
