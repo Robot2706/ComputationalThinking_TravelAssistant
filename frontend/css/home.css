@@ -705,9 +705,9 @@ select.search-input {
     position: relative;
     z-index: 1;
     background-color: var(--bg-white);
-    margin-top: 100vh;
-    padding: 100px 10%;
-    min-height: 100vh;
+    margin-top: 250px;
+    padding: 40px 10%;
+    min-height: auto;
 }
 
 .white-section h2 {
